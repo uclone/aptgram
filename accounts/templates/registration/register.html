@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} - 사용자 등록{% endblock %}</title>
+</head>
+
+<body>
+{% block content %}
+    <div class="row">
+        <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-default">
+                <div class="alert alert-info">등록 정보를 입력하시기 바랍니다.</div>
+                <form action="" method="post">
+                    {{ form|crispy }}
+                    {% csrf_token %}
+                    <input class="btn btn-primary" type="submit" value="등록합니다">
+                </form>
+            </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}
+</body>
+</html>

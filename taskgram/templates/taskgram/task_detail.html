@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>task-detail</title>
+</head>
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'taskgram:task_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
+        <a href="{% url 'taskgram:task_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        <a href="{% url 'taskgram:detail_pdf' kk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+    <div class="btn-group float-left">
+        <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>작성자</td><td>{{object.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{object.group}}</td></tr>
+            <tr><td>소속부서</td><td>{{object.department}}</td></tr>
+            <tr><td>담당자</td><td>{{object.charge}}</td></tr>
+            <tr><td>작성일자</td><td>{{object.created|date:"M d, Y"}}</td></tr>
+            <tr><td>업무내역</td><td>{{object.task}}</td></tr>
+            <tr>
+                <td><a href="{{object.photo.url}}">참고사진</a></td>
+                <td><img src="{{object.photo.url}}" width="300" height="300"></td>
+            </tr>
+            <tr><td>관리자</td><td>{{object.manager}}</td></tr>
+            <tr><td>추인역</td><td>{{object.director}}</td></tr>
+            <tr><td>업무확인</td><td>{{object.response}}</td></tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

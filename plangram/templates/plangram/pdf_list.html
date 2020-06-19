@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-list</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>일정목록<span clas="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>업무개시</th>
+                <th>업무완료</th>
+                <th>담당부서</th>
+                <th>담당자</th>
+                <th>업무제목</th>
+                <th>업무관리</th>
+                <th>책임관리</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr>
+                <td>{{post.start|date:"M d, Y"}}</td>
+                <td>{{post.close|date:"M d, Y"}}</td>
+                <td>{{post.department}}</td>
+                <td>{{post.charge}}</td>
+                <td>{{post.subject}}</td>
+                <td>{{post.manager}}</td>
+                <td>{{post.director}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>

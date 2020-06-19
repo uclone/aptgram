@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 주민목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    {% for post in files %}
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>동</td><td>{{post.dong}}</td></tr>
+            <tr><td>호</td><td>{{post.ho}}</td></tr>
+            <tr><td>세대주</td><td>{{post.represent}}</td></tr>
+            <tr><td>가족구성</td><td>{{post.family}}</td></tr>
+            <tr><td>대표전화</td><td>{{post.phone}}</td></tr>
+            <tr><td>자동차</td><td>{{post.car}}</td></tr>
+            <tr><td>입주일자</td><td>{{post.date|date:"M d, Y"}}</td></tr>
+            <tr><td>비고</td><td>{{post.remark}}</td></tr>
+            <tr><td>최초작성일</td><td>{{post.created|date:"M d, Y"}}</td></tr>
+            <tr><td>수정일자</td><td>{{post.updated|date:"M d, Y"}}</td></tr>
+            <tr>
+                <td><a href="{{post.file.url}}">문서다운로드</a></td>
+                <td><a href="{{post.file.url}}">{{post.file}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p></p><p></p>
+
+    {% endfor %}
+
+</body>
+</html>

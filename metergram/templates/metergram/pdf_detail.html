@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 검침내역<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    {% for post in files %}
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>동</td><td>{{post.dong}}</td></tr>
+            <tr><td>호</td><td>{{post.ho}}</td></tr>
+            <tr><td>종류</td><td>{{post.utility}}</td></tr>
+            <tr><td>계량사용량</td><td>{{post.mtr}}</td></tr>
+            <tr><td>보정사용량</td><td>{{post.cor}}</td></tr>
+            <tr><td>사용금액</td><td>{{post.amount}}</td></tr>
+            <tr><td>검침일자</td><td>{{post.created|date:"M d, Y"}}</td></tr>
+            <tr><td>조치상황</td><td>{{post.action}}</td></tr>
+            <tr><td>검침담당</td><td>{{post.charge}}</td></tr>
+            <tr><td>관리담당</td><td>{{post.manager}}</td></tr>
+        </tbody>
+    </table>
+    <p></p><p></p>
+
+    {% endfor %}
+
+</body>
+</html>

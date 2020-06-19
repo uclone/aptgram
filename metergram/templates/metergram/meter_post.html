@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<head>
+    <meta charset="UTF-8">
+    <title>just arrived</title>
+</head>
+<body>
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">종류</th>
+                <th scope="col">기기번호</th>
+                <th scope="col">계량사용량</th>
+                <th scope="col">검침사용량</th>
+                <th scope="col">조치상황</th>
+                <th scope="col">검침담당</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td><input id="dong" type="text" name="dong" value="{{ dong }}" size="4"></td>
+                <td><input id="ho" type="text" name="ho" value="{{ ho }}" size="4"></td>
+                <td><input id="utility" type="text" name="utility" value="{{ utility }}" size="6"></td>
+                <td><input id="serial" type="text" name="serial" value="{{ serial }}" size="10"></td>
+                <td><input id="mtr" type="text" name="mtr" value="{{ mtr }}" size="10"></td>
+                <td><input id="cor" type="text" name="cor" value="{{ cor }}" size="10"></td>
+                <td><input id="action" type="text" name="action" value="검침" size="6"></td>
+                <td><input id="charge" type="text" name="charge" value="원격검침" size="6"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-success btn-sm float-right">자료저장</button>
+</form>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">종류</th>
+                <th scope="col">기기번호</th>
+                <th scope="col">계량지침</th>
+                <th scope="col">검침지침</th>
+                <th scope="col">검침일자</th>
+                <th scope="col">조치상황</th>
+                <th scope="col">검침담당</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in data %}
+            <tr>
+                <td>{{post.dong}}</td>
+                <td>{{post.ho}}</td>
+                <td>{{post.utility}}</td>
+                <td>{{post.serial}}</td>
+                <td>{{post.mtr}}</td>
+                <td>{{post.cor}}</td>
+                <td>{{post.created|date:"M d, Y"}}</td>
+                <td>{{post.action}}</td>
+                <td>{{post.charge}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

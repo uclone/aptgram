@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>life-detail</title>
+</head>
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'lifegram:life_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
+        <a href="{% url 'lifegram:life_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        <a href="{% url 'lifegram:detail_pdf' kk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
+    </div>
+    <div class="btn-group float-left">
+        <a href="{% url 'lifegram:life_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            <tr><td>작성자</td><td>{{object.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{object.group}}</td></tr>
+            <tr><td>신청인정보</td><td>{{object.contact}}</td></tr>
+            <tr><td>민원일자</td><td>{{object.created|date:"M d, Y"}}</td></tr>
+            <tr><td>민원제목</td><td>{{object.subject}}</td></tr>
+            <tr><td>민원내용</td><td>{{object.task_1}}</td></tr>
+            <tr>
+                <td><a href="{{object.photo_1.url}}">민원사진</a></td>
+                <td><img src="{{object.photo_1.url}}" width="300" height="300"></td>
+            </tr>
+            <tr><td>담당자</td><td>{{object.charge}}</td></tr>
+            <tr><td>응답처리일자</td><td>{{object.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>담당부서</td><td>{{object.department}}</td></tr>
+            <tr><td>응답처리결과</td><td>{{object.task_2}}</td></tr>
+            <tr>
+                <td><a href="{{object.photo_2.url}}">처리사진</a></td>
+                <td><img src="{{object.photo_2.url}}" width="300" height="300"></td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

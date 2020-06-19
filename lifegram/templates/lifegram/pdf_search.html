@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-search</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>민원목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>아파트명</th>
+                <th>민원일자</th>
+                <th>민원안건</th>
+                <th>담당자</th>
+                <th>응답일자</th>
+                <th>담당부서</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in filter %}
+            <tr>
+                <td>{{post.group}}</td>
+                <td>{{post.created|date:"M d, Y"}}</td>
+                <td>{{post.subject}}</td>
+                <td>{{post.charge}}
+                <td>{{post.updated|date:"M d, Y"}}</td>
+                <td>{{post.department}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>

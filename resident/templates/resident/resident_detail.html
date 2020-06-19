@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}입주민 명부{% endblock %}</title>
+</head>
+<body>
+{% block content %}
+    <div class="btn-group">
+        <a href="{% url 'resident:resident_add' %}" class="btn btn-info">설비추가</a>
+    </div>
+    <p></p>
+
+    <table class="table">
+        <thread>
+            <tr>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">세대주</th>
+                <th scope="col">가족구성</th>
+                <th scope="col">전화</th>
+                <th scope="col">입주일자</th>
+                <th scope="col">자동차</th>
+                <th scope="col">비고</th>
+            </tr>
+        </thread>
+
+        <tbody>
+            <tr>
+                <td>{{object.dong}}</td>
+                <td>{{object.ho}}</td>
+                <td>{{object.represent}}</td>
+                <td>{{object.family}}</td>
+                <td>{{object.phone}}</td>
+                <td>{{object.date}}</td>
+                <td>{{object.car}}</td>
+                <td>{{object.remark}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>
+

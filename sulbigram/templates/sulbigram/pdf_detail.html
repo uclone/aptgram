@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 설비목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    {% for post in files %}
+
+        <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>담당부서</td><td>{{post.department}}</td></tr>
+            <tr><td>설비명칭</td><td>{{post.subject}}</td></tr>
+            <tr><td>관리사항</td><td>{{post.action}}</td></tr>
+            <tr><td>시작일자</td><td>{{post.start|date:"M d, Y"}}</td></tr>
+            <tr><td>완료일자</td><td>{{post.close|date:"M d, Y"}}</td></tr>
+            <tr><td>상세내용</td><td>{{post.text}}</td></tr>
+            <tr><td>비고</td><td>{{post.remark}}</td></tr>
+            <tr><td>최초작성일</td><td>{{post.created|date:"M d, Y"}}</td></tr>
+            <tr><td>수정일자</td><td>{{post.updated|date:"M d, Y"}}</td></tr>
+            <tr>
+                <td><a href="{{post.file.url}}">문서다운로드</a></td>
+                <td><a href="{{post.file.url}}">{{post.file}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p></p><p></p>
+
+    {% endfor %}
+
+</body>
+</html>

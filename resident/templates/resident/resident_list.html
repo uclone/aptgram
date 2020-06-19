@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}입주민관리{% endblock %}</title>
+</head>
+<body>
+{% block content %}
+    <div class="btn-group">
+        <a href="{% url 'resident:resident_add' %}" class="btn btn-info">입주민추가</a>
+    </div>
+    <p></p>
+
+    <table class="table">
+        <thread>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">세대주</th>
+                <th scope="col">가족구성</th>
+                <th scope="col">연락처</th>
+                <th scope="col">입주일자</th>
+                <th scope="col">자동차</th>
+                <th scope="col">비고</th>
+                <th scope="col">수정</th>
+                <th scope="col">삭제</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for resident in object_list %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{resident.dong}}</a></td>
+                    <td>{{resident.ho}}</td>
+                    <td><a href="{% url 'resident:resident_detail' pk=resident.id %}">{{resident.represent}}</a></td>
+                    <td>{{resident.family}}</td>
+                    <td>{{resident.phone}}</td>
+                    <td>{{resident.date}}</td>
+                    <td>{{resident.car}}</td>
+                    <td>{{resident.remark}}</td>
+                    <td><a href="{% url 'resident:resident_update' pk=resident.id %}" class="btn btn-success btn-sm">수정</a></td>
+                    <td><a href="{% url 'resident:resident_delete' pk=resident.id %}" class="btn btn-danger btn-sm">삭제</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block pagination %}
+    {% if is_paginated %}
+        <ul class="pagination justify-content-center pagination-sm">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'resident:resident_list' %}?page={{ page_obj.previous_page_number }}"
+                       tabindex="-1">이전</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">이전</a>
+                </li>
+            {% endif %}
+
+
+            {% for object in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == forloop.counter %}disabled{% endif %}">
+                    <a class="page-link" href="{{ request.path }}?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                </li>
+            {% endfor %}
+
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'resident:resident_list' %}?page={{ page_obj.next_page_number }}">다음</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">다음</a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-search</title>
+</head>
+
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>비품목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>비품명칭</th>
+                <th>보관장소</th>
+                <th>관리부서</th>
+                <th>관리자(정)</th>
+                <th>관리자(부)</th>
+                <th>비품규격</th>
+                <th>구입일자</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in filter %}
+            <tr>
+                <td>{{post.subject}}</td>
+                <td>{{post.location}}
+                <td>{{postt.department}}</td>
+                <td>{{post.manager_1}}</td>
+                <td>{{post.manager_2}}</td>
+                <td>{{post.spec}}</td>
+                <td>{{post.date|date:"M d, Y"}}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</body>
+</html>

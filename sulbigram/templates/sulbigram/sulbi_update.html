@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>sulbi-update</title>
+</head>
+<body>
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-default">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {{form|crispy}}
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary" value="수정완료">
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+{% endblock %}
+</body>
+</html>

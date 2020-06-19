@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>meter-delete</title>
+</head>
+<body>
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-default">
+                <div class="alert alert-info">[{{object.dong}}:{{object.ho}}:{{created.ho}}] 자료를 정말 삭제하시겠습니까?</div>
+
+                <form action="" method="post">
+                    {{form.as_p}}
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Confirm">
+                </form>
+            </div>
+        <div class="col-md-2"></div>
+    </div>
+
+{% endblock %}
+</body>
+</html>
