@@ -13,9 +13,11 @@ from .filters import SearchFilter
 
 @login_required
 def task_list(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    pagefiles = Task.objects.filter(group_id=gr_id)
+    request_user = request.user
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    data = Task.objects.filter(author_id=request_user.id).first()
+    pagefiles = Task.objects.filter(group_id=data.group_id)
+
     # pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 3)
@@ -30,9 +32,11 @@ def task_list(request):
 
 @login_required
 def task_search(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    file_list = Task.objects.filter(group_id=gr_id)
+    request_user = request.user
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    data = Task.objects.filter(author_id=request_user.id).first()
+    file_list = Task.objects.filter(group_id=data.group_id)
+
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
     Stask.objects.all().delete()

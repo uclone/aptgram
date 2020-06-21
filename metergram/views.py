@@ -13,9 +13,11 @@ from .forms import MeterForm
 
 @login_required
 def meter_list(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    pagefiles = Meter.objects.filter(group_id=gr_id)
+    request_user = request.user
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    data = Meter.objects.filter(author_id=request_user.id).first()
+    pagefiles = Meter.objects.filter(group_id=data.group_id)
+
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 3)
@@ -30,9 +32,11 @@ def meter_list(request):
 
 @login_required
 def meter_search(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    file_list = Meter.objects.filter(group_id=gr_id)
+    request_user = request.user
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    data = Meter.objects.filter(author_id=request_user.id).first()
+    file_list = Meter.objects.filter(group_id=data.group_id)
+
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
     Smeter.objects.all().delete()

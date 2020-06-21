@@ -9,13 +9,11 @@ from .models import File, Sfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
-from django.contrib.auth import get_user
-#from django.contrib.auth.models import Group
 
 @login_required
 def file_list(request):
     request_user = request.user
-    #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     data = File.objects.filter(author_id=request_user.id).first()
     pagefiles = File.objects.filter(group_id=data.group_id)
 
@@ -34,7 +32,7 @@ def file_list(request):
 @login_required
 def file_search(request):
     request_user = request.user
-    #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     data = File.objects.filter(author_id=request_user.id).first()
     file_list = File.objects.filter(group_id=data.group_id)
 
