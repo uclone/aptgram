@@ -16,6 +16,7 @@ def life_list(request):
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     data = Life.objects.filter(author_id=request_user.id).first()
     pagefiles = Life.objects.filter(group_id=data.group_id)
+
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 3)
