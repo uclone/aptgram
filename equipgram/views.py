@@ -34,8 +34,10 @@ def equip_list(request):
 @login_required
 def equip_search(request):
     # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    file_list = Equip.objects.filter(group_id=gr_id)
+    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    #file_list = Equip.objects.filter(group_id=gr_id)
+
+    file_list = Equip.objects.all()
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
