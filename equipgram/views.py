@@ -13,8 +13,12 @@ from .filters import SearchFilter
 @login_required
 def equip_list(request):
     # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    pagefiles = Equip.objects.filter(group_id=gr_id)
+#    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+#    pagefiles = Equip.objects.filter(group_id=gr_id)
+
+
+
+    pagefiles = Equip.objects.all()
 # - pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 6)
