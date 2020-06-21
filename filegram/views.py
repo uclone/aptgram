@@ -14,11 +14,13 @@ from django.contrib.auth import get_user
 
 @login_required
 def file_list(request):
-    #request_user = request.user
-    grrr_id = request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
-    gr_id = grrr_id[0]
-    pagefiles = File.objects.filter(group_id=gr_id)
+    request_user = request.user
+    #user_data = File.obects.filter(author_id=request.user_id)
+    #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
+    #gr_id = grrr_id[0]
+    pagefiles = File.objects.filter(author_id=request_user.id)
     #pagefiles = File.objects.filter(author=request.user)
+
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 3)
@@ -38,6 +40,8 @@ def file_search(request):
     #gr_id = xuser.group_id   #values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     grrr_id = request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
     gr_id = grrr_id[0]
+
+
     file_list = File.objects.filter(group_id=gr_id)
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
