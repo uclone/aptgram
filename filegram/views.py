@@ -10,11 +10,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from django.contrib.auth import get_user
+#from django.contrib.auth.models import Group
 
 @login_required
 def file_list(request):
     request.user = get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    grrr_id = request.user.groups.values_list('id', flat=True)        #.first()  # for "group_name" use 'name' instead of 'id'
+    gr_id = grrr_id[0]
     pagefiles = File.objects.filter(group_id=gr_id)
     #pagefiles = File.objects.filter(author=request.user)
     #pagination - start
