@@ -104,7 +104,7 @@ DATABASES = {
 }
 
 #for Heroku Database
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
+#DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 #for Amazon Database aptgram
 #DATABASES = {
