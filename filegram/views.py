@@ -9,10 +9,11 @@ from .models import File, Sfile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
+from django.contrib.auth import get_user
 
 @login_required
 def file_list(request):
-    # user = auth.get_user(request)
+    request.user = get_user(request)
     gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     pagefiles = File.objects.filter(group_id=gr_id)
     #pagination - start
