@@ -15,13 +15,9 @@ from django.contrib.auth import get_user
 @login_required
 def file_list(request):
     request_user = request.user
-    #user_data = File.obects.filter(author_id=request.user_id)
     #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
-    #gr_id = grrr_id[0]
-    files = File.objects.filter(author_id=request_user.id).first()
-    #for xx in files:
-    yy = files.group_id
-    pagefiles = File.objects.filter(group_id=yy)
+    data = File.objects.filter(author_id=request_user.id).first()
+    pagefiles = File.objects.filter(group_id=data.group_id)
 
     #pagination - start
     page = request.GET.get('page', 1)
@@ -37,14 +33,12 @@ def file_list(request):
 
 @login_required
 def file_search(request):
-    #request_user = request.user
-    #group = File.objects.filter(author_id=request_user).first()
-    #gr_id = xuser.group_id   #values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    grrr_id = request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
-    gr_id = grrr_id[0]
+    request_user = request.user
+    #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
+    data = File.objects.filter(author_id=request_user.id).first()
+    file_list = File.objects.filter(group_id=data.group_id)
 
-
-    file_list = File.objects.filter(group_id=gr_id)
+    #django-filter - start
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
     Sfile.objects.all().delete()
