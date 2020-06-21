@@ -31,7 +31,7 @@ SECRET_KEY = '47z6b0hi+&twg!)y&-vrzmue=cf#+y_tmjb2)!t5*_%(4er+)c'
 #ALLOWED_HOSTS = ['.compute.amazonaws.com']                       #---------------Amazon Server AWS EC2
 # for Heroku
 DEBUG = False
-ALLOWED_HOSTS = ['*']                       #---------------Amazon Server AWS EC2
+ALLOWED_HOSTS = ['herokuapp.com']                       #---------------Amazon Server AWS EC2
 # for Local
 #DEBUG = True
 #ALLOWED_HOSTS = []
