@@ -18,8 +18,10 @@ def file_list(request):
     #user_data = File.obects.filter(author_id=request.user_id)
     #request.user.groups.values_list('id').first()  # for "group_name" use 'name' instead of 'id'
     #gr_id = grrr_id[0]
-    pagefiles = File.objects.filter(author_id=request_user.id)
-    #pagefiles = File.objects.filter(author=request.user)
+    files = File.objects.filter(author_id=request_user.id).first()
+    #for xx in files:
+    yy = files.group_id
+    pagefiles = File.objects.filter(group_id=yy)
 
     #pagination - start
     page = request.GET.get('page', 1)
