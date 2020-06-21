@@ -16,6 +16,7 @@ def file_list(request):
     request.user = get_user(request)
     gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     pagefiles = File.objects.filter(group_id=gr_id)
+    #pagefiles = File.objects.filter(author=request.user)
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 3)

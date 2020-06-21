@@ -180,7 +180,7 @@ DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'                  #med
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
 # for Deploy
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')                         # for Heroku, Pythonanywhere
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')                         # for Heroku, Pythonanywhere
 # for Amazon -- Static under Bucket
 #AWS_DEFAULT_ACL = 'public-read'                                             #shopping
 #AWS_LOCATION = 'static'                                                     #shopping
