@@ -11,14 +11,17 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import dj_database_url
+
+# for Heroku
+#import dj_database_url
+
 # for Amazon & Mysql
-#import pymysql
-#pymysql.install_as_MySQLdb()
+import pymysql
+pymysql.version_info = (1, 3, 13, "final", 0)
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -26,18 +29,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '47z6b0hi+&twg!)y&-vrzmue=cf#+y_tmjb2)!t5*_%(4er+)c'
 
+
 # SECURITY WARNING: don't run with debug turned on in production! ---------------Amazon Server AWS EC2
 #DEBUG = False
 #ALLOWED_HOSTS = ['.compute.amazonaws.com']                       #---------------Amazon Server AWS EC2
 # for Heroku
-DEBUG = False
-ALLOWED_HOSTS = ['*']                       #---------------remote server
+#DEBUG = False
+#ALLOWED_HOSTS = ['*']                       #---------------remote server
 # for Local
-#DEBUG = True
-#ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = []
+
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -96,32 +100,31 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 #for Local Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-#for Heroku Database
-DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
-
-#for Amazon Database aptgram
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'aptgram',
-#        'USER': 'admin',
-#        'PASWWORD': '3457amazon',
-#        'HOST': 'aptgram.cexvtitcxxdk.ap-northeast-2.rds.amazonaws.com',
-#        'PORT': '3306',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
 #}
+
+#for Heroku Database
+#DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
+
+#for Amazon Database aptgram
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aptgram',
+        'USER': 'admin',
+        'PASSWORD': '3457amazon',
+        'HOST': 'aptgram.cexvtitcxxdk.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -164,7 +167,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#for Amazon -- Bucket - Aptgram
+# for Amazon -- Bucket - Aptgram
 AWS_ACCESS_KEY_ID = 'AKIAWYGKWKC7DYLERDFG'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_REGION = 'ap-northeast-2'
@@ -178,13 +181,15 @@ DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'                  #med
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATIC_URL = '/static/'
-# for Deploy
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')                         # for Heroku, Pythonanywhere
+# Default
+#STATIC_URL = '/static/'
+# for Herku
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')                         # for Heroku, Pythonanywhere
+
 # for Amazon -- Static under Bucket
-#AWS_DEFAULT_ACL = 'public-read'                                             #shopping
-#AWS_LOCATION = 'static'                                                     #shopping
-#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)        #shopping
-#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'            #shopping
+AWS_DEFAULT_ACL = 'public-read'                                             #shopping
+AWS_LOCATION = 'static'                                                     #shopping
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)        #shopping
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'            #shopping
 
 

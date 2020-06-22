@@ -26,8 +26,8 @@ class Life(models.Model):
     def __str__(self):
         return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")
 
-    def __str__(self):
-        return self.file.name
+#    def __str__(self):
+#        return self.file.name
 
     def get_absolute_url_file(self):
         return reverse('lifegram:life_detail', arg=[str(self.id)])
@@ -56,5 +56,5 @@ class Slife(models.Model):
     def __str__(self):
         return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")
 
-    def __str__(self):
-        return self.file.name
+#    def __str__(self):
+#        return self.file.name

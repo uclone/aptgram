@@ -14,8 +14,11 @@ from .filters import SearchFilter
 def file_list(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = File.objects.filter(author_id=request_user.id).first()
-    pagefiles = File.objects.filter(group_id=data.group_id)
+    try:
+        data = File.objects.filter(author_id=request_user.id).first()
+        pagefiles = File.objects.filter(group_id=data.group_id)
+    except:
+        pagefiles = File.objects.filter(group_id=1)
 
     #pagination - start
     page = request.GET.get('page', 1)
@@ -33,8 +36,11 @@ def file_list(request):
 def file_search(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = File.objects.filter(author_id=request_user.id).first()
-    file_list = File.objects.filter(group_id=data.group_id)
+    try:
+        data = File.objects.filter(author_id=request_user.id).first()
+        file_list = File.objects.filter(group_id=data.group_id)
+    except:
+        file_list = File.objects.filter(group_id=1)
 
     #django-filter - start
     file_filter = SearchFilter(request.GET, queryset=file_list)

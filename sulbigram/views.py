@@ -14,8 +14,11 @@ from .filters import SearchFilter
 def sulbi_list(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Sulbi.objects.filter(author_id=request_user.id).first()
-    pagefiles = Sulbi.objects.filter(group_id=data.group_id)
+    try:
+        data = Sulbi.objects.filter(author_id=request_user.id).first()
+        pagefiles = Sulbi.objects.filter(group_id=data.group_id)
+    except:
+        pagefiles = Sulbi.objects.filter(group_id=1)
 
     # pagination - start
     page = request.GET.get('page', 1)
@@ -33,8 +36,11 @@ def sulbi_list(request):
 def sulbi_search(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Sulbi.objects.filter(author_id=request_user.id).first()
-    file_list = Sulbi.objects.filter(group_id=data.group_id)
+    try:
+        data = Sulbi.objects.filter(author_id=request_user.id).first()
+        file_list = Sulbi.objects.filter(group_id=data.group_id)
+    except:
+        file_list = Sulbi.objects.filter(group_id=1)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs

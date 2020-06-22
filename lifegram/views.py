@@ -14,8 +14,11 @@ from .filters import SearchFilter
 def life_list(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Life.objects.filter(author_id=request_user.id).first()
-    pagefiles = Life.objects.filter(group_id=data.group_id)
+    try:
+        data = Life.objects.filter(author_id=request_user.id).first()
+        pagefiles = Life.objects.filter(group_id=data.group_id)
+    except:
+        pagefiles = Life.objects.filter(group_id=1)
 
     #pagination - start
     page = request.GET.get('page', 1)
@@ -33,8 +36,11 @@ def life_list(request):
 def life_search(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Life.objects.filter(author_id=request_user.id).first()
-    file_list = Life.objects.filter(group_id=data.group_id)
+    try:
+        data = Life.objects.filter(author_id=request_user.id).first()
+        file_list = Life.objects.filter(group_id=data.group_id)
+    except:
+        file_list = Life.objects.filter(group_id=1)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs

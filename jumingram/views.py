@@ -12,14 +12,12 @@ from .filters import SearchFilter
 
 @login_required
 def jumin_list(request):
-    #request_user = request.user
-    #data = Jumin.objects.filter(author_id=request_user.id).first()
-    #pagefiles = Jumin.objects.filter(group_id=data.group_id)
-
-
-    pagefiles = Jumin.objects.all()
-
-
+    request_user = request.user
+    try:
+        data = Jumin.objects.filter(author_id=request_user.id).first()
+        pagefiles = Jumin.objects.filter(group_id=data.group_id)
+    except:
+        pagefiles = Jumin.objects.filter(group_id=1)
 
     # pagination - start
     page = request.GET.get('page', 1)
@@ -35,14 +33,12 @@ def jumin_list(request):
 
 @login_required
 def jumin_search(request):
-    #request_user = request.user
-    #data = Jumin.objects.filter(author_id=request_user.id).first()
-    #file_list = Jumin.objects.filter(group_id=data.group_id)
-
-
-    file_list = Jumin.objects.all()
-
-
+    request_user = request.user
+    try:
+        data = Jumin.objects.filter(author_id=request_user.id).first()
+        file_list = Jumin.objects.filter(group_id=data.group_id)
+    except:
+        file_list = Jumin.objects.filter(group_id=1)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs

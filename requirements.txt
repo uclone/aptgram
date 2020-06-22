@@ -8,7 +8,6 @@ cffi==1.14.0
 chardet==3.0.4
 cssselect2==0.3.0
 defusedxml==0.6.0
-dj-database-url==0.5.0
 Django==3.0.6
 django-crispy-forms==1.9.1
 django-filter==2.3.0
@@ -22,7 +21,6 @@ idna==2.9
 jmespath==0.10.0
 mysql-connector==2.2.9
 Pillow==7.1.2
-psycopg2-binary==2.8.5
 pycparser==2.20
 PyMySQL==0.9.3
 Pyphen==0.9.5

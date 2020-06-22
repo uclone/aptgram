@@ -14,8 +14,11 @@ from .filters import SearchFilter
 def equip_list(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Equip.objects.filter(author_id=request_user.id).first()
-    pagefiles = Equip.objects.filter(group_id=data.group_id)
+    try:
+        data = Equip.objects.filter(author_id=request_user.id).first()
+        pagefiles = Equip.objects.filter(group_id=data.group_id)
+    except:
+        pagefiles = Equip.objects.filter(group_id=1)
 
 # - pagination - start
     page = request.GET.get('page', 1)
@@ -33,8 +36,11 @@ def equip_list(request):
 def equip_search(request):
     request_user = request.user
     #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    data = Equip.objects.filter(author_id=request_user.id).first()
-    file_list = Equip.objects.filter(group_id=data.group_id)
+    try:
+        data = Equip.objects.filter(author_id=request_user.id).first()
+        file_list = Equip.objects.filter(group_id=data.group_id)
+    except:
+        file_list = Equip.objects.filter(group_id=1)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
