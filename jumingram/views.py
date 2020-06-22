@@ -13,7 +13,6 @@ from .filters import SearchFilter
 @login_required
 def jumin_list(request):
     #request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     #data = Jumin.objects.filter(author_id=request_user.id).first()
     #pagefiles = Jumin.objects.filter(group_id=data.group_id)
 
@@ -37,7 +36,6 @@ def jumin_list(request):
 @login_required
 def jumin_search(request):
     #request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
     #data = Jumin.objects.filter(author_id=request_user.id).first()
     #file_list = Jumin.objects.filter(group_id=data.group_id)
 
