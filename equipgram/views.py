@@ -9,14 +9,20 @@ from .models import Equip, Sequip
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
+from django.contrib.auth.models import User, Group
 
 @login_required
 def equip_list(request):
-    request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    #try:
+    #    request_user = request.user
+    #    data = Equip.objects.filter(author_id=request_user.id).first()
+    #    pagefiles = Equip.objects.filter(group_id=data.group_id)
+    #except:
+    #    pagefiles = Equip.objects.filter(group_id=1)
+
     try:
-        data = Equip.objects.filter(author_id=request_user.id).first()
-        pagefiles = Equip.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        pagefiles = Equip.objects.filter(group_id=group_id)
     except:
         pagefiles = Equip.objects.filter(group_id=1)
 
@@ -34,11 +40,16 @@ def equip_list(request):
 
 @login_required
 def equip_search(request):
-    request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    #try:
+    #    request_user = request.user
+    #    data = Equip.objects.filter(author_id=request_user.id).first()
+    #    file_list = Equip.objects.filter(group_id=data.group_id)
+    #except:
+    #    file_list = Equip.objects.filter(group_id=1)
+
     try:
-        data = Equip.objects.filter(author_id=request_user.id).first()
-        file_list = Equip.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        file_list = Equip.objects.filter(group_id=group_id)
     except:
         file_list = Equip.objects.filter(group_id=1)
 
@@ -64,6 +75,7 @@ class EquipUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
+        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
             return redirect('equipgram:equip_list')

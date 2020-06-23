@@ -13,11 +13,16 @@ from .filters import SearchFilter
 
 @login_required
 def task_list(request):
-    request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    #try:
+    #    request_user = request.user
+    #    data = Task.objects.filter(author_id=request_user.id).first()
+    #    pagefiles = Task.objects.filter(group_id=data.group_id)
+    #except:
+    #    pagefiles = Task.objects.filter(group_id=1)
+
     try:
-        data = Task.objects.filter(author_id=request_user.id).first()
-        pagefiles = Task.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()
+        pagefiles = Task.objects.filter(group_id=group_id)
     except:
         pagefiles = Task.objects.filter(group_id=1)
 
@@ -35,11 +40,16 @@ def task_list(request):
 
 @login_required
 def task_search(request):
-    request_user = request.user
-    #gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
+    #try:
+    #    request_user = request.user
+    #    data = Task.objects.filter(author_id=request_user.id).first()
+    #    file_list = Task.objects.filter(group_id=data.group_id)
+    #except:
+    #    file_list = Task.objects.filter(group_id=1)
+
     try:
-        data = Task.objects.filter(author_id=request_user.id).first()
-        file_list = Task.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()
+        file_list= Task.objects.filter(group_id=group_id)
     except:
         file_list = Task.objects.filter(group_id=1)
 
@@ -64,6 +74,7 @@ class TaskUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
+        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
             return redirect('taskgram:task_list')

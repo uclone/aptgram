@@ -12,10 +12,16 @@ from .filters import SearchFilter
 
 @login_required
 def jumin_list(request):
-    request_user = request.user
+    #try:
+    #    request_user = request.user
+    #    data = Jumin.objects.filter(author_id=request_user.id).first()
+    #    pagefiles = Jumin.objects.filter(group_id=data.group_id)
+    #except:
+    #    pagefiles = Jumin.objects.filter(group_id=1)
+
     try:
-        data = Jumin.objects.filter(author_id=request_user.id).first()
-        pagefiles = Jumin.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()
+        pagefiles = Jumin.objects.filter(group_id=group_id)
     except:
         pagefiles = Jumin.objects.filter(group_id=1)
 
@@ -33,10 +39,16 @@ def jumin_list(request):
 
 @login_required
 def jumin_search(request):
-    request_user = request.user
+    #try:
+    #    request_user = request.user
+    #    data = Jumin.objects.filter(author_id=request_user.id).first()
+    #    file_list = Jumin.objects.filter(group_id=data.group_id)
+    #except:
+    #    file_list = Jumin.objects.filter(group_id=1)
+
     try:
-        data = Jumin.objects.filter(author_id=request_user.id).first()
-        file_list = Jumin.objects.filter(group_id=data.group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        file_list = Jumin.objects.filter(group_id=group_id)
     except:
         file_list = Jumin.objects.filter(group_id=1)
 
@@ -61,6 +73,7 @@ class JuminUploadView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
+        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
             return redirect('jumingram:jumin_list')
