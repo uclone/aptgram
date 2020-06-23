@@ -10,6 +10,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from django.contrib.auth.models import User, Group
+from weasyprint import HTML, CSS
+from weasyprint.fonts import FontConfiguration
+
 
 @login_required
 def equip_list(request):
@@ -96,6 +99,8 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
             return self.render_to_response({'form':form})
 
 #for weasyprint
+#font_config = FontConfiguration()
+
 def generate_pdf(request):
     # user = auth.get_user(request)
     gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
