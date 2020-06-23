@@ -23,7 +23,7 @@
                 <ul>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'plangram:plan_list' %}">업무일정</a></li>
-                    <li><a href="{% url 'filegram:file_list' %}">업무관리</a></li>
+                    <li><a href="{% url 'filegram:file_list' %}">문서업무</a></li>
                     <li><a href="{% url 'taskgram:task_list' %}">업무일지</a></li>
                     <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
                     <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
