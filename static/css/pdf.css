@@ -1,7 +1,7 @@
 @font-face
 {
     font-family: "Arial Unicode MS", "Helvetica", "sans-serif";
-    src: http://www.microsoft.com/typography/fonts/font.aspx?FID=24&FNAME=Arial+Unicode+MS&FVER=1.01
+    src: url('/static/arial-unicode-ms.tiff') format('truetype'),
 }
 
 body    {
