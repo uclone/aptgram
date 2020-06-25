@@ -1,10 +1,11 @@
 @font-face
 {
-    font-family: "JetBrains Mono", "Arial Unicode MS", "Helvetica", "sans-serif";
+    font-family: "Arial Unicode MS", "Helvetica", "sans-serif";
+    src: url(.fonts/arial-unicode-ms.ttf) format("truetype");
 }
 
 body    {
-    font-family: "JetBrains Mono", "Arial Unicode MS", "Helvetica", "sans-serif";
+    font-family: "Arial Unicode MS", "Helvetica", "sans-serif";
     color:#222;
     line-height:1.1;
 }
