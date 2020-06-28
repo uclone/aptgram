@@ -26,8 +26,8 @@ class Meter(models.Model):
     def __str__(self):
         return self.file.name
 
-    def get_absolute_url_file(self):
-        return reverse('metergram:meter_detail', arg=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse('metergram:meter_detail', args=[str(self.id)])
 
 
 class Smeter(models.Model):

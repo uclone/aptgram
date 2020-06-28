@@ -2,17 +2,14 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string, get_template
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import Equip, Sequip
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
-from django.contrib.auth.models import User, Group
-from weasyprint import HTML, CSS
-from weasyprint.fonts import FontConfiguration
-
+from .forms import DateForm
 
 @login_required
 def equip_list(request):
@@ -52,9 +49,9 @@ def equip_search(request):
 
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        file_list = Equip.objects.filter(group_id=group_id)
+        file_list = Equip.objects.filter(group_id=group_id)                         #.order_by('author')
     except:
-        file_list = Equip.objects.filter(group_id=1)
+        file_list = Equip.objects.filter(group_id=1)                                #.order_by('author')
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
@@ -73,38 +70,56 @@ class EquipDeleteView(LoginRequiredMixin, DeleteView):
 
 class EquipUploadView(LoginRequiredMixin, CreateView):
     model = Equip
-    fields = ['subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'photo']
+    form_class = DateForm
     template_name = 'equipgram/equip_upload.html'
+    #success_url = reverse_lazy('equipgram:equip_upload')
 
-    def form_valid(self, form):
+    def post(self, request):
+        form = DateForm(request.POST)
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
-            return redirect('equipgram:equip_list')
-        else:
-            return self.render_to_response({'form':form})
+            return redirect('equipgram:equip_upload')
+        return self.render_to_response({'form': form})
+
+    #def get_form(self):
+    #    forms = super().get_form()
+    #    forms.fields['date'].widget = DateTimePickerInput()
+    #    forms.instance.author_id = self.request.user.id
+    #    forms.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+    #    return forms
+
+    #def form_valid(self, form):
+    #    form.instance.author_id = self.request.user.id
+    #    form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+    #    if form.is_valid():
+    #        form.instance.save()
+    #        return redirect('taskgram:task_list')
+    #    else:
+    #        return self.render_to_response({'form':form})
 
 class EquipUpdateView(LoginRequiredMixin, UpdateView):
     model = Equip
-    fields = ['subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'photo']
+    form_class = DateForm
     template_name = 'equipgram/equip_update.html'
 
-    def form_valid(self, form):
-        form.instance.author_id = self.request.user.id
-        if form.is_valid():
-            form.instance.save()
-            return redirect('equipgram:equip_list')
-        else:
-            return self.render_to_response({'form':form})
+    #def form_valid(self, form):
+    #    form.instance.author_id == self.request.user.id
+    #    if form.is_valid():
+    #        form.instance.save()
+    #        return redirect('taskgram:task_list')
+    #    else:
+    #        return self.render_to_response({'form': form})
 
 #for weasyprint
-#font_config = FontConfiguration()
-
 def generate_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    files = Equip.objects.filter(group_id=gr_id).order_by('author')
+    try:
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        files = Equip.objects.filter(group_id=group_id)                             #.order_by('author')
+    except:
+        files = Equip.objects.filter(group_id=1)                                    #.order_by('author')
+
     html_string = render_to_string('equipgram/pdf_list.html', {'files': files})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=equip_list_{}.pdf'.format(request.user)
@@ -122,9 +137,7 @@ def detail_pdf(request, kk):
     return response
 
 def search_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    files_filter = Sequip.objects.filter(group_id=gr_id).order_by('author')
+    files_filter = Sequip.objects.all()
     html_string = render_to_string('equipgram/pdf_search.html', {'filter': files_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=equip_search_{}.pdf'.format(request.user)

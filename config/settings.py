@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
 # for Heroku
 #import dj_database_url
 
@@ -62,6 +61,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'index',
     'metergram',
+    'papergram',
+    'bootstrap3',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +121,9 @@ DATABASES = {
         'PASSWORD': '3457amazon',
         'HOST': 'aptgram.cexvtitcxxdk.ap-northeast-2.rds.amazonaws.com',
         'PORT': '3306',
+
+        #'OPTIONS': {
+        #    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",}
     }
 }
 
@@ -146,6 +151,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ko-kr'
+
+DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
 TIME_ZONE = 'UTC'
 

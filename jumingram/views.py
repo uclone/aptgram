@@ -9,6 +9,7 @@ from .models import Jumin, Sjumin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
+from .forms import DateForm
 
 @login_required
 def jumin_list(request):
@@ -68,36 +69,31 @@ class JuminDeleteView(LoginRequiredMixin, DeleteView):
 
 class JuminUploadView(LoginRequiredMixin, CreateView):
     model = Jumin
-    fields = ['dong', 'ho', 'represent', 'family', 'phone', 'car', 'date', 'remark', 'file']
+    form_class = DateForm
     template_name = 'jumingram/jumin_upload.html'
 
-    def form_valid(self, form):
+    def post(self, request):
+        form = DateForm(request.POST)
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
-            return redirect('jumingram:jumin_list')
-        else:
-            return self.render_to_response({'form':form})
+            return redirect('jumingram:jumin_upload')
+        return self.render_to_response({'form': form})
 
 class JuminUpdateView(LoginRequiredMixin, UpdateView):
     model = Jumin
-    fields = ['dong', 'ho', 'represent', 'family', 'phone', 'car', 'date', 'remark', 'file']
+    form_class = DateForm
     template_name = 'jumingram/jumin_update.html'
-
-    def form_valid(self, form):
-        form.instance.author_id = self.request.user.id
-        if form.is_valid():
-            form.instance.save()
-            return redirect('jumingram:jumin_list')
-        else:
-            return self.render_to_response({'form': form})
 
 #for weasyprint
 def generate_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    files = Jumin.objects.filter(group_id=gr_id).order_by('author')                                          # Model data
+    try:
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        files = Jumin.objects.filter(group_id=group_id)                             #.order_by('author')
+    except:
+        files = Jumin.objects.filter(group_id=1)                                    #.order_by('author')
+
     html_string = render_to_string('jumingram/pdf_list.html', {'files': files})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=jumin_list_{}.pdf'.format(request.user)
@@ -115,9 +111,7 @@ def detail_pdf(request, kk):
     return response
 
 def search_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    file_filter = Sjumin.objects.filter(group_id=gr_id).order_by('author')
+    file_filter = Sjumin.objects.all()
     html_string = render_to_string('jumingram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=jumin_search_{}.pdf'.format(request.user)

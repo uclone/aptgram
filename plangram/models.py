@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.urls import reverse
+from django.utils import timezone
 
 class Plan(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_plans', verbose_name='작성자')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_plans', verbose_name='아파트명')
-    start = models.DateField(null=True, verbose_name='시작일자')
-    close = models.DateField(null=True, verbose_name='완료일자')
+    start = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='시작일자')
+    close = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='완료일자')
     department = models.CharField(max_length=100, null=True, verbose_name='담당부서')
     charge = models.CharField(max_length=100, null=True, verbose_name='담당자')
     subject = models.CharField(max_length=100, null=True, verbose_name='업무제목')
@@ -27,8 +28,8 @@ class Plan(models.Model):
     def __str__(self):
         return self.photo.name
 
-    def get_absolute_url_file(self):
-        return reverse('plangram:plan_detail', arg=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse('plangram:plan_detail', args=[str(self.id)])
 
 
 class Splan(models.Model):

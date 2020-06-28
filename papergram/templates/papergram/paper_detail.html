@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>paper-detail</title>
+</head>
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'papergram:paper_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:detail_pdf' kk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+    <div class="btn-group float-left">
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>작성자</td><td>{{object.author}}</td></tr>
+            <tr><td>공급자</td><td>{{object.group}}</td></tr>
+            <tr><td>서식제목</td><td>{{object.subject}}</td></tr>
+            <tr><td>서식설명</td><td>{{object.description}}</td></tr>
+            <tr><td>최초등록</td><td>{{object.created|date:"M d, Y"}}</td></tr>
+            <tr><td>수정등록</td><td>{{object.updated|date:"M d, Y"}}</td></tr>
+            <tr>
+                <td><a href="{{object.paper.url}}">서식식다운로드</a></td>
+                <td><a href="{{object.paper.url}}">{{object.file}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+ {% endblock %}
+</body>
+</html>

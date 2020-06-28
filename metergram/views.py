@@ -9,7 +9,7 @@ from .models import Meter, Smeter
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
-from .forms import MeterForm
+from .forms import MeterForm, DateForm
 
 @login_required
 def meter_list(request):
@@ -83,36 +83,31 @@ class MeterDeleteView(LoginRequiredMixin, DeleteView):
 
 class MeterUploadView(LoginRequiredMixin, CreateView):
     model = Meter
-    fields = ['dong', 'ho', 'utility', 'serial', 'mtr', 'cor', 'amount', 'action', 'charge', 'manager']
+    form_class = DateForm
     template_name = 'metergram/meter_upload.html'
 
-    def form_valid(self, form):
+    def post(self, request):
+        form = DateForm(request.POST)
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.instance.save()
-            return redirect('metergram:meter_list')
-        else:
-            return self.render_to_response({'form':form})
+            return redirect('metergram:meter_upload')
+        return self.render_to_response({'form': form})
 
 class MeterUpdateView(LoginRequiredMixin, UpdateView):
     model = Meter
-    fields = ['dong', 'ho', 'utility', 'serial', 'mtr', 'cor', 'amount', 'action', 'charge', 'manager']
+    form_class = DateForm
     template_name = 'metergram/meter_update.html'
-
-    def form_valid(self, form):
-        form.instance.author_id = self.request.user.id
-        if form.is_valid():
-            form.instance.save()
-            return redirect('metergram:meter_list')
-        else:
-            return self.render_to_response({'form': form})
 
 #for weasyprint
 def generate_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    files = Meter.objects.filter(group_id=gr_id).order_by('author')                                    # Model data
+    try:
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        files = Meter.objects.filter(group_id=group_id)                             #.order_by('author')
+    except:
+        files = Meter.objects.filter(group_id=1)                                    #.order_by('author')
+
     html_string = render_to_string('metergram/pdf_list.html', {'files': files})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                            # Creating http response
     response['Content-Disposition'] = 'filename=meter_list_{}.pdf'.format(request.user)
@@ -130,9 +125,7 @@ def detail_pdf(request, kk):
     return response
 
 def search_pdf(request):
-    # user = auth.get_user(request)
-    gr_id = request.user.groups.values_list('id', flat=True).first()  # for "group_name" use 'name' instead of 'id'
-    file_filter = Smeter.objects.filter(group_id=gr_id).order_by('author')
+    file_filter = Smeter.objects.all()
     html_string = render_to_string('metergram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=meter_search_{}.pdf'.format(request.user)

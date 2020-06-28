@@ -31,6 +31,7 @@ urlpatterns = [
     path('lifegram/', include('lifegram.urls')),
     path('index/', include('index.urls')),
     path('metergram/', include('metergram.urls')),
+    path('papergram/', include('papergram.urls')),
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)        #transfered to Amazon

@@ -29,8 +29,8 @@ class Life(models.Model):
 #    def __str__(self):
 #        return self.file.name
 
-    def get_absolute_url_file(self):
-        return reverse('lifegram:life_detail', arg=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse('lifegram:life_detail', args=[str(self.id)])
 
 
 class Slife(models.Model):

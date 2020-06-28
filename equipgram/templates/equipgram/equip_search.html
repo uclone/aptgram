@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+
+{% load bootstrap3 %}
 <head>
     <meta charset="UTF-8">
     <title>equip-search</title>
@@ -11,7 +12,8 @@
 {% block content %}
     <p></p>
     <form method="get">
-        {{ filter.form|crispy }}
+
+        {% bootstrap_form filter.form %}
         <div class="btn-group float-right">&nbsp;&nbsp;
         <a href="{% url 'equipgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
         <div class="btn-group float-left">

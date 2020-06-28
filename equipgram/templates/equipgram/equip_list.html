@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 {% extends 'base.html' %}
+{% load bootstrap3 %}
+
 <head>
     <meta charset="UTF-8">
     <title>equip-list</title>
@@ -13,6 +15,7 @@
         <a href="{% url 'equipgram:equip_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'equipgram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">서식목록</a>&nbsp;&nbsp;
         <a href="{% url 'equipgram:equip_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>
 
@@ -52,12 +55,13 @@
 
 {% block pagination %}
 {% if files.has_other_pages %}
+<div class="text-center">
     <ul class="pagination justify-content-center pagination-sm">
 
         {% if files.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ files.previous_page_number }}">&laquo; 이전 </a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ files.previous_page_number }}">&laquo; 이전 </a></li>
         {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">&laquo; 이전 </a></li>
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">&laquo; 이전 </a></li>
         {% endif %}
 
     {% for i in files.paginator.page_range %}
@@ -68,13 +72,14 @@
         {% endif %}
     {% endfor %}
 
-    {% if files.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ files.next_page_number }}"> 다음 &raquo;</a></li>
-    {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#">다음 &raquo;</a></li>
-    {% endif %}
+        {% if files.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ files.next_page_number }}"> 다음 &raquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">다음 &raquo;</a></li>
+        {% endif %}
 
-  </ul>
+    </ul>
+</div>
 {% endif %}
 {% endblock %}
 </body>

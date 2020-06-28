@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load bootstrap3 %}
 
 <head>
     <meta charset="UTF-8">
     <title>task-upload</title>
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
 </head>
 <body>
 {% block content %}
@@ -14,7 +19,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-8 panel panel-default">
                 <form action="" method="post" enctype="multipart/form-data">
-                    {{form|crispy}}
+                    {% bootstrap_form form %}
                     {% csrf_token %}
                     <input type="submit" class="btn btn-primary" value="작성완료">
                 </form>
