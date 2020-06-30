@@ -34,10 +34,10 @@
             <tr><td>가족구성</td><td>{{object.family}}</td></tr>
             <tr><td>대표전화</td><td>{{object.phone}}</td></tr>
             <tr><td>자동차</td><td>{{object.car}}</td></tr>
-            <tr><td>입주일자</td><td>{{object.date|date:"M d, Y"}}</td></tr>
+            <tr><td>입주일자</td><td>{{object.date|date:"Y-m-d"}}</td></tr>
             <tr><td>비고</td><td>{{object.remark}}</td></tr>
-            <tr><td>최초작성일</td><td>{{object.created|date:"M d, Y"}}</td></tr>
-            <tr><td>수정일자</td><td>{{object.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
             <tr>
                 <td><a href="{{object.file.url}}">문서다운로드</a></td>
                 <td><a href="{{object.file.url}}">{{object.file}}</a></td>

@@ -7,6 +7,7 @@ class SearchFilter(django_filters.FilterSet):
     class Meta:
         model = Equip
         fields = {
+        #    'code': ['icontains'],
             'subject': ['icontains'],
             'location': ['icontains'],
             'date': ['year__gt', 'year__lt'],

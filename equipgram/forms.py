@@ -6,7 +6,7 @@ from bootstrap_datepicker_plus import DatePickerInput
 class DateForm(forms.ModelForm):
     class Meta:
         model = Equip
-        fields = ['subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'photo']
+        fields = ['code', 'subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'photo']
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d')
         }

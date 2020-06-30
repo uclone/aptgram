@@ -13,7 +13,7 @@
         <a href="{% url 'lifegram:life_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'lifegram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">서식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
         <a href="{% url 'lifegram:life_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>
 
@@ -23,9 +23,10 @@
                 <th scope="col">아파트명</th>
                 <th scope="col">민원일자</th>
                 <th scope="col">민원안건</th>
-                <th scope="col">담당자</th>
-                <th scope="col">응답일자</th>
                 <th scope="col">담당부서</th>
+                <th scope="col">담당자</th>
+                <th scope="col">처리일자</th>
+                <th scope="col">완료일자</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
@@ -34,11 +35,12 @@
         {% for post in files %}
             <tr>
                 <td>{{post.group}}</td>
-                <td>{{post.created|date:"M d, Y"}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
                 <td>{{post.subject}}</td>
-                <td>{{post.charge}}
-                <td>{{post.updated|date:"M d, Y"}}</td>
                 <td>{{post.department}}</td>
+                <td>{{post.charge}}</td>
+                <td>{{post.date|date:"Y-m-d"}}</td>
+                <td>{{post.close|date:"Y-m-d"}}</td>
                 <td><a href="{% url 'lifegram:life_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}

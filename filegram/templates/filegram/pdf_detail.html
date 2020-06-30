@@ -25,13 +25,13 @@
             <tr><td>담당부서</td><td>{{post.department}}</td></tr>
             <tr><td>담당자</td><td>{{post.charge}}</td></tr>
             <tr><td>관리자</td><td>{{post.manager}}</td></tr>
-            <tr><td>승인역</td><td>{{post.director}}</td></tr>
-            <tr><td>추인역</td><td>{{post.super}}</td></tr>
+            <tr><td>관리소장</td><td>{{post.director}}</td></tr>
+            <tr><td>입주자대표회장</td><td>{{post.super}}</td></tr>
             <tr><td>업무제목</td><td>{{post.subject}}</td></tr>
             <tr><td>업무내역</td><td>{{post.abstract|linebreaksbr}}</td></tr>
             <tr><td>비고</td><td>{{post.remark}}</td></tr>
-            <tr><td>최초작성일</td><td>{{post.created|date:"M d, Y"}}</td></tr>
-            <tr><td>수정일자</td><td>{{post.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>최초작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정일자</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
             <tr>
                 <td><a href="{{post.file.url}}">문서다운로드</a></td>
                 <td><a href="{{post.file.url}}">{{post.file}}</a></td>

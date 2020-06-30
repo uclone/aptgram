@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>일정목록<span clas="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>일정목록<span clas="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
@@ -16,16 +16,16 @@
                 <th>담당부서</th>
                 <th>담당자</th>
                 <th>업무제목</th>
-                <th>업무관리</th>
-                <th>책임관리</th>
+                <th>관리자</th>
+                <th>관리소장</th>
             </tr>
         </thead>
 
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.start|date:"M d, Y"}}</td>
-                <td>{{post.close|date:"M d, Y"}}</td>
+                <td>{{post.start|date:"Y-m-d"}}</td>
+                <td>{{post.close|date:"Y-m-d"}}</td>
                 <td>{{post.department}}</td>
                 <td>{{post.charge}}</td>
                 <td>{{post.subject}}</td>

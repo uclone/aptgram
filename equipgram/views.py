@@ -28,7 +28,7 @@ def equip_list(request):
 
 # - pagination - start
     page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 6)
+    paginator = Paginator(pagefiles, 10)
     try:
         files = paginator.page(page)
     except PageNotAnInteger:
@@ -58,8 +58,8 @@ def equip_search(request):
     x = file_filter.qs
     Sequip.objects.all().delete()
     for a in x:
-        b = Sequip(id=a.id, subject=a.subject, location=a.location, department=a.department, manager_1=a.manager_1,
-                   manager_2=a.manager_2, spec=a.spec, date=a.date, remark=a.remark, photo=a.photo)
+        b = Sequip(id=a.id, code=a.code, subject=a.subject, location=a.location, department=a.department,
+                   manager_1=a.manager_1, manager_2=a.manager_2, spec=a.spec, date=a.date, remark=a.remark, photo=a.photo)
         b.save()
     return render(request, 'equipgram/equip_search.html', {'filter': file_filter})
 

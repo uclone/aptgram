@@ -13,7 +13,7 @@
         <a href="{% url 'jumingram:jumin_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">서식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:jumin_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>
 
@@ -27,7 +27,7 @@
                 <th scope="col">가족구성</th>
                 <th scope="col">대표전화</th>
                 <th scope="col">자동차</th>
-                <th scope="col">입주일</th>
+                <th scope="col">입주일자</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
@@ -42,7 +42,7 @@
                 <td>{{post.family}}</td>
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
-                <td>{{post.date|date:"M d, Y" }}</td>
+                <td>{{post.date|date:"Y-m-d" }}</td>
                 <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}

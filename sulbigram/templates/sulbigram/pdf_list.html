@@ -6,12 +6,13 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>설비목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>설비목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
             <tr>
                 <th>담당부서</th>
+                <th>설비번호</th>
                 <th>설비명칭</th>
                 <th>관리내용</th>
                 <th>시작일자</th>
@@ -23,10 +24,11 @@
         {% for post in files %}
             <tr>
                 <td>{{post.department}}</td>
+                <td>{{post.code}}</td>
                 <td>{{post.subject}}</td>
                 <td>{{post.action}}</td>
-                <td>{{post.start|date:"M d, Y"}}</td>
-                <td>{{post.close|date:"M d, Y"}}</td>
+                <td>{{post.start|date:"Y-m-d"}}</td>
+                <td>{{post.close|date:"Y-m-d"}}</td>
             </tr>
         {% endfor %}
         </tbody>

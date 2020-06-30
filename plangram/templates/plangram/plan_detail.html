@@ -27,8 +27,8 @@
         <tbody>
             <tr><td>작성자</td><td>{{object.author.username}}</td></tr>
             <tr><td>아파트명</td><td>{{object.group}}</td></tr>
-            <tr><td>업무개시</td><td>{{object.start|date:"M d, Y"}}</td></tr>
-            <tr><td>업무완료</td><td>{{object.close|date:"M d, Y"}}</td></tr>
+            <tr><td>업무개시</td><td>{{object.start|date:"Y-m-d"}}</td></tr>
+            <tr><td>업무완료</td><td>{{object.close|date:"Y-m-d"}}</td></tr>
             <tr><td>담당부서</td><td>{{object.department}}</td></tr>
             <tr><td>담당자</td><td>{{object.charge}}</td></tr>
             <tr><td>업무제목</td><td>{{object.subject}}</td></tr>
@@ -37,11 +37,11 @@
                 <td><a href="{{object.photo.url}}">사진연결</a></td>
                 <td><img src="{{object.photo.url}}" width="300" height="300"></td>
             </tr>
-            <tr><td>업무관리</td><td>{{object.manager}}</td></tr>
-            <tr><td>책임관리</td><td>{{object.director}}</td></tr>
+            <tr><td>관리자</td><td>{{object.manager}}</td></tr>
+            <tr><td>관리소장</td><td>{{object.director}}</td></tr>
             <tr><td>비고</td><td>{{object.remark}}</td></tr>
-            <tr><td>최초작성일</td><td>{{object.created|date:"M d, Y"}}</td></tr>
-            <tr><td>수정일자</td><td>{{object.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
         </tbody>
     </table>
 

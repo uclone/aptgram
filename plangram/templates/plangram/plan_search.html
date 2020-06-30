@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load bootstrap3 %}
 <head>
     <meta charset="UTF-8">
     <title>plan-search</title>
@@ -11,7 +11,7 @@
 {% block content %}
     <p></p>
     <form method="get">
-        {{ filter.form|crispy }}
+        {% bootstrap_form filter.form %}
         <div class="btn-group float-right">&nbsp;&nbsp;
         <a href="{% url 'plangram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
         <div class="btn-group float-left">
@@ -29,8 +29,8 @@
                 <th scope="col">담당부서</th>
                 <th scope="col">담당자</th>
                 <th scope="col">업무제목</th>
-                <th scope="col">업무관리</th>
-                <th scope="col">책임관리</th>
+                <th scope="col">관리자</th>
+                <th scope="col">관리소장</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
@@ -39,8 +39,8 @@
             {% for post in filter.qs %}
                 <tr>
                     <td>{{post.group}}</td>
-                    <td>{{post.start|date:"M d, Y"}}</td>
-                    <td>{{post.close|date:"M d, Y"}}</td>
+                    <td>{{post.start|date:"Y-m-d"}}</td>
+                    <td>{{post.close|date:"Y-m-d"}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.charge}}</td>
                     <td>{{post.subject}}</td>

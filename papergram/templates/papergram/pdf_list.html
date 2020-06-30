@@ -6,13 +6,13 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>서식목록<span clas="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>서식목록<span clas="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
             <tr>
-                <th scope="col">서식제목</th>
-                <th scope="col">서식설명</th>
+                <th scope="col">양식제목</th>
+                <th scope="col">양식설명</th>
                 <th scope="col">최초등록</th>
                 <th scope="col">수정등록</th>
             </tr>
@@ -21,10 +21,10 @@
         <tbody>
         {% for post in files %}
             <tr>
-                td>{{post.subject}}</td>
+                <td>{{post.subject}}</td>
                 <td>{{post.description}}</td>
-                <td>{{post.created|date:"M d, Y"}}</td>
-                <td>{{post.updated|date:"M d, Y"}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.updated|date:"Y-m-d"}}</td>
             </tr>
         {% endfor %}
         </tbody>

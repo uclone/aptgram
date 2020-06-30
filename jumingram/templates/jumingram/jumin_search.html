@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load bootstrap3 %}
 <head>
     <meta charset="UTF-8">
     <title>jumin-search</title>
@@ -11,7 +11,7 @@
 {% block content %}
     <p></p>
     <form method="get">
-        {{ filter.form|crispy }}
+        {% bootstrap_form filter.form %}
         <div class="btn-group float-right">&nbsp;&nbsp;
         <a href="{% url 'jumingram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
         <div class="btn-group float-left">
@@ -45,7 +45,7 @@
                 <td>{{post.family}}</td>
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
-                <td>{{post.date|date:"M d, Y" }}</td>
+                <td>{{post.date|date:"Y-m-d" }}</td>
                 <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}

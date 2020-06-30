@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>서식목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>서식목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
@@ -23,8 +23,8 @@
             <tr>
                 <td>{{post.subject}}</td>
                 <td>{{post.description}}</td>
-                <td>{{post.created|date:"M d, Y"}}</td>
-                <td>{{post.updated|date:"M d, Y"}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.updated|date:"Y-m-d"}}</td>
             </tr>
         {% endfor %}
         </tbody>

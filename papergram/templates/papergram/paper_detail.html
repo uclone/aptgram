@@ -29,8 +29,8 @@
             <tr><td>공급자</td><td>{{object.group}}</td></tr>
             <tr><td>서식제목</td><td>{{object.subject}}</td></tr>
             <tr><td>서식설명</td><td>{{object.description}}</td></tr>
-            <tr><td>최초등록</td><td>{{object.created|date:"M d, Y"}}</td></tr>
-            <tr><td>수정등록</td><td>{{object.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>최초등록</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정등록</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
             <tr>
                 <td><a href="{{object.paper.url}}">서식식다운로드</a></td>
                 <td><a href="{{object.paper.url}}">{{object.file}}</a></td>

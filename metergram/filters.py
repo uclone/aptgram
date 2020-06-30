@@ -9,9 +9,9 @@ class SearchFilter(django_filters.FilterSet):
         fields = {
             'dong': ['icontains'],
             'ho': ['icontains'],
-            'utility': ['icontains'],
-            'serial': ['icontains'],
             'action': ['icontains'],
+            'charge': ['icontains'],
+            'manager': ['icontains'],
             'created': ['month__lt', 'month__gt'],
         }
 #        fields = {

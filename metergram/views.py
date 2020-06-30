@@ -57,8 +57,8 @@ def meter_search(request):
     x = file_filter.qs
     Smeter.objects.all().delete()
     for a in x:
-        b = Smeter(id=a.id, dong=a.dong, ho=a.ho, utility=a.utility, serial=a.serial, mtr=a.mtr, cor=a.cor,
-                   amount=a.amount, action=a.action, charge=a.charge, manager=a.manager)
+        b = Smeter(id=a.id, dong=a.dong, ho=a.ho, mtr=a.mtr, cor=a.cor, elec=a.elec, water=a.water,
+                   action=a.action, charge=a.charge, manager=a.manager)
         b.save()
     return render(request, 'metergram/meter_search.html', {'filter': file_filter})
 

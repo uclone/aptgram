@@ -29,15 +29,16 @@
             <tr><td>아파트명</td><td>{{object.group}}</td></tr>
             <tr><td>소속부서</td><td>{{object.department}}</td></tr>
             <tr><td>담당자</td><td>{{object.charge}}</td></tr>
-            <tr><td>작성일자</td><td>{{object.created|date:"M d, Y"}}</td></tr>
+            <tr><td>작성일자</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>담당업무</td><td>{{object.subject}}</td></tr>
             <tr><td>업무내역</td><td>{{object.task}}</td></tr>
             <tr>
                 <td><a href="{{object.photo.url}}">참고사진</a></td>
                 <td><img src="{{object.photo.url}}" width="300" height="300"></td>
             </tr>
             <tr><td>관리자</td><td>{{object.manager}}</td></tr>
-            <tr><td>추인역</td><td>{{object.director}}</td></tr>
-            <tr><td>업무확인</td><td>{{object.response}}</td></tr>
+            <tr><td>관리소장</td><td>{{object.director}}</td></tr>
+            <tr><td>지시사항</td><td>{{object.response}}</td></tr>
         </tbody>
     </table>
 

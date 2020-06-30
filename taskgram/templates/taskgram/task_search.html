@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load bootstrap3 %}
 <head>
     <meta charset="UTF-8">
     <title>task-search</title>
@@ -11,7 +11,7 @@
 {% block content %}
     <p></p>
     <form method="get">
-        {{ filter.form|crispy }}
+        {% bootstrap_form filter.form %}
         <div class="btn-group float-right">&nbsp;&nbsp;
         <a href="{% url 'taskgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
         <div class="btn-group float-left">
@@ -28,7 +28,7 @@
                 <th scope="col">담당자</th>
                 <th scope="col">작성일자</th>
                 <th scope="col">담당업무</th>
-                <th scope="col">관리담당</th>
+                <th scope="col">관리자</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
@@ -39,7 +39,7 @@
                     <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.charge}}</td>
-                    <td>{{post.created|date:"M d, Y"}}</td>
+                    <td>{{post.created|date:"Y-m-d"}}</td>
                     <td>{{post.subject}}
                     <td>{{post.manager}}</td>
                     <td><a href="{% url 'taskgram:task_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>

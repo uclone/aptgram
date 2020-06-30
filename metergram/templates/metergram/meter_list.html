@@ -13,7 +13,7 @@
         <a href="{% url 'metergram:meter_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'metergram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">서식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
         <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>
 
@@ -22,11 +22,13 @@
             <tr>
                 <th scope="col">동</th>
                 <th scope="col">호</th>
-                <th scope="col">기기번호</th>
-                <th scope="col">계량사용량</th>
-                <th scope="col">검침사용량</th>
+                <th scope="col">가스미터검침</th>
+                <th scope="col">가스보정검침</th>
+                <th scope="col">전기검침</th>
+                <th scope="col">수도검침</th>
                 <th scope="col">검침일자</th>
-                <th scope="col">조치상황</th>
+                <th scope="col">진행상황</th>
+                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -35,11 +37,13 @@
             <tr>
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
-                <td>{{post.serial}}</td>
                 <td>{{post.mtr}}</td>
                 <td>{{post.cor}}</td>
-                <td>{{post.created|date:"M d, Y"}}</td>
+                <td>{{post.elec}}</td>
+                <td>{{post.water}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
                 <td>{{post.action}}</td>
+                <td><a href="{% url 'metergram:meter_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}
         </tbody>

@@ -57,7 +57,7 @@ def plan_search(request):
     x = file_filter.qs
     Splan.objects.all().delete()
     for a in x:
-        b = Splan(id=a.id, start=a.start, close=a.close, department=a.department, subject=a.subject,
+        b = Splan(id=a.id, start=a.start, close=a.close, department=a.department, charge=a.charge, subject=a.subject,
                   task=a.task, photo=a.photo, manager=a.manager, director=a.director, remark=a.remark)
         b.save()
     return render(request, 'plangram/plan_search.html', {'filter': file_filter})

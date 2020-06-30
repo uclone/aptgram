@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>주민자료<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>주민자료<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
@@ -32,7 +32,7 @@
                 <td>{{post.family}}</td>
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
-                <td>{{post.date|date:"M d, Y"}}</td>
+                <td>{{post.date|date:"Y-m-d"}}</td>
             </tr>
         {% endfor %}
         </tbody>

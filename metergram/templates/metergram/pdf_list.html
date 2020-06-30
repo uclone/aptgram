@@ -6,18 +6,19 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>검침내역<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>검침내역<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
             <tr>
                 <th scope="col">동</th>
                 <th scope="col">호</th>
-                <th scope="col">종류</th>
-                <th scope="col">계량사용량</th>
-                <th scope="col">검침사용량</th>
+                <th scope="col">가스미터검침</th>
+                <th scope="col">가스보정검침</th>
+                <th scope="col">전기검침</th>
+                <th scope="col">수도검침</th>
                 <th scope="col">검침일자</th>
-                <th scope="col">조치상황</th>
+                <th scope="col">진행상황</th>
             </tr>
         </thead>
 
@@ -26,10 +27,11 @@
             <tr>
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
-                <td>{{post.utility}}</td>
                 <td>{{post.mtr}}</td>
                 <td>{{post.cor}}</td>
-                <td>{{post.created|date:"M d, Y"}}</td>
+                <td>{{post.elec}}</td>
+                <td>{{post.water}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
                 <td>{{post.action}}</td>
             </tr>
         {% endfor %}

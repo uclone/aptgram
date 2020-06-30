@@ -4,7 +4,7 @@ from .models import Meter
 class MeterForm(forms.ModelForm):
     class Meta:
         model = Meter
-        fields = [ 'dong', 'ho', 'utility', 'serial', 'mtr', 'cor', ]
+        fields = [ 'dong', 'ho', 'mtr', 'cor', 'elec', 'water', ]
         #widgets = {
         #    'date': DatePickerInput(format = '%Y-%m-%d'),
         #}
@@ -12,7 +12,7 @@ class MeterForm(forms.ModelForm):
 class DateForm(forms.ModelForm):
     class Meta:
         model = Meter
-        fields = ['dong', 'ho', 'utility', 'serial', 'mtr', 'cor', 'amount', 'action', 'charge', 'manager']
+        fields = ['dong', 'ho', 'mtr', 'cor', 'elec', 'water', 'action', 'charge', 'manager']
         #widgets = {
         #    'date': DatePickerInput(format = '%Y-%m-%d'),
         #}

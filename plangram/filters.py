@@ -8,6 +8,7 @@ class SearchFilter(django_filters.FilterSet):
         model = Plan
         fields = {
             'department': ['icontains'],
+            'charge': ['icontains'],
             'subject': ['icontains'],
             'start': ['year__lt', 'year__gt'],
             'close': ['year__lt', 'year__gt'],

@@ -58,7 +58,7 @@ def life_search(request):
     Slife.objects.all().delete()
     for a in x:
         b = Slife(id=a.id, contact=a.contact, subject=a.subject, task_1=a.task_1, photo_1=a.photo_1, charge=a.charge,
-                  department=a.department, task_2=a.task_2, photo_2=a.photo_2, response=a.response)
+                  department=a.department, date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
         b.save()
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
 

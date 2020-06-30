@@ -13,7 +13,7 @@
         <a href="{% url 'sulbigram:sulbi_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'sulbigram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">서식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
         <a href="{% url 'sulbigram:sulbi_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>
 
@@ -22,6 +22,7 @@
             <tr>
                 <th scope="col">아파트명</th>
                 <th scope="col">담당부서</th>
+                <th scope="col">설비번호</th>
                 <th scope="col">설비명칭</th>
                 <th scope="col">관리내용</th>
                 <th scope="col">시작일자</th>
@@ -35,10 +36,11 @@
                 <tr>
                     <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
+                    <td>{{post.code}}</td>
                     <td>{{post.subject}}</td>
                     <td>{{post.action}}</td>
-                    <td>{{post.start|date:"M d, Y"}}</td>
-                    <td>{{post.close|date:"M d, Y"}}</td>
+                    <td>{{post.start|date:"Y-m-d"}}</td>
+                    <td>{{post.close|date:"Y-m-d"}}</td>
                     <td><a href="{% url 'sulbigram:sulbi_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}

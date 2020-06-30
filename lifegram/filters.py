@@ -10,6 +10,7 @@ class SearchFilter(django_filters.FilterSet):
             'subject': ['icontains'],
             'contact': ['icontains'],
             'department': ['icontains'],
+            'charge': ['icontains'],
             'created': ['year__lt', 'year__gt'],
         }
 #        fields = {

@@ -8,7 +8,9 @@ class SearchFilter(django_filters.FilterSet):
         model = Sulbi
         fields = {
             'subject': ['icontains'],
+            'code': ['icontains'],
             'action': ['icontains'],
+            'cycle': ['icontains'],
             'start': ['year__lt', 'year__gt'],
             'close': ['year__lt', 'year__gt'],
         }

@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>상세 - 설비목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>상세 - 설비목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     {% for post in files %}
 
@@ -23,14 +23,15 @@
             <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
             <tr><td>아파트명</td><td>{{post.group}}</td></tr>
             <tr><td>담당부서</td><td>{{post.department}}</td></tr>
+            <tr><td>설비번호</td><td>{{post.code}}</td></tr>
             <tr><td>설비명칭</td><td>{{post.subject}}</td></tr>
             <tr><td>관리사항</td><td>{{post.action}}</td></tr>
-            <tr><td>시작일자</td><td>{{post.start|date:"M d, Y"}}</td></tr>
-            <tr><td>완료일자</td><td>{{post.close|date:"M d, Y"}}</td></tr>
+            <tr><td>시작일자</td><td>{{post.start|date:"Y-m-d"}}</td></tr>
+            <tr><td>완료일자</td><td>{{post.close|date:"Y-m-d"}}</td></tr>
             <tr><td>상세내용</td><td>{{post.text}}</td></tr>
             <tr><td>비고</td><td>{{post.remark}}</td></tr>
-            <tr><td>최초작성일</td><td>{{post.created|date:"M d, Y"}}</td></tr>
-            <tr><td>수정일자</td><td>{{post.updated|date:"M d, Y"}}</td></tr>
+            <tr><td>최초작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정일자</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
             <tr>
                 <td><a href="{{post.file.url}}">문서다운로드</a></td>
                 <td><a href="{{post.file.url}}">{{post.file}}</a></td>

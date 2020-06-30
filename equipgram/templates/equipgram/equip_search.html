@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 {% extends 'base.html' %}
-
 {% load bootstrap3 %}
 <head>
     <meta charset="UTF-8">
@@ -12,7 +11,6 @@
 {% block content %}
     <p></p>
     <form method="get">
-
         {% bootstrap_form filter.form %}
         <div class="btn-group float-right">&nbsp;&nbsp;
         <a href="{% url 'equipgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
@@ -26,7 +24,8 @@
         <thead>
             <tr>
                 <th scope="col">아파트명</th>
-                <th scope="col">장치명</th>
+                <th scope="col">비품번호</th>
+                <th scope="col">비품명칭</th>
                 <th scope="col">보관장소</th>
                 <th scope="col">관리부서</th>
                 <th scope="col">관리자(정)</th>
@@ -41,13 +40,14 @@
             {% for post in filter.qs %}
                 <tr>
                     <td>{{post.group}}</td>
+                    <td>{{post.code}}</td>
                     <td>{{post.subject}}</td>
                     <td>{{post.location}}
                     <td>{{post.department}}</td>
                     <td>{{post.manager_1}}</td>
                     <td>{{post.manager_2}}</td>
                     <td>{{post.spec}}</td>
-                    <td>{{post.date|date:"M d, Y"}}</td>
+                    <td>{{post.date|date:"Y-m-d"}}</td>
                     <td><a href="{% url 'equipgram:equip_detail' pk=post.id %}"
                            class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>

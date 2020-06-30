@@ -9,6 +9,8 @@ class SearchFilter(django_filters.FilterSet):
         fields = {
             'dong': ['icontains'],
             'ho': ['icontains'],
+            'represent': ['icontains'],
+            'family': ['icontains'],
             'car': ['icontains'],
         }
 #        fields = {
