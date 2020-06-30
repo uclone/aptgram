@@ -42,8 +42,8 @@ class Sfile(models.Model):
     abstract = models.TextField(max_length=500, null=True, blank=True, verbose_name='안건요약')
     file = models.FileField(upload_to='files/%Y/%m/%d', null=True, blank=True, verbose_name='품의문서', default='files/aptgram.jpg')
     remark = models.CharField(max_length=100, null=True, blank=True, verbose_name='비고')
-    created = models.DateTimeField(blank=True, default=timezone.now())
-    updated = models.DateTimeField(blank=True, default=timezone.now())
+    created = models.DateTimeField(blank=True, default=timezone.now)
+    updated = models.DateTimeField(blank=True, default=timezone.now)
 
     class Meta:
         ordering = ['-updated']

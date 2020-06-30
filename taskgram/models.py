@@ -32,13 +32,13 @@ class Stask(models.Model):
     group = models.CharField(max_length=100, null=True, verbose_name='아파트명')
     department = models.CharField(max_length=100, null=True, verbose_name='소속부서')
     charge = models.CharField(max_length=100, null=True, verbose_name='담당자')
-    created = models.DateTimeField(null=True, default=timezone.now(), verbose_name='작성일자')
+    created = models.DateTimeField(null=True, default=timezone.now, verbose_name='작성일자')
     subject = models.CharField(max_length=100, null=True, verbose_name='담당업무')
     task = models.TextField(max_length=500, null=True, verbose_name='업무내역')
     photo = models.ImageField(upload_to='tasks/%Y/%m/%d', null=True, verbose_name='참고', default='tasks/aptgram.jpg')
     manager = models.CharField(max_length=100, null=True, verbose_name='관리자')
     director = models.CharField(max_length=100, null=True, verbose_name='관리소장')
-    updated = models.DateTimeField(null=True, default=timezone.now(), verbose_name='관리일자')
+    updated = models.DateTimeField(null=True, default=timezone.now, verbose_name='관리일자')
     response = models.CharField(max_length=200, null=True, blank=True, verbose_name='지시사항')
 
     class Meta:

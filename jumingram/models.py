@@ -12,7 +12,7 @@ class Jumin(models.Model):
     family = models.CharField(max_length=200, null=True, blank=True, verbose_name='가족정보')
     phone = models.CharField(max_length=100, null=True, blank=True, verbose_name='대표전화')
     car = models.CharField(max_length=100, null=True, blank=True, verbose_name='자동차')
-    date = models.DateField(blank=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='입주일자')
+    date = models.DateField(blank=True, default=timezone.now, verbose_name='입주일자')
     remark = models.CharField(max_length=100, null=True, blank=True, verbose_name='비고')
     file = models.FileField(upload_to='jumins/%Y/%m/%d', null=True, blank=True, verbose_name='입주자카드', default='jumins/aptgram.jpg')
     created = models.DateTimeField(auto_now_add=True)
@@ -43,8 +43,8 @@ class Sjumin(models.Model):
     date = models.DateField(null=True, verbose_name='입주일자')
     remark = models.CharField(max_length=100, null=True, verbose_name='비고')
     file = models.FileField(upload_to='jumins/%Y/%m/%d', null=True, verbose_name='첨부자료', default='jumins/aptgram.jpg')
-    created = models.DateTimeField(blank=True, default=timezone.now())
-    updated = models.DateTimeField(blank=True, default=timezone.now())
+    created = models.DateTimeField(blank=True, default=timezone.now)
+    updated = models.DateTimeField(blank=True, default=timezone.now)
 
     class Meta:
         ordering = ['-updated']

@@ -37,7 +37,7 @@ class Smeter(models.Model):
     cor = models.IntegerField(default=0, null=True, blank=True,verbose_name='가스보정검침')
     elec = models.IntegerField(default=0, null=True, blank=True,verbose_name='전기점검')
     water = models.IntegerField(default=0, null=True, blank=True,verbose_name='수도점검')
-    created = models.DateTimeField(blank=True, default=timezone.now(), verbose_name='검침일자')
+    created = models.DateTimeField(blank=True, default=timezone.now, verbose_name='검침일자')
     action = models.CharField(max_length=100, default="검침", verbose_name='처리현황')
     charge = models.CharField(max_length=100, null=True, verbose_name='검침담당')
     manager = models.CharField(max_length=100, null=True, verbose_name='관리담당')

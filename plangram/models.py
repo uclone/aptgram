@@ -6,8 +6,8 @@ from django.utils import timezone
 class Plan(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_plans', verbose_name='작성자')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_plans', verbose_name='아파트명')
-    start = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='시작일자')
-    close = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='완료일자')
+    start = models.DateField(null=True, default=timezone.now, verbose_name='시작일자')
+    close = models.DateField(null=True, default=timezone.now, verbose_name='완료일자')
     department = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당부서')
     charge = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당자')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='업무제목')
@@ -45,8 +45,8 @@ class Splan(models.Model):
     manager = models.CharField(max_length=100, null=True, verbose_name='관리자')
     director = models.CharField(max_length=100, null=True, verbose_name='관리소장')
     remark = models.CharField(max_length=200, null=True, verbose_name='비고')
-    created = models.DateTimeField(blank=True, default=timezone.now())
-    updated = models.DateTimeField(blank=True, default=timezone.now())
+    created = models.DateTimeField(blank=True, default=timezone.now)
+    updated = models.DateTimeField(blank=True, default=timezone.now)
 
     class Meta:
         ordering = ['-updated']

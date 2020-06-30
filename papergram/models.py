@@ -28,8 +28,8 @@ class Spaper(models.Model):
     subject = models.CharField(max_length=100, null=True, verbose_name='양식제목')
     file = models.FileField(upload_to='papers/%Y/%m/%d', null=True, default='papers/SMK.xlsx', verbose_name='문서양식')
     description = models.TextField(max_length=500, null=True, verbose_name='양식설명')
-    created = models.DateTimeField(blank=True, default=timezone.now())
-    updated = models.DateTimeField(blank=True, default=timezone.now())
+    created = models.DateTimeField(blank=True, default=timezone.now)
+    updated = models.DateTimeField(blank=True, default=timezone.now)
 
     class Meta:
         ordering = ['-updated']

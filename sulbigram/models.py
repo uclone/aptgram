@@ -11,8 +11,8 @@ class Sulbi(models.Model):
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='설비명칭')
     action = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리사항')
     cycle = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리주기')
-    start = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='시작일자')
-    close = models.DateField(null=True, default=timezone.now().strftime('%Y-%m-%d'), verbose_name='완료일자')
+    start = models.DateField(null=True, default=timezone.now, verbose_name='시작일자')
+    close = models.DateField(null=True, default=timezone.now, verbose_name='완료일자')
     text = models.TextField(null=True, blank=True, max_length=500, verbose_name='관리내역')
     file = models.FileField(upload_to='sulbis/%Y/%m/%d', null=True, blank=True, default='sulbis/SMK.xlsx', verbose_name='관리문서')
     remark = models.CharField(max_length=100, null=True, blank=True, verbose_name='비고')
@@ -45,8 +45,8 @@ class Ssulbi(models.Model):
     text = models.TextField(null=True, max_length=500, verbose_name='관리내역')
     file = models.FileField(upload_to='sulbis/%Y/%m/%d', null=True, default='sulbis/SMK.xlsx', verbose_name='관리문서')
     remark = models.CharField(max_length=100, null=True, verbose_name='비고')
-    created = models.DateTimeField(null=True, default=timezone.now(), verbose_name='작성일자')
-    updated = models.DateTimeField(null=True, default=timezone.now(), verbose_name='수정일자' )
+    created = models.DateTimeField(null=True, default=timezone.now, verbose_name='작성일자')
+    updated = models.DateTimeField(null=True, default=timezone.now, verbose_name='수정일자' )
 
     class Meta:
         ordering = ['-updated']
