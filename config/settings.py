@@ -145,7 +145,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 def FILTERS_VERBOSE_LOOKUPS():
     from django_filters.conf import DEFAULTS
 
