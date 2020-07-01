@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends 'base.html' %}
+{% extends 'base_mobile.html' %}
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome to Aptgram!!{% endblock %}</title>
@@ -29,6 +29,7 @@
                     <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
                     <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
                     <li><a href="{% url 'lifegram:life_list' %}">민원관리</a></li>
+                    <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
                     <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
                     {% else %}
                     <li><a href="{% url 'accounts:login' %}">로그인</a></li>
