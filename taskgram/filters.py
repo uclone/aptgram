@@ -10,7 +10,7 @@ class SearchFilter(django_filters.FilterSet):
             'department': ['icontains'],
             'charge': ['icontains'],
             'subject': ['icontains'],
-            'created': ['year__lt', 'year__gt'],
+            'created': ['range'],
         }
 #        fields = {
 #            'price': ['lt', 'gt'],

@@ -28,7 +28,7 @@ def jumin_list(request):
 
     # pagination - start
     page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 3)
+    paginator = Paginator(pagefiles, 10)
     try:
         files = paginator.page(page)
     except PageNotAnInteger:

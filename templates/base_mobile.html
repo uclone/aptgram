@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Aptgram{% block title %}{% endblock %}</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+
+
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+
+    {% block extrahead %}
+    {% endblock %}
+
+
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="head clearfix">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="/">Aptgram</a><br>
+                <ul class="nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'taskgram:task_post' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'lifegram:life_post' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'metergram:meter_post' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">&laquo;로그아웃&raquo;</a></li>
+                    {% else %}
+                    <li class="nav-item"><a href="{% url 'accounts:login' %}" class="nav-link">&laquo; 로그인 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'accounts:register' %}" class="nav-link">&laquo;등록하기&raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        <div class="row justify-content-center">
+            <div class="col">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {% block pagination %}
+        {% endblock %}
+
+        <footer class="footer">
+            <p>&copy; Aptgram</p>
+        </footer>
+    </div>
+</body>
+</html>

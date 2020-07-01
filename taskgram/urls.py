@@ -8,6 +8,7 @@ app_name = 'taskgram'
 
 urlpatterns = [
     path('', task_list, name='task_list'),
+    path('author/', task_list_author, name='task_list_author'),
     path('upload/', TaskUploadView.as_view(), name='task_upload'),
     path('delete/<int:pk>/', TaskDeleteView.as_view(), name='task_delete'),
     path('update/<int:pk>/', TaskUpdateView.as_view(), name='task_update'),
@@ -18,4 +19,6 @@ urlpatterns = [
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', task_search, name='task_search'),                 # search
+
+    url(r'^taskpost/$', task_post, name='task_post'),  # post == meter only
 ]

@@ -12,7 +12,7 @@ class SearchFilter(django_filters.FilterSet):
             'action': ['icontains'],
             'charge': ['icontains'],
             'manager': ['icontains'],
-            'created': ['month__lt', 'month__gt'],
+            'created': ['range'],
         }
 #        fields = {
 #            'price': ['lt', 'gt'],

@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
-from .forms import DateForm
+from .forms import DateForm, TaskForm
 
 @login_required
 def task_list(request):
@@ -28,7 +28,7 @@ def task_list(request):
 
     # pagination - start
     page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 3)
+    paginator = Paginator(pagefiles, 10)
     try:
         files = paginator.page(page)
     except PageNotAnInteger:
@@ -39,14 +39,27 @@ def task_list(request):
     return render(request, 'taskgram/task_list.html', {'files':files})
 
 @login_required
-def task_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = Task.objects.filter(author_id=request_user.id).first()
-    #    file_list = Task.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = Task.objects.filter(group_id=1)
+def task_list_author(request):
+    try:
+        request_user = request.user
+        pagefiles = Task.objects.filter(author_id=request_user.id)
+    except:
+        pagefiles = Task.objects.filter(author_id=1)
 
+    # pagination - start
+    page = request.GET.get('page', 1)
+    paginator = Paginator(pagefiles, 10)
+    try:
+        files = paginator.page(page)
+    except PageNotAnInteger:
+        files = paginator.page(1)
+    except EmptyPage:
+        files = paginator.page(paginator.num_pages)
+    # pagination - end
+    return render(request, 'taskgram/task_list_author.html', {'files':files})
+
+@login_required
+def task_search(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         file_list= Task.objects.filter(group_id=group_id)
@@ -61,6 +74,16 @@ def task_search(request):
                   photo=a.photo, manager=a.manager, director=a.director, response=a.response)
         b.save()
     return render(request, 'taskgram/task_search.html', {'filter': file_filter})
+
+@login_required
+def task_post(request):
+    form = TaskForm(request.POST)
+    form.instance.author_id = request.user.id
+    form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+    if form.is_valid():
+        form.instance.save()
+        return redirect('taskgram:task_list_author')
+    return render(request, 'taskgram/task_post.html', {'form': form})
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task

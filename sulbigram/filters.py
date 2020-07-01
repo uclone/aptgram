@@ -11,8 +11,8 @@ class SearchFilter(django_filters.FilterSet):
             'code': ['icontains'],
             'action': ['icontains'],
             'cycle': ['icontains'],
-            'start': ['year__lt', 'year__gt'],
-            'close': ['year__lt', 'year__gt'],
+            'start': ['range'],
+            'close': ['range'],
         }
 #        fields = {
 #            'price': ['lt', 'gt'],

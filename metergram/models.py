@@ -7,7 +7,7 @@ class Meter(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_meters', verbose_name='작성자')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_meters', verbose_name='아파트명')
     dong = models.CharField(max_length=100, null=True, blank=True, verbose_name='동')
-    ho = models.CharField(max_length=100, null=True, blank=True, verbose_name='호')
+    ho = models.CharField(max_length=100, default="호", verbose_name='호')
     mtr = models.IntegerField(default=0, null=True, blank=True,verbose_name='가스미터검침')
     cor = models.IntegerField(default=0, null=True, blank=True,verbose_name='가스보정검침')
     elec = models.IntegerField(default=0, null=True, blank=True,verbose_name='전기검침')

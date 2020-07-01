@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base_mobile.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome to Aptgram!!{% endblock %}</title>
+</head>
+<body>
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-13 panel panel-default">
+                <p></p><p></p><p></p>
+                <h1>*새로움아파트*입니다.</h1>
+                <h3><span class="secondary"></span></h3>
+                {% if user.is_authenticated %}
+                <div class="alert alert-info">"{{user.get_username}}"님, 업무를 선택하세요!!</div>
+                {% else %}
+                <div class="alert alert-info">먼저 '로그인' 하신 후에, 업무를 선택하세요!!</div>
+                {% endif %}
+
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'taskgram:task_post' %}">일지추가</a></li>
+                    <li><a href="{% url 'lifegram:life_post' %}">민원신청</a></li>
+                    <li><a href="{% url 'metergram:meter_post' %}">검침추가</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
+                    {% else %}
+                    <li><a href="{% url 'accounts:login' %}">로그인</a></li>
+                    <li><a href="{% url 'accounts:register' %}">등록하기</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+{% endblock %}
+</body>
+</html>

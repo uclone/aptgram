@@ -9,8 +9,8 @@ class SearchFilter(django_filters.FilterSet):
         fields = {
             'subject': ['icontains'],
             'department': ['icontains'],
-            'created': ['year__gt', 'year__lt'],
-            'updated': ['year__gt', 'year__lt'],
+            'created': ['range'],
+            'updated': ['range'],
         }
 #        fields = {
 #            'price': ['lt', 'gt'],

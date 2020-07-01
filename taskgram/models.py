@@ -6,7 +6,7 @@ from django.utils import timezone
 class Task(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tasks', verbose_name='작성자')
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='group_tasks', verbose_name='아파트명')
-    department = models.CharField(max_length=100, null=True, blank=True, verbose_name='소속부서')
+    department = models.CharField(max_length=100, default='필수', verbose_name='소속부서')
     charge = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당자')
     created = models.DateTimeField(auto_now_add=True, verbose_name='작성일자')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당업무')

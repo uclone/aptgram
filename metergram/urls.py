@@ -8,6 +8,7 @@ app_name = 'metergram'
 
 urlpatterns = [
     path('', meter_list, name='meter_list'),
+    path('author/', meter_list_author, name='meter_list_author'),
     path('upload/', MeterUploadView.as_view(), name='meter_upload'),
     path('delete/<int:pk>/', MeterDeleteView.as_view(), name='meter_delete'),
     path('update/<int:pk>/', MeterUpdateView.as_view(), name='meter_update'),

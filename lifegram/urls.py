@@ -8,6 +8,7 @@ app_name = 'lifegram'
 
 urlpatterns = [
     path('', life_list, name='life_list'),
+    path('author/', life_list_author, name='life_list_author'),
     path('upload/', LifeUploadView.as_view(), name='life_upload'),
     path('delete/<int:pk>/', LifeDeleteView.as_view(), name='life_delete'),
     path('update/<int:pk>/', LifeUpdateView.as_view(), name='life_update'),
@@ -17,5 +18,7 @@ urlpatterns = [
     path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),              # weasyprint ####New
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
-    url(r'^search/$', life_search, name='life_search'),  # search
+    url(r'^search/$', life_search, name='life_search'),                     # search
+
+    url(r'^lifepost/$', life_post, name='life_post'),                       # post == jumin only
 ]

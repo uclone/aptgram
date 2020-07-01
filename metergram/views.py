@@ -28,7 +28,7 @@ def meter_list(request):
 
     #pagination - start
     page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 3)
+    paginator = Paginator(pagefiles, 10)
     try:
         files = paginator.page(page)
     except PageNotAnInteger:
@@ -39,14 +39,27 @@ def meter_list(request):
     return render(request, 'metergram/meter_list.html', {'files':files})
 
 @login_required
-def meter_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = Meter.objects.filter(author_id=request_user.id).first()
-    #    file_list = Meter.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = Meter.objects.filter(group_id=1)
+def meter_list_author(request):
+    try:
+        request_user = request.user
+        pagefiles = Meter.objects.filter(author_id=request_user.id)
+    except:
+        pagefiles = Meter.objects.filter(author_id=1)
 
+    # pagination - start
+    page = request.GET.get('page', 1)
+    paginator = Paginator(pagefiles, 10)
+    try:
+        files = paginator.page(page)
+    except PageNotAnInteger:
+        files = paginator.page(1)
+    except EmptyPage:
+        files = paginator.page(paginator.num_pages)
+    # pagination - end
+    return render(request, 'metergram/meter_list_author.html', {'files':files})
+
+@login_required
+def meter_search(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         file_list = Meter.objects.filter(group_id=group_id)
@@ -62,19 +75,28 @@ def meter_search(request):
         b.save()
     return render(request, 'metergram/meter_search.html', {'filter': file_filter})
 
+#def meter_post(request):
+#    if request.method == 'POST':
+#        form = MeterForm(request.POST)
+#        form.instance.author_id = request.user.id
+#        gr_id = request.user.groups.values_list('id', flat=True).first()
+#        form.instance.group_id = gr_id
+#        if form.is_valid():
+#            form.save()
+#            file = Meter.objects.order_by('-id')[:3]
+#            return render(request, 'metergram/meter_post.html', {'data': file})
+#    else:
+#        file = Meter.objects.order_by('-id')[:3]
+#    return render(request, 'metergram/meter_post.html', {'data': file})
+
 def meter_post(request):
-    if request.method == 'POST':
-        form = MeterForm(request.POST)
-        form.instance.author_id = request.user.id
-        gr_id = request.user.groups.values_list('id', flat=True).first()
-        form.instance.group_id = gr_id
-        if form.is_valid():
-            form.save()
-            file = Meter.objects.order_by('-id')[:3]
-            return render(request, 'metergram/meter_post.html', {'data': file})
-    else:
-        file = Meter.objects.order_by('-id')[:3]
-    return render(request, 'metergram/meter_post.html', {'data': file})
+    form = MeterForm(request.POST)
+    form.instance.author_id = request.user.id
+    form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+    if form.is_valid():
+        form.instance.save()
+        return redirect('metergram:meter_list')
+    return render(request, 'metergram/meter_post.html', {'form': form})
 
 class MeterDeleteView(LoginRequiredMixin, DeleteView):
     model = Meter

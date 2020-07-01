@@ -9,17 +9,10 @@ from .models import Life, Slife
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
-from .forms import DateForm
+from .forms import DateForm, LifeForm
 
 @login_required
 def life_list(request):
-    #try:
-    #    request_user = request.user
-    #    data = Life.objects.filter(author_id=request_user.id).first()
-    #    pagefiles = Life.objects.filter(group_id=data.group_id)
-    #except:
-    #    pagefiles = Life.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         pagefiles = Life.objects.filter(group_id=group_id)
@@ -28,7 +21,7 @@ def life_list(request):
 
     #pagination - start
     page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 3)
+    paginator = Paginator(pagefiles, 10)
     try:
         files = paginator.page(page)
     except PageNotAnInteger:
@@ -39,14 +32,27 @@ def life_list(request):
     return render(request, 'lifegram/life_list.html', {'files':files})
 
 @login_required
-def life_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = Life.objects.filter(author_id=request_user.id).first()
-    #    file_list = Life.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = Life.objects.filter(group_id=1)
+def life_list_author(request):
+    try:
+        request_user = request.user
+        pagefiles = Life.objects.filter(author_id=request_user.id)
+    except:
+        pagefiles = Life.objects.filter(author_id=1)
 
+    # pagination - start
+    page = request.GET.get('page', 1)
+    paginator = Paginator(pagefiles, 10)
+    try:
+        files = paginator.page(page)
+    except PageNotAnInteger:
+        files = paginator.page(1)
+    except EmptyPage:
+        files = paginator.page(paginator.num_pages)
+    # pagination - end
+    return render(request, 'lifegram/life_list_author.html', {'files':files})
+
+@login_required
+def life_search(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         file_list = Life.objects.filter(group_id=group_id)
@@ -61,6 +67,15 @@ def life_search(request):
                   department=a.department, date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
         b.save()
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
+
+def life_post(request):
+    form = LifeForm(request.POST)
+    form.instance.author_id = request.user.id
+    form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+    if form.is_valid():
+        form.instance.save()
+        return redirect('lifegram:life_list_author')
+    return render(request, 'lifegram/life_post.html', {'form': form})
 
 class LifeDeleteView(LoginRequiredMixin, DeleteView):
     model = Life

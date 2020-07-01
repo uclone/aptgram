@@ -146,6 +146,18 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+def FILTERS_VERBOSE_LOOKUPS():
+    from django_filters.conf import DEFAULTS
+
+    verbose_lookups = DEFAULTS['VERBOSE_LOOKUPS'].copy()
+    verbose_lookups.update({
+        'exact': '(완전 일치)',
+        'icontains': '(일부 포함)',
+        'contains': '(일부 포함)',
+        'range': '(2000-01-01, 2099-12-12)',
+    })
+    return verbose_lookups
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
