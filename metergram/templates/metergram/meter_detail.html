@@ -3,7 +3,7 @@
 {% extends 'base.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>meter-delete</title>
+    <title>meter-detail</title>
 </head>
 <body>
 {% block content %}
@@ -25,7 +25,7 @@
         </thead>
 
         <tbody>
-            <tr><td>작성자</td><td>{{object.author.username}}</td></tr>
+            <tr><td>작성자</td><td>{{object.author}}</td></tr>
             <tr><td>아파트명</td><td>{{object.group}}</td></tr>
             <tr><td>동</td><td>{{object.dong}}</td></tr>
             <tr><td>호</td><td>{{object.ho}}</td></tr>

@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <title>life-list</title>
 </head>
+
 <body>
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'lifegram:life_post' %}" class="btn btn-success btn-sm">민원신청</a>&nbsp;&nbsp;
+        <a href="{% url 'lifegram:life_post' %}" class="btn btn-success btn-sm">민원신청</a></div>
     <p></p>
 
     <table class="table">
@@ -32,7 +33,7 @@
                 <td>{{post.department}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
                 <td>{{post.close|date:"Y-m-d"}}</td>
-                <td><a href="{% url 'lifegram:life_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                <td><a href="{% url 'lifegram:life_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}
         </tbody>

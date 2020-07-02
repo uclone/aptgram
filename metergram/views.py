@@ -98,6 +98,10 @@ def meter_post(request):
         return redirect('metergram:meter_list')
     return render(request, 'metergram/meter_post.html', {'form': form})
 
+def meter_detail_mobile(request, kk):
+    form = Meter.objects.filter(id=kk)                                   # Model data
+    return render(request, 'metergram/meter_detail_mobile.html', {'form': form})
+
 class MeterDeleteView(LoginRequiredMixin, DeleteView):
     model = Meter
     success_url = reverse_lazy('metergram:meter_list')

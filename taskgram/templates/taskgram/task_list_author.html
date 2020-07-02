@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <title>task-list</title>
 </head>
+
 <body>
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'taskgram:task_post' %}" class="btn btn-success btn-sm">일지추가</a>&nbsp;&nbsp;
+        <a href="{% url 'taskgram:task_post' %}" class="btn btn-success btn-sm">일지추가</a></div>
     <p></p>
 
     <table class="table">
@@ -32,7 +33,7 @@
                     <td>{{post.created|date:"Y-m-d"}}</td>
                     <td>{{post.subject}}
                     <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                    <td><a href="{% url 'taskgram:task_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html lang="en">
+{% extends 'base_mobile.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>pdf-detail</title>
+    <title>task-detail_mobile</title>
 </head>
-<body>
-    <h1>Aptgram Publishing</h1>
-    <h3>상세 - 일지목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
-    <table class="container_big">
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-left">
+        <a href="{% url 'taskgram:task_list_author' %}" class="btn btn-info btn-sm">전체자료</a></div>
+    <p></p>
+
+    <table class="table">
         <thead>
             <tr>
                 <th scope="col">항목</th>
@@ -18,7 +22,7 @@
         </thead>
 
         <tbody>
-        {% for post in files %}
+        {% for post in form %}
             <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
             <tr><td>아파트명</td><td>{{post.group}}</td></tr>
             <tr><td>소속부서</td><td>{{post.department}}</td></tr>
@@ -28,7 +32,7 @@
             <tr><td>업무내역</td><td>{{post.task}}</td></tr>
             <tr>
                 <td><a href="{{post.photo.url}}">참고사진</a></td>
-                <td><img src="{{post.photo.url}}" class="container"></td>
+                <td><img src="{{post.photo.url}}" width="300" height="300"></td>
             </tr>
             <tr><td>관리자</td><td>{{post.manager}}</td></tr>
             <tr><td>관리소장</td><td>{{post.director}}</td></tr>
@@ -36,7 +40,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <p></p><p></p>
 
+{% endblock %}
 </body>
 </html>

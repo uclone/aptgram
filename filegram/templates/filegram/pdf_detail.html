@@ -9,8 +9,6 @@
     <h1>Aptgram Publishing</h1>
     <h3>상세 - 문서목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
 
-    {% for post in files %}
-
     <table class="container_big">
         <thead>
             <tr>
@@ -20,6 +18,7 @@
         </thead>
 
         <tbody>
+        {% for post in files %}
             <tr><td>작성자</td><td>{{post.author}}</td></tr>
             <tr><td>아파트명</td><td>{{post.group}}</td></tr>
             <tr><td>담당부서</td><td>{{post.department}}</td></tr>
@@ -36,11 +35,12 @@
                 <td><a href="{{post.file.url}}">문서다운로드</a></td>
                 <td><a href="{{post.file.url}}">{{post.file}}</a></td>
             </tr>
+        {% endfor %}
         </tbody>
     </table>
     <p></p><p></p>
 
-    {% endfor %}
+
 
 </body>
 </html>

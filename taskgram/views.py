@@ -85,6 +85,10 @@ def task_post(request):
         return redirect('taskgram:task_list_author')
     return render(request, 'taskgram/task_post.html', {'form': form})
 
+def task_detail_mobile(request, kk):
+    form = Task.objects.filter(id=kk)                                   # Model data
+    return render(request, 'taskgram/task_detail_mobile.html', {'form': form})
+
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
     success_url = reverse_lazy('taskgram:task_list')

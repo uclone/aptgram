@@ -14,11 +14,12 @@ urlpatterns = [
     path('update/<int:pk>/', TaskUpdateView.as_view(), name='task_update'),
     path('detail/<int:pk>/', DetailView.as_view(model=Task, template_name='taskgram/task_detail.html'), name='task_detail'),
 
-    path('makepdf/', generate_pdf, name='generate_pdf'),                # weasyprint
-    path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),          # weasyprint
+    path('makepdf/', generate_pdf, name='generate_pdf'),                                # weasyprint
+    path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),                          # weasyprint
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
-    url(r'^search/$', task_search, name='task_search'),                 # search
+    url(r'^search/$', task_search, name='task_search'),                                 # search
 
-    url(r'^taskpost/$', task_post, name='task_post'),  # post == meter only
+    url(r'^taskpost/$', task_post, name='task_post'),                                   # mobile
+    path('detailmobile/<int:kk>/', task_detail_mobile, name='task_detail_mobile'),      # mobile
 ]

@@ -77,6 +77,10 @@ def life_post(request):
         return redirect('lifegram:life_list_author')
     return render(request, 'lifegram/life_post.html', {'form': form})
 
+def life_detail_mobile(request, kk):
+    form = Life.objects.filter(id=kk)                                   # Model data
+    return render(request, 'lifegram/life_detail_mobile.html', {'form': form})
+
 class LifeDeleteView(LoginRequiredMixin, DeleteView):
     model = Life
     success_url = reverse_lazy('lifegram:life_list')
