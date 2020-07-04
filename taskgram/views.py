@@ -77,11 +77,11 @@ def task_search(request):
 
 @login_required
 def task_upload_mobile(request):
-    form = TaskForm(request.POST)
+    form = TaskForm(request.POST, request.FILES)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
-        form.instance.save()
+        form.save()
         return redirect('taskgram:task_list_mobile')
     return render(request, 'taskgram/task_upload_mobile.html', {'form': form})
 

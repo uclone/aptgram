@@ -70,7 +70,7 @@ def life_search(request):
 
 @login_required
 def life_upload_mobile(request):
-    form = LifeForm(request.POST)
+    form = LifeForm(request.POST, request.FILES)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
