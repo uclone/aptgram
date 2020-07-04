@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import DateForm
+from django.contrib.auth.models import User, Group
 
 @login_required
 def equip_list(request):
@@ -72,45 +73,37 @@ class EquipUploadView(LoginRequiredMixin, CreateView):
     model = Equip
     form_class = DateForm
     template_name = 'equipgram/equip_upload.html'
-    #success_url = reverse_lazy('equipgram:equip_upload')
+    #success_url = reverse_lazy('equipgram:equip_list)
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('equipgram:equip_upload')
+            form.save()
+            return redirect('equipgram:equip_list')
         return self.render_to_response({'form': form})
-
-    #def get_form(self):
-    #    forms = super().get_form()
-    #    forms.fields['date'].widget = DateTimePickerInput()
-    #    forms.instance.author_id = self.request.user.id
-    #    forms.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
-    #    return forms
-
-    #def form_valid(self, form):
-    #    form.instance.author_id = self.request.user.id
-    #    form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
-    #    if form.is_valid():
-    #        form.instance.save()
-    #        return redirect('taskgram:task_list')
-    #    else:
-    #        return self.render_to_response({'form':form})
 
 class EquipUpdateView(LoginRequiredMixin, UpdateView):
     model = Equip
     form_class = DateForm
     template_name = 'equipgram/equip_update.html'
 
-    #def form_valid(self, form):
-    #    form.instance.author_id == self.request.user.id
-    #    if form.is_valid():
-    #        form.instance.save()
-    #        return redirect('taskgram:task_list')
-    #    else:
-    #        return self.render_to_response({'form': form})
+    def equip_update(self, request, pk):
+        field_author = 'author'
+        field_photo = 'photo'
+        obj = Equip.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        photo_field = getattr(obj, field_photo)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.photo = photo_field
+        if form.is_valid():
+            form.save()
+            Equip.objects.filter(id=pk).delete()
+            return redirect('equipgram:equip_list')
+        return render(request, 'equipgram/equip_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):
@@ -144,4 +137,30 @@ def search_pdf(request):
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
+
+
+
+    #def get_form(self):
+    #    forms = super().get_form()
+    #    forms.fields['date'].widget = DateTimePickerInput()
+    #    forms.instance.author_id = self.request.user.id
+    #    forms.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+    #    return forms
+
+    #def form_valid(self, form):
+    #    form.instance.author_id = self.request.user.id
+    #    form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+    #    if form.is_valid():
+    #        form.instance.save()
+    #        return redirect('taskgram:task_list')
+    #    else:
+    #        return self.render_to_response({'form':form})
+
+    #def form_valid(self, form):
+    #    form.instance.author_id == self.request.user.id
+    #    if form.is_valid():
+    #        form.instance.save()
+    #        return redirect('taskgram:task_list')
+    #    else:
+    #        return self.render_to_response({'form': form})
 

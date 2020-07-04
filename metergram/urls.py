@@ -8,7 +8,6 @@ app_name = 'metergram'
 
 urlpatterns = [
     path('', meter_list, name='meter_list'),
-    path('author/', meter_list_author, name='meter_list_author'),
     path('upload/', MeterUploadView.as_view(), name='meter_upload'),
     path('delete/<int:pk>/', MeterDeleteView.as_view(), name='meter_delete'),
     path('update/<int:pk>/', MeterUpdateView.as_view(), name='meter_update'),
@@ -20,6 +19,7 @@ urlpatterns = [
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', meter_search, name='meter_search'),                               # search
 
-    url(r'^meterpost/$', meter_post, name='meter_post'),                                # mobile
+    path('mobile/', meter_list_mobile, name='meter_list_mobile'),
+    url(r'^uploadmobile/$', meter_upload_mobile, name='meter_upload_mobile'),                                # mobile
     path('detailmobile/<int:kk>/', meter_detail_mobile, name='meter_detail_mobile'),    # mobile
 ]

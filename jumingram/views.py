@@ -40,13 +40,6 @@ def jumin_list(request):
 
 @login_required
 def jumin_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = Jumin.objects.filter(author_id=request_user.id).first()
-    #    file_list = Jumin.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = Jumin.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
         file_list = Jumin.objects.filter(group_id=group_id)
@@ -73,18 +66,34 @@ class JuminUploadView(LoginRequiredMixin, CreateView):
     template_name = 'jumingram/jumin_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
+        form = DateForm(request.POST, request.FILES, request.FILES)
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('jumingram:jumin_upload')
+            form.save()
+            return redirect('jumingram:jumin_list')
         return self.render_to_response({'form': form})
 
 class JuminUpdateView(LoginRequiredMixin, UpdateView):
     model = Jumin
     form_class = DateForm
     template_name = 'jumingram/jumin_update.html'
+
+    def jumin_update(self, request, pk):
+        field_author = 'author'
+        field_file = 'file'
+        obj = Jumin.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        file_field = getattr(obj, field_file)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.file = file_field
+        if form.is_valid():
+            form.save()
+            Jumin.objects.filter(id=pk).delete()
+            return redirect('jumingram:jumin_list')
+        return render(request, 'jumingram/jumin_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

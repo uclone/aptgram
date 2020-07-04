@@ -72,18 +72,34 @@ class PaperUploadView(LoginRequiredMixin, CreateView):
     template_name = 'papergram/paper_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('papergram:paper_upload')
+            form.save()
+            return redirect('papergram:paper_list')
         return self.render_to_response({'form': form})
 
 class PaperUpdateView(LoginRequiredMixin, UpdateView):
     model = Paper
     form_class = DateForm
     template_name = 'papergram/paper_update.html'
+
+    def paper_update(self, request, pk):
+        field_author = 'author'
+        field_file = 'file'
+        obj = Paper.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        file_field = getattr(obj, field_file)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.file = file_field
+        if form.is_valid():
+            form.save()
+            Paper.objects.filter(id=pk).delete()
+            return redirect('papergram:paper_list')
+        return render(request, 'papergram/paper_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

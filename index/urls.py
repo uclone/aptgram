@@ -6,5 +6,5 @@ app_name = 'index'
 
 urlpatterns = [
     path('', index_view, name='index'),
-    path('mobile/', index_mobile_view, name='index_mobile'),
+    path('mobile/', index_mobile_view, name='mobile'),
 ]

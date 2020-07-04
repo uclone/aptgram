@@ -3,42 +3,41 @@
 {% extends 'base_mobile.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>task-list</title>
+    <title>life-list</title>
 </head>
 
 <body>
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'taskgram:task_post' %}" class="btn btn-success btn-sm">일지추가</a></div>
+        <a href="{% url 'lifegram:life_upload_mobile' %}" class="btn btn-success btn-sm">민원신청</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">소속부서</th>
-                <th scope="col">담당자</th>
-                <th scope="col">작성일자</th>
-                <th scope="col">담당업무</th>
-                <th scope="col">관리일자</th>
+                <th scope="col">민원일자</th>
+                <th scope="col">민원안건</th>
+                <th scope="col">담당부서</th>
+                <th scope="col">처리일자</th>
+                <th scope="col">완료일자</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for post in files %}
-                <tr>
-                    <td>{{post.department}}</td>
-                    <td>{{post.charge}}</td>
-                    <td>{{post.created|date:"Y-m-d"}}</td>
-                    <td>{{post.subject}}
-                    <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'taskgram:task_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                </tr>
-            {% endfor %}
+        {% for post in files %}
+            <tr>
+                <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.subject}}</td>
+                <td>{{post.department}}</td>
+                <td>{{post.date|date:"Y-m-d"}}</td>
+                <td>{{post.close|date:"Y-m-d"}}</td>
+                <td><a href="{% url 'lifegram:life_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}
 
 

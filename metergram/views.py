@@ -13,19 +13,11 @@ from .forms import MeterForm, DateForm
 
 @login_required
 def meter_list(request):
-    #try:
-    #    request_user = request.user
-    #    data = Meter.objects.filter(author_id=request_user.id).first()
-    #    pagefiles = Meter.objects.filter(group_id=data.group_id)
-    #except:
-    #    pagefiles = Meter.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         pagefiles = Meter.objects.filter(group_id=group_id)
     except:
         pagefiles = Meter.objects.filter(group_id=1)
-
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -39,13 +31,12 @@ def meter_list(request):
     return render(request, 'metergram/meter_list.html', {'files':files})
 
 @login_required
-def meter_list_author(request):
+def meter_list_mobile(request):
     try:
         request_user = request.user
         pagefiles = Meter.objects.filter(author_id=request_user.id)
     except:
         pagefiles = Meter.objects.filter(author_id=1)
-
     # pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -56,7 +47,7 @@ def meter_list_author(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end
-    return render(request, 'metergram/meter_list_author.html', {'files':files})
+    return render(request, 'metergram/meter_list_mobile.html', {'files':files})
 
 @login_required
 def meter_search(request):
@@ -75,29 +66,17 @@ def meter_search(request):
         b.save()
     return render(request, 'metergram/meter_search.html', {'filter': file_filter})
 
-#def meter_post(request):
-#    if request.method == 'POST':
-#        form = MeterForm(request.POST)
-#        form.instance.author_id = request.user.id
-#        gr_id = request.user.groups.values_list('id', flat=True).first()
-#        form.instance.group_id = gr_id
-#        if form.is_valid():
-#            form.save()
-#            file = Meter.objects.order_by('-id')[:3]
-#            return render(request, 'metergram/meter_post.html', {'data': file})
-#    else:
-#        file = Meter.objects.order_by('-id')[:3]
-#    return render(request, 'metergram/meter_post.html', {'data': file})
-
-def meter_post(request):
+@login_required
+def meter_upload_mobile(request):
     form = MeterForm(request.POST)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
         form.instance.save()
-        return redirect('metergram:meter_list')
-    return render(request, 'metergram/meter_post.html', {'form': form})
+        return redirect('metergram:meter_list_mobile')
+    return render(request, 'metergram/meter_upload_mobile.html', {'form': form})
 
+@login_required
 def meter_detail_mobile(request, kk):
     form = Meter.objects.filter(id=kk)                                   # Model data
     return render(request, 'metergram/meter_detail_mobile.html', {'form': form})
@@ -114,11 +93,11 @@ class MeterUploadView(LoginRequiredMixin, CreateView):
 
     def post(self, request):
         form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('metergram:meter_upload')
+            form.save()
+            return redirect('metergram:meter_list')
         return self.render_to_response({'form': form})
 
 class MeterUpdateView(LoginRequiredMixin, UpdateView):

@@ -73,18 +73,35 @@ class PlanUploadView(LoginRequiredMixin, CreateView):
     template_name = 'plangram/plan_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('plangram:plan_upload')
+            form.save()
+            return redirect('plangram:plan_list')
         return self.render_to_response({'form': form})
 
 class PlanUpdateView(LoginRequiredMixin, UpdateView):
     model = Plan
     form_class = DateForm
+    #fields = ['start', 'close', 'department', 'charge', 'subject', 'task', 'photo', 'manager', 'director', 'remark']
     template_name = 'plangram/plan_update.html'
+
+    def plan_update(self, request, pk):
+        field_author = 'author'
+        field_photo = 'photo'
+        obj = Plan.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        photo_field = getattr(obj, field_photo)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.photo = photo_field
+        if form.is_valid():
+            form.save()
+            Plan.objects.filter(id=pk).delete()
+            return redirect('plangram:plan_list')
+        return render(request, 'plangram/plan_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

@@ -73,18 +73,35 @@ class SulbiUploadView(LoginRequiredMixin, CreateView):
     template_name = 'sulbigram/sulbi_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('sulbigram:sulbi_upload')
+            form.save()
+            return redirect('sulbigram:sulbi_list')
         return self.render_to_response({'form': form})
 
 class SulbiUpdateView(LoginRequiredMixin, UpdateView):
     model = Sulbi
     form_class = DateForm
+    #fields = ['department', 'code', 'subject', 'action', 'cycle', 'start', 'close', 'text', 'file', 'remark']
     template_name = 'sulbigram/sulbi_update.html'
+
+    def sulbi_update(self, request, pk):
+        field_author = 'author'
+        field_file = 'file'
+        obj = Sulbi.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        file_field = getattr(obj, field_file)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.file = file_field
+        if form.is_valid():
+            form.save()
+            Sulbi.objects.filter(id=pk).delete()
+            return redirect('sulbigram:sulbi_list')
+        return render(request, 'sulbigram/sulbi_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

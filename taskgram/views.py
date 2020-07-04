@@ -39,7 +39,7 @@ def task_list(request):
     return render(request, 'taskgram/task_list.html', {'files':files})
 
 @login_required
-def task_list_author(request):
+def task_list_mobile(request):
     try:
         request_user = request.user
         pagefiles = Task.objects.filter(author_id=request_user.id)
@@ -56,7 +56,7 @@ def task_list_author(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end
-    return render(request, 'taskgram/task_list_author.html', {'files':files})
+    return render(request, 'taskgram/task_list_mobile.html', {'files':files})
 
 @login_required
 def task_search(request):
@@ -76,15 +76,16 @@ def task_search(request):
     return render(request, 'taskgram/task_search.html', {'filter': file_filter})
 
 @login_required
-def task_post(request):
+def task_upload_mobile(request):
     form = TaskForm(request.POST)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
         form.instance.save()
-        return redirect('taskgram:task_list_author')
-    return render(request, 'taskgram/task_post.html', {'form': form})
+        return redirect('taskgram:task_list_mobile')
+    return render(request, 'taskgram/task_upload_mobile.html', {'form': form})
 
+@login_required
 def task_detail_mobile(request, kk):
     form = Task.objects.filter(id=kk)                                   # Model data
     return render(request, 'taskgram/task_detail_mobile.html', {'form': form})
@@ -100,19 +101,35 @@ class TaskUploadView(LoginRequiredMixin, CreateView):
     template_name = 'taskgram/task_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('taskgram:task_upload')
+            form.save()
+            return redirect('taskgram:task_list')
         return self.render_to_response({'form': form})
 
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     model = Task
     form_class = DateForm
+    #fields = ['department', 'charge', 'subject', 'task', 'photo', 'manager', 'director', 'response']
     template_name = 'taskgram/task_update.html'
 
+    def task_update(self, request, pk):
+        field_author = 'author'
+        field_photo = 'photo'
+        obj = Task.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        photo_field = getattr(obj, field_photo)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.photo = photo_field
+        if form.is_valid():
+            form.save()
+            Task.objects.filter(id=pk).delete()
+            return redirect('taskgram:task_list')
+        return render(request, 'taskgram/task_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

@@ -9,7 +9,7 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'taskgram:task_post' %}" class="btn btn-success btn-sm">일지추가</a>&nbsp;&nbsp;
+        <a href="{% url 'taskgram:task_upload_mobile' %}" class="btn btn-success btn-sm">일지추가</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:task_upload' %}" class="btn btn-info btn-sm">일지관리</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:task_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>

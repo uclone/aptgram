@@ -32,7 +32,7 @@ def life_list(request):
     return render(request, 'lifegram/life_list.html', {'files':files})
 
 @login_required
-def life_list_author(request):
+def life_list_mobile(request):
     try:
         request_user = request.user
         pagefiles = Life.objects.filter(author_id=request_user.id)
@@ -49,7 +49,7 @@ def life_list_author(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end
-    return render(request, 'lifegram/life_list_author.html', {'files':files})
+    return render(request, 'lifegram/life_list_mobile.html', {'files':files})
 
 @login_required
 def life_search(request):
@@ -68,15 +68,17 @@ def life_search(request):
         b.save()
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
 
-def life_post(request):
+@login_required
+def life_upload_mobile(request):
     form = LifeForm(request.POST)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
         form.instance.save()
-        return redirect('lifegram:life_list_author')
-    return render(request, 'lifegram/life_post.html', {'form': form})
+        return redirect('lifegram:life_list_mobile')
+    return render(request, 'lifegram/life_upload_mobile.html', {'form': form})
 
+@login_required
 def life_detail_mobile(request, kk):
     form = Life.objects.filter(id=kk)                                   # Model data
     return render(request, 'lifegram/life_detail_mobile.html', {'form': form})
@@ -92,18 +94,36 @@ class LifeUploadView(LoginRequiredMixin, CreateView):
     template_name = 'lifegram/life_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST)
-        form.instance.author_id = self.request.user.id
-        form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.instance.save()
-            return redirect('lifegram:life_upload')
+            form.save()
+            return redirect('lifegram:life_list')
         return self.render_to_response({'form': form})
 
 class LifeUpdateView(LoginRequiredMixin, UpdateView):
     model = Life
     form_class = DateForm
+    #fields = ['department', 'charge', 'date', 'close', 'task_2', 'photo_2', 'response']
     template_name = 'lifegram/life_update.html'
+
+    def life_update(self, request, pk):
+        field_author = 'author'
+        field_photo_2 = 'photo_2'
+        obj = Life.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        photo_2_field = getattr(obj, field_photo_2)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.photo = photo_2_field
+        if form.is_valid():
+            form.save()
+            Life.objects.filter(id=pk).delete()
+            return redirect('lifegram:life_list')
+        return render(request, 'lifegram/life_update.html', {'form': form})
+
 
 #for weasyprint
 def generate_pdf(request):

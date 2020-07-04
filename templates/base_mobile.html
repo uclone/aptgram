@@ -30,9 +30,9 @@
                 <a class="navbar-brand" href="/">Aptgram</a><br>
                 <ul class="nav">
                     {% if user.is_authenticated %}
-                    <li class="nav-item"><a href="{% url 'taskgram:task_post' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
-                    <li class="nav-item"><a href="{% url 'lifegram:life_post' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
-                    <li class="nav-item"><a href="{% url 'metergram:meter_post' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'taskgram:task_upload_mobile' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'lifegram:life_upload_mobile' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
+                    <li class="nav-item"><a href="{% url 'metergram:meter_upload_mobile' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
                     <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">&laquo;로그아웃&raquo;</a></li>
                     {% else %}
                     <li class="nav-item"><a href="{% url 'accounts:login' %}" class="nav-link">&laquo; 로그인 &raquo;</a></li>
@@ -45,6 +45,7 @@
         <div class="row justify-content-center">
             <div class="col">
                 {% block content %}
+
                 {% endblock %}
             </div>
         </div>

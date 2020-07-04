@@ -18,6 +18,4 @@ urlpatterns = [
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', equip_search, name='equip_search'),          #search
-    #url(r'^search/(?P<qq>[0-9]{4})/$', equip_search, name='equip_search'),          #search
-    #path('search/', equip_search, name='equip_search'),
 ]

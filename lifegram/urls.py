@@ -8,7 +8,6 @@ app_name = 'lifegram'
 
 urlpatterns = [
     path('', life_list, name='life_list'),
-    path('author/', life_list_author, name='life_list_author'),
     path('upload/', LifeUploadView.as_view(), name='life_upload'),
     path('delete/<int:pk>/', LifeDeleteView.as_view(), name='life_delete'),
     path('update/<int:pk>/', LifeUpdateView.as_view(), name='life_update'),
@@ -20,6 +19,7 @@ urlpatterns = [
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', life_search, name='life_search'),                                 # search
 
-    url(r'^lifepost/$', life_post, name='life_post'),                                   # mobile
+    path('mobile/', life_list_mobile, name='life_list_mobile'),
+    url(r'^uploadmobile/$', life_upload_mobile, name='life_upload_mobile'),                                   # mobile
     path('detailmobile/<int:kk>/', life_detail_mobile, name='life_detail_mobile'),      # mobile
 ]
