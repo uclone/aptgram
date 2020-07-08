@@ -12,7 +12,7 @@
         <a href="{% url 'jumingram:jumin_upload' %}" class="btn btn-info btn-sm">주민추가</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:jumin_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
-        {% if user.last_name != '공고금지' %}
+        {% if user.last_name == '관리' %}
         <a href="{% url 'jumingram:gongo_cast' %}" class="btn btn-info btn-sm">공고실행</a>&nbsp;&nbsp;
         {% endif %}
     </div>
@@ -47,7 +47,7 @@
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
                 <td>{{post.date|date:"Y-m-d" }}</td>
-                {% if user.last_name == '공고' %}
+                {% if user.last_name == '관리' %}
                 <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">공고준비</a></td>
                 {% else %}
                 <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>

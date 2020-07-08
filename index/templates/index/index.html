@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends 'base.html' %}
+{% extends 'base_mobile.html' %}
 
 <head>
     <meta charset="UTF-8">
@@ -23,10 +23,21 @@
 
                 <ul>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'jumingram:jumin_detail_mobile' %}">모바일 - 공고읽기</a></li>
-                    <li><a href="{% url 'taskgram:task_upload_mobile' %}">모바일 - 일지추가</a></li>
-                    <li><a href="{% url 'lifegram:life_upload_mobile' %}">모바일 - 민원신청</a></li>
-                    <li><a href="{% url 'metergram:meter_upload_mobile' %}">모바일 - 검침추가</a></li>
+                        {% if user.last_name == "관리" %}
+                        <li><a href="{% url 'plangram:plan_list' %}">일정관리</a></li>
+                        <li><a href="{% url 'filegram:file_list' %}">문서관리</a></li>
+                        <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
+                        <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
+                        <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
+                        <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
+                        <li><a href="{% url 'lifegram:life_list' %}">민원관리</a></li>
+                        <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
+                        {% else %}
+                        <li><a href="{% url 'jumingram:jumin_detail_mobile' %}">공고읽기</a></li>
+                        <li><a href="{% url 'taskgram:task_upload_mobile' %}">일지추가</a></li>
+                        <li><a href="{% url 'lifegram:life_upload_mobile' %}">민원신청</a></li>
+                        <li><a href="{% url 'metergram:meter_upload_mobile' %}">검침추가</a></li>
+                        {% endif %}
                     {% else %}
                     <li><a href="{% url 'accounts:login' %}">로그인</a></li>
                     <li><a href="{% url 'accounts:register' %}">등록하기</a></li>
