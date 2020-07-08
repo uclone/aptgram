@@ -33,11 +33,11 @@ SECRET_KEY = '47z6b0hi+&twg!)y&-vrzmue=cf#+y_tmjb2)!t5*_%(4er+)c'
 #DEBUG = False
 #ALLOWED_HOSTS = ['.compute.amazonaws.com']                       #---------------Amazon Server AWS EC2
 # for Heroku
-#DEBUG = False
-#ALLOWED_HOSTS = ['*']                       #---------------remote server
+DEBUG = False
+ALLOWED_HOSTS = ['*']                       #---------------remote server
 # for Local
-DEBUG = True
-ALLOWED_HOSTS = []
+#DEBUG = True
+#ALLOWED_HOSTS = []
 
 
 # Application definition
