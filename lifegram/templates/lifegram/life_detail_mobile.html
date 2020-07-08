@@ -26,7 +26,7 @@
         {% for post in form %}
             <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
             <tr><td>아파트명</td><td>{{post.group}}</td></tr>
-            <tr><td>신청인정보</td><td>{{post.contact}}</td></tr>
+            <tr><td>신청인</td><td>{{post.applicant}}</td></tr>
             <tr><td>민원일자</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
             <tr><td>민원제목</td><td>{{post.subject}}</td></tr>
             <tr><td>민원내용</td><td>{{post.task_1}}</td></tr>

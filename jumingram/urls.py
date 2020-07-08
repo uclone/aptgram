@@ -18,4 +18,8 @@ urlpatterns = [
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', jumin_search, name='jumin_search'),  # search
+
+    path('detailmobile/', jumin_detail_mobile, name='jumin_detail_mobile'),  # mobile
+    path('gongoupdate/<int:pk>/', GongoUpdateView.as_view(), name='gongo_update'),
+    path('gongocast/', gongo_cast, name='gongo_cast'),
 ]

@@ -13,7 +13,7 @@ department_choice= [
 class LifeForm(forms.ModelForm):
     class Meta:
         model = Life
-        fields = [ 'contact', 'subject', 'task_1', 'photo_1', ]
+        fields = [ 'applicant', 'subject', 'task_1', 'photo_1', ]
         #widgets = {
         #    'date': DatePickerInput(format = '%Y-%m-%d'),
         #}

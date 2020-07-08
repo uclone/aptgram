@@ -7,8 +7,8 @@ class SearchFilter(django_filters.FilterSet):
     class Meta:
         model = Jumin
         fields = {
-            'dong': ['icontains'],
-            'ho': ['icontains'],
+            'dong': ['exact'],
+            'ho': ['exact'],
             'represent': ['icontains'],
             'family': ['icontains'],
             'car': ['icontains'],
@@ -17,3 +17,11 @@ class SearchFilter(django_filters.FilterSet):
 #            'price': ['lt', 'gt'],
 #            'release_date': ['exact', 'year__gt'],
 #        }
+
+class GongoFilter(django_filters.FilterSet):
+    class Meta:
+        model = Jumin
+        fields = {
+            'dong': ['exact'],
+            'ho': ['exact'],
+        }

@@ -8,7 +8,7 @@ class SearchFilter(django_filters.FilterSet):
         model = Life
         fields = {
             'subject': ['icontains'],
-            'contact': ['icontains'],
+            'applicant': ['icontains'],
             'department': ['icontains'],
             'charge': ['icontains'],
             'created': ['range'],

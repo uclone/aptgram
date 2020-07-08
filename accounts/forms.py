@@ -5,12 +5,14 @@ from django import forms
 class RegisterForm(forms.ModelForm):
     group = forms.ModelChoiceField(queryset=Group.objects.all(), required=True)
     email = forms.EmailField()
+    last_name = forms.CharField(label='동 이름', required=True)
+    first_name = forms.CharField(label='호', required=True)
     password = forms.CharField(label='패스워드', widget=forms.PasswordInput)
     password2 = forms.CharField(label='패스워드 재확인', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['group', 'username', 'first_name', 'last_name', 'email']
+        fields = ['group', 'username', 'last_name', 'first_name', 'email']
 
     def clean_password2(self):
         cd = self.cleaned_data

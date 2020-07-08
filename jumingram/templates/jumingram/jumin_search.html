@@ -46,7 +46,11 @@
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
                 <td>{{post.date|date:"Y-m-d" }}</td>
+                {% if user.last_name == '공고' %}
+                <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">공고준비</a></td>
+                {% else %}
                 <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

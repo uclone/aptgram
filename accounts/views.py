@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
 
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         user_form = RegisterForm(request.POST)

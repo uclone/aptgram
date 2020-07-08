@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import DateForm, LifeForm
+from django.contrib.auth.models import User, Group
 
 @login_required
 def life_list(request):
@@ -63,8 +64,8 @@ def life_search(request):
     x = file_filter.qs
     Slife.objects.all().delete()
     for a in x:
-        b = Slife(id=a.id, contact=a.contact, subject=a.subject, task_1=a.task_1, photo_1=a.photo_1, charge=a.charge,
-                  department=a.department, date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
+        b = Slife(id=a.id, first_name=a.first_name, last_name=a.last_name,subject=a.subject, task_1=a.task_1, photo_1=a.photo_1,
+                  charge=a.charge, department=a.department, date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
         b.save()
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
 
@@ -74,7 +75,7 @@ def life_upload_mobile(request):
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
-        form.instance.save()
+        form.save()
         return redirect('lifegram:life_list_mobile')
     return render(request, 'lifegram/life_upload_mobile.html', {'form': form})
 

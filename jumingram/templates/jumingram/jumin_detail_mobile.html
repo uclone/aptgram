@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base_mobile.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>life-detail_mobile</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-left">
+        <a href="{% url 'jumingram:jumin_detail_mobile' %}" class="btn btn-info btn-sm">정보공고</a>&nbsp;&nbsp;
+        <a href="{% url 'taskgram:task_upload_mobile' %}" class="btn btn-info btn-sm">일지추가</a>&nbsp;&nbsp;
+        <a href="{% url 'lifegram:life_upload_mobile' %}" class="btn btn-info btn-sm">민원신청</a></a>&nbsp;&nbsp;
+        <a href="{% url 'metergram:meter_upload_mobile' %}" class="btn btn-info btn-sm">검침추가</a>
+    </div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in form %}
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>동</td><td>{{post.dong}}</td></tr>
+            <tr><td>호</td><td>{{post.ho}}</td></tr>
+            <tr>
+                <td><a href="{{post.photo.url}}">알림사진</a></td>
+                <td><img src="{{post.photo.url}}" width="300" height="300"></td>
+            </tr>
+            <tr>
+                <td><a href="{{post.file.url}}">알림문서 다운로드</a></td>
+                <td><a href="{{post.file.url}}">{{post.file}}</a></td>
+            </tr>
+            <tr><td>전체 알림</td><td>{{post.task_apt}}</td></tr>
+            <tr><td>동별 알림</td><td>{{post.task_dong}}</td></tr>
+            <tr><td>개별 알림</td><td>{{post.task_ho}}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

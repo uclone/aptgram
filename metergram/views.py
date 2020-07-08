@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import MeterForm, DateForm
+import xlwt
 
 @login_required
 def meter_list(request):
@@ -136,4 +137,31 @@ def search_pdf(request):
     response['Content-Disposition'] = 'filename=meter_search_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
+    return response
+
+def search_xls(request):
+    group_idd = request.user.groups.values_list('id', flat=True).first()
+    field_group = 'group'
+    obj = Meter.objects.filter(group_id=group_idd).first()
+    group_name = getattr(obj, field_group)
+    # Exel format
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=meter_search_{}.xls'.format(group_name)
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('검침 자료')
+    # Sheet header, first row
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    columns = ['dong', 'ho', 'mtr', 'cor', 'elec', 'water',]
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    rows = Smeter.objects.all().values_list('dong', 'ho', 'mtr', 'cor', 'elec', 'water',)
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+    wb.save(response)
     return response

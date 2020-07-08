@@ -22,6 +22,7 @@
 
                 <ul>
                     {% if user.is_authenticated %}
+                    <li><a href="{% url 'jumingram:meter_detail_mobile' %}">모바일 - 검침추가</a></li>
                     <li><a href="{% url 'taskgram:task_upload_mobile' %}">모바일 - 일지추가</a></li>
                     <li><a href="{% url 'lifegram:life_upload_mobile' %}">모바일 - 민원신청</a></li>
                     <li><a href="{% url 'metergram:meter_upload_mobile' %}">모바일 - 검침추가</a></li>

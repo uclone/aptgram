@@ -22,4 +22,6 @@ urlpatterns = [
     path('mobile/', meter_list_mobile, name='meter_list_mobile'),
     url(r'^uploadmobile/$', meter_upload_mobile, name='meter_upload_mobile'),                                # mobile
     path('detailmobile/<int:kk>/', meter_detail_mobile, name='meter_detail_mobile'),    # mobile
+
+    url(r'^searchxls/$', search_xls, name='search_xls'),
 ]

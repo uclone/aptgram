@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th scope="col">민원일자</th>
+                <th scope="col">신청인</th>
                 <th scope="col">민원안건</th>
                 <th scope="col">담당부서</th>
                 <th scope="col">처리일자</th>
@@ -29,6 +30,7 @@
         {% for post in files %}
             <tr>
                 <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.applicant}}</td>
                 <td>{{post.subject}}</td>
                 <td>{{post.department}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
