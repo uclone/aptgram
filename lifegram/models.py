@@ -8,8 +8,6 @@ class Life(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, default=1, related_name='group_lives',
                               verbose_name='아파트명')
     applicant = models.CharField(max_length=100, null=True, verbose_name='신청인')
-    #first_name = models.ForeignKey(User, to_field='first_name', db_column='first_name', on_delete=models.CASCADE, null=True, blank=True, related_name='first_lives',verbose_name='호')
-    #last_name = models.ForeignKey(User, to_field='first_name', db_column='last_name', on_delete=models.CASCADE, null=True, blank=True, related_name='last_lives',verbose_name='동')
     created = models.DateTimeField(auto_now_add=True, verbose_name='민원제기일자')
     subject = models.CharField(max_length=100, default='필수', verbose_name='민원제목')
     task_1 = models.TextField(max_length=500, null=True, blank=True, verbose_name='민원내역')
