@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 설비목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+        <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>대분류</td><td>{{post.category}}</td></tr>
+            <tr><td>구분</td><td>{{post.subject}}</td></tr>
+            <tr><td>공사종별</td><td>{{post.treatment}}</td></tr>
+            <tr><td>수선방법</td><td>{{post.method}}</td></tr>
+            <tr><td>수선주기(년)</td><td>{{post.cycle}}</td></tr>
+            <tr><td>수선율(%)</td><td>{{post.ratio}}</td></tr>
+            <tr><td>최종수선(년)</td><td>{{post.last}}</td></tr>
+            <tr><td>법정예정(년)</td><td>{{post.rule}}</td></tr>
+            <tr><td>최초수정연</td><td>{{post.plan}}</td></tr>
+            <tr><td>수선예정금</td><td>{{post.cost}}</td></tr>
+            <tr><td>예정횟수</td><td>{{post.times}}</td></tr>
+            <tr><td>총수선예정금</td><td>{{post.amount}}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p></p><p></p>
+
+</body>
+</html>

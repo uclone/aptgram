@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>jumin-delete</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'accounts:account_update' pk=object.id %}" class="btn btn-info btn-sm">권한수정</a>&nbsp;&nbsp;
+        <a href="{% url 'accounts:account_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+    </div>
+
+    <div class="btn-group float-left">
+        <a href="{% url 'accounts:account_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>아파트이름</td><td>{{object.groups.all.0.name}}</td></tr>
+            <tr><td>ID</td><td>{{object.username}}</td></tr>
+            <tr><td>부서</td><td>{{object.last_name}}</td></tr>
+            <tr><td>직책&이름</td><td>{{object.first_name}}</td></tr>
+            <tr><td>이메일</td><td>{{object.email}}</td></tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

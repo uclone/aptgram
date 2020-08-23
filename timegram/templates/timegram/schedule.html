@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% extends 'base_schedule.html' %}
+
+<head>
+    <meta charset="UTF-8">
+    {% block title %} 일정보기 {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <div class="clearfix">
+        <a class="btn btn-primary left" href="{% url 'index:index' %}"> 초기화면 </a>
+        <a class="btn btn-primary left" href="{% url 'timegram:event_new' %}"> 일정관리 </a>
+        <a class="btn btn-success right" href="{% url 'timegram:schedule' %}?{{ prev_month }}"> 이전달 </a>
+        <a class="btn btn-success right" href="{% url 'timegram:schedule' %}?{{ next_month }}"> 다음달 </a>
+    </div>
+
+	<p></p>
+
+    {{ calendar }}
+
+    {% endblock %}
+</body>
+</html>

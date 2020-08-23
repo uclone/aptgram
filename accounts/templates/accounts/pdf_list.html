@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-list</title>
+</head>
+
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>사용자목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>아파트이름</th>
+                <th>사용자 ID</th>
+                <th>부서</th>
+                <th>직책&이름</th>
+                <th>이메일</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr>
+                <td>{{post.groups.all.0.name}}</td>
+                <td>{{post.username}}</td>
+                <td>{{post.last_name}}</td>
+                <td>{{post.first_name}}</td>
+                <td>{{post.email}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>

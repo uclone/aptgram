@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+<head>
+    <meta charset="UTF-8">
+    <title> Event </title>
+
+{% block title %} 일정관리 {% endblock %}
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+</head>
+
+<body>
+{% block content %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">{{ field.label }}<strong>{{ error|escape }}</strong></div>
+            {% endfor %}
+        {% endfor %}
+
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ field.label }}<strong>{{ error|escape }}</strong></div>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 panel panel-default">
+            <p></p>
+            <div class="clearfix">
+                <a class="btn btn-primary left" href="{% url 'timegram:schedule' %}"> 일정보기 </a>
+                <a class="btn btn-primary left" href="{% url 'index:index' %}"> 초기화면 </a>
+            </div>
+            <p></p><br>
+
+            <form action="" method="post" enctype="multipart/form-data">
+                {% bootstrap_form form %}
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary" value="편집완료">
+            </form>
+            <p></p>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+
+
+
+{% endblock %}
+
+</body>
+</html>

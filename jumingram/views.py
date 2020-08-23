@@ -68,13 +68,13 @@ class GongoUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.file = file_field
         if form.is_valid():
             form.save()
-            Jumin.objects.filter(id=pk).delete()
+            #Jumin.objects.filter(id=pk).delete()
             return redirect('jumingram:jumin_list')
         return render(request, 'jumingram/gongo_update.html', {'form': form})
 
 @login_required
 def gongo_cast(request):
-    obj = Jumin.objects.filter(author_id=request.user.id).first()
+    obj = Jumin.objects.filter(author_id=request.user.id).last()
     dong_field = getattr(obj, 'dong')
     ho_field = getattr(obj, 'ho')
     photo_field = getattr(obj, 'photo')

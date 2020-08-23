@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse_lazy
 from .models import Sulbi, Ssulbi
+from timegram.models import Time
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
@@ -73,11 +74,17 @@ class SulbiUploadView(LoginRequiredMixin, CreateView):
     template_name = 'sulbigram/sulbi_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST, request.FILES)
+        instance = Sulbi()
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.save()
+            x = Time(subject=instance.subject, description=instance.text, remark=instance.code,
+                     start_time=instance.start, end_time=instance.close)
+            x.author_id = request.user.id
+            x.group_id = request.user.groups.values_list('id', flat=True).first()
+            x.save()
             return redirect('sulbigram:sulbi_list')
         return self.render_to_response({'form': form})
 

@@ -32,6 +32,8 @@ urlpatterns = [
     path('index/', include('index.urls')),
     path('metergram/', include('metergram.urls')),
     path('papergram/', include('papergram.urls')),
+    path('susungram/', include('susungram.urls')),
+    path('timegram/', include('timegram.urls')),
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)        #transfered to Amazon

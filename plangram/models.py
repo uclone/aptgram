@@ -56,3 +56,12 @@ class Splan(models.Model):
 
     def __str__(self):
         return self.photo.name
+
+
+class Schedule(models.Model):
+    start = models.DateField(null=True, verbose_name='시작일자')
+    close = models.DateField(null=True, verbose_name='완료일자')
+    department = models.CharField(max_length=100, null=True, verbose_name='담당부서')
+    subject = models.CharField(max_length=100, null=True, verbose_name='업무제목')
+    remark = models.CharField(max_length=200, null=True, verbose_name='비고')
+

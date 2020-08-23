@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>jumin-list</title>
+</head>
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'accounts:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
+    </div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">아파트이름</th>
+                <th scope="col">사용자 ID</th>
+                <th scope="col">부서</th>
+                <th scope="col">직책&이름</th>
+                <th scope="col">이메일</th>
+                <th scope="col">상세보기</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr>
+                <td>{{post.groups.all.0.name}}</td>
+                <td>{{post.username}}</td>
+                <td>{{post.last_name}}</td>
+                <td>{{post.first_name}}</td>
+                <td>{{post.email}}</td>
+                <td><a href="{% url 'accounts:account_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">권한확인</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+</body>
+</html>

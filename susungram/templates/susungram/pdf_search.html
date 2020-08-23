@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-search</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>설비목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>대분류</th>
+                <th>구분</th>
+                <th>공사종별</th>
+                <th>수선주기</th>
+                <th>최종수선</th>
+                <th>최종수정연</th>
+                <th>수선예정금</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in filter %}
+            <tr>
+                <td>{{post.category}}</td>
+                <td>{{post.subject}}</td>
+                <td>{{post.treatment}}</td>
+                <td>{{post.cycle}}</td>
+                <td>{{post.last}}</td>
+                <td>{{post.plan}}</td>
+                <td>{{post.cost}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>

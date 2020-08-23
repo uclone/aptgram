@@ -23,7 +23,7 @@ class Jumin(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-updated']
+        ordering = ['-dong', '-ho']
 
     def __str__(self):
         return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")
@@ -50,7 +50,7 @@ class Sjumin(models.Model):
     updated = models.DateTimeField(blank=True, default=timezone.now)
 
     class Meta:
-        ordering = ['-updated']
+        ordering = ['-dong', '-ho']
 
     def __str__(self):
         return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")

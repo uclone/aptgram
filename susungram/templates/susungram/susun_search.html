@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+<head>
+    <meta charset="UTF-8">
+    <title>sulbi-search</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <form method="get">
+        {% bootstrap_form filter.form %}
+        <div class="btn-group float-right">&nbsp;&nbsp;
+        <a href="{% url 'susungram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+        <div class="btn-group float-left">
+        <a href="{% url 'susungram:susun_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
+        <button type="submit" class="btn btn-info btn-sm float-right">검색하기</button>
+    </form>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">대분류</th>
+                <th scope="col">구분</th>
+                <th scope="col">공사종별</th>
+                <th scope="col">수선주기</th>
+                <th scope="col">최종수선</th>
+                <th scope="col">최종수정연</th>
+                <th scope="col">수선예정금</th>
+                <th scope="col">상세자료</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for post in filter.qs %}
+                <tr>
+                    <td>{{post.category}}</td>
+                    <td>{{post.subject}}</td>
+                    <td>{{post.treatment}}</td>
+                    <td>{{post.cycle}}</td>
+                    <td>{{post.last}}</td>
+                    <td>{{post.plan}}</td>
+                    <td>{{post.cost}}</td>
+                    <td><a href="{% url 'susungram:susun_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

@@ -5,27 +5,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.template.loader import render_to_string, get_template
 from django.urls import reverse_lazy
-from .models import Plan, Splan
+from .models import Plan, Splan, Schedule
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import DateForm
+from sulbigram.models import Sulbi
+from susungram.models import Susun
+from django.utils import timezone
+
 
 @login_required
 def plan_list(request):
-    #try:
-    #    request_user = request.user
-    #    data = Plan.objects.filter(author_id=request_user.id).first()
-    #    pagefiles = Plan.objects.filter(group_id=data.group_id)
-    #except:
-    #    pagefiles = Plan.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         pagefiles = Plan.objects.filter(group_id=group_id)
     except:
         pagefiles = Plan.objects.filter(group_id=1)
-
     # pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -40,13 +36,6 @@ def plan_list(request):
 
 @login_required
 def plan_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = Plan.objects.filter(author_id=request_user.id).first()
-    #    file_list = Plan.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = Plan.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()
         file_list = Plan.objects.filter(group_id=group_id)
@@ -61,6 +50,27 @@ def plan_search(request):
                   task=a.task, photo=a.photo, manager=a.manager, director=a.director, remark=a.remark)
         b.save()
     return render(request, 'plangram/plan_search.html', {'filter': file_filter})
+
+def check_schedule(request):
+    Schedule.objects.all().delete()
+    group_id = request.user.groups.values_list('id', flat=True).first()
+    sulbi_list = Sulbi.objects.filter(group_id=group_id)
+
+    for a in sulbi_list:
+        if a.start < timezone.now and a.close > timezone.now:
+            b = Schedule(start=a.start, close=a.close, department=a.department, subject=a.subject, remark=a.remark)
+            #b.pk = None                             #b.id = None
+            b.save()
+
+    susun_list = Susun.objects.filter(group_id=group_id)
+    for a in susun_list:
+        if a.start < timezone.now and a.close > timezone.now:
+            b = Schedule(start=a.rule, close=a.plan, department=a.category, subject=a.subject, remark=a.treatment)
+            #b.pk = None                             #b.id = None
+            b.save()
+
+    schedule_list = Schedule.objects.all()
+    return render(request, 'plangram/schedule.html', {'files': schedule_list})
 
 class PlanDeleteView(LoginRequiredMixin, DeleteView):
     model = Plan

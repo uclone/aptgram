@@ -24,9 +24,10 @@
                 <ul>
                     {% if user.is_authenticated %}
                         {% if user.last_name == "관리" %}
-                        <li><a href="{% url 'plangram:plan_list' %}">일정관리</a></li>
+                        <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
                         <li><a href="{% url 'filegram:file_list' %}">문서관리</a></li>
                         <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
+                        <li><a href="{% url 'susungram:susun_list' %}">장기수선</a></li>
                         <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
                         <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
                         <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>

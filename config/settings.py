@@ -62,8 +62,10 @@ INSTALLED_APPS = [
     'index',
     'metergram',
     'papergram',
+    'susungram',
     'bootstrap3',
     'bootstrap_datepicker_plus',
+    'timegram',
 ]
 
 MIDDLEWARE = [
@@ -153,7 +155,7 @@ def FILTERS_VERBOSE_LOOKUPS():
         'exact': '(완전 일치)',
         'icontains': '(일부 포함)',
         'contains': '(일부 포함)',
-        'range': '(2000-01-01, 2099-12-12)',
+        'range': '(2000-01-01)',
     })
     return verbose_lookups
 

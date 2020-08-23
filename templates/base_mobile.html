@@ -27,9 +27,10 @@
     <div class="container">
         <header class="head clearfix">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/">Aptgram</a><br>
+                <a class="navbar-brand" href="/index/">Aptgram</a><br>
                 <ul class="nav">
                     {% if user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
                     <li class="nav-item"><a href="{% url 'jumingram:jumin_detail_mobile' %}" class="active nav-link">&laquo; 알림 &raquo;</a></li>
                     <li class="nav-item"><a href="{% url 'taskgram:task_upload_mobile' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
                     <li class="nav-item"><a href="{% url 'lifegram:life_upload_mobile' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
