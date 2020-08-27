@@ -33,7 +33,7 @@
                     <td>{{post.created|date:"Y-m-d"}}</td>
                     <td>{{post.subject}}
                     <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'taskgram:task_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                    <td><a href="{% url 'taskgram:task_detail_mobile' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

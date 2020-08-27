@@ -3,7 +3,7 @@
 {% extends 'base.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>jumin-list</title>
+    <title>accounts-list</title>
 </head>
 <body>
 {% block content %}
@@ -26,6 +26,7 @@
         </thead>
 
         <tbody>
+        {% if "관리" in user.last_name %}
         {% for post in files %}
             <tr>
                 <td>{{post.groups.all.0.name}}</td>
@@ -36,6 +37,7 @@
                 <td><a href="{% url 'accounts:account_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">권한확인</a></td>
             </tr>
         {% endfor %}
+        {% endif %}
         </tbody>
     </table>
 {% endblock %}

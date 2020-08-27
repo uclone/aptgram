@@ -14,7 +14,7 @@ urlpatterns = [
     path('detail/<int:pk>/', DetailView.as_view(model=Susun, template_name='susungram/susun_detail.html'), name='susun_detail'),
 
     path('makepdf/', generate_pdf, name='generate_pdf'),  # weasyprint
-    path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),  # weasyprint
+    path('detailpdf/<int:pk>', detail_pdf, name='detail_pdf'),  # weasyprint
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', susun_search, name='susun_search'),  # search

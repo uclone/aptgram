@@ -1,27 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends 'base_mobile.html' %}
+{% extends 'base.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>life-list</title>
+    <title>news-read</title>
 </head>
-
 <body>
 {% block content %}
-    <p></p>
-    <div class="btn-group float-right">
-        <a href="{% url 'lifegram:life_upload_mobile' %}" class="btn btn-success btn-sm">민원신청</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">민원일자</th>
-                <th scope="col">신청인</th>
-                <th scope="col">민원안건</th>
-                <th scope="col">담당부서</th>
-                <th scope="col">처리일자</th>
-                <th scope="col">완료일자</th>
+                <th scope="col">아파트명</th>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">공고일자</th>
+                <th scope="col">공고제목</th>
                 <th scope="col">상세보기</th>
             </tr>
         </thead>
@@ -29,13 +24,18 @@
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.created|date:"Y-m-d"}}</td>
-                <td>{{post.applicant}}</td>
-                <td>{{post.subject}}</td>
-                <td>{{post.department}}</td>
+                <td>{{post.group}}</td>
+                <td>{{post.dong}}</td>
+                <td>{{post.ho}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
-                <td>{{post.close|date:"Y-m-d"}}</td>
-                <td><a href="{% url 'lifegram:life_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                <td>{{post.subject}}</td>
+                {% if "관리" in user.last_name %}
+                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                {% elif "일반" in user.last_name %}
+                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                {% else %}
+                <td><a href="{% url 'newsgram:news_detail_jumin' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

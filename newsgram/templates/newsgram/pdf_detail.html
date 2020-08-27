@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 공고목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+         <tbody>
+            <tr><td>아파트명</td><td>{{object.group}}</td></tr>
+            <tr><td>동</td><td>{{object.dong}}</td></tr>
+            <tr><td>호</td><td>{{object.ho}}</td></tr>
+            <tr><td>공고일자</td><td>{{object.date|date:"Y-m-d"}}</td></tr>
+            <tr><td>공고제목</td><td>{{object.subject}}</td></tr>
+            <tr><td>공고내용</td><td>{{object.text}}</td></tr>
+            <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+            <tr>
+                <td><a href="{{object.photo.url}}">공고사진</a></td>
+                <td><img src="{{object.photo.url}}" width="300" height="300"></td>
+            </tr>
+            <tr>
+                <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
+                <td><a href="{{object.file.url}}">{{object.file}}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p></p><p></p>
+
+</body>
+</html>

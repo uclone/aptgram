@@ -120,11 +120,11 @@ def generate_pdf(request):
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
-def detail_pdf(request, kk):
-    files = Equip.objects.filter(id=kk)                                        # Model data
+def detail_pdf(request, pk):
+    files = Equip.objects.filter(id=pk)                                        # Model data
     html_string = render_to_string('equipgram/pdf_detail.html', {'files': files})           # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
-    response['Content-Disposition'] = 'filename=equip_detail_{}_{}.pdf'.format(request.user, kk)    #user)
+    response['Content-Disposition'] = 'filename=equip_detail_{}_{}.pdf'.format(request.user, pk)    #user)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response

@@ -14,12 +14,12 @@ urlpatterns = [
     path('detail/<int:pk>/', DetailView.as_view(model=Life, template_name='lifegram/life_detail.html'), name='life_detail'),
 
     path('makepdf/', generate_pdf, name='generate_pdf'),                                # weasyprint
-    path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),                          # weasyprint ####New
+    path('detailpdf/<int:pk>', detail_pdf, name='detail_pdf'),                          # weasyprint ####New
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', life_search, name='life_search'),                                 # search
 
-    path('mobile/', life_list_mobile, name='life_list_mobile'),
-    url(r'^uploadmobile/$', life_upload_mobile, name='life_upload_mobile'),                                   # mobile
-    path('detailmobile/<int:kk>/', life_detail_mobile, name='life_detail_mobile'),      # mobile
+    path('listjumin/', life_list_jumin, name='life_list_jumin'),
+    url(r'^uploadjumin/$', life_upload_jumin, name='life_upload_jumin'),                                   # mobile
+    path('detailjumin/<int:pk>/', life_detail_jumin, name='life_detail_jumin'),      # mobile
 ]

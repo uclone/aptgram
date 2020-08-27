@@ -12,7 +12,6 @@
     <div class="btn-group float-right">
         <a href="{% url 'metergram:meter_upload_mobile' %}" class="btn btn-success btn-sm">검침추가</a></div>
     <p></p>
-
     <table class="table">
         <thead>
             <tr>
@@ -23,7 +22,7 @@
                 <th scope="col">전기검침</th>
                 <th scope="col">수도검침</th>
                 <th scope="col">검침일자</th>
-                <th scope="col">상세__보기</th>
+                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -37,7 +36,7 @@
                 <td>{{post.elec}}</td>
                 <td>{{post.water}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
-                <td><a href="{% url 'metergram:meter_detail_mobile' kk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
+                <td><a href="{% url 'metergram:meter_detail_mobile' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}
         </tbody>

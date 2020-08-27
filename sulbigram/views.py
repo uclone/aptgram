@@ -125,11 +125,11 @@ def generate_pdf(request):
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
-def detail_pdf(request, kk):
-    files = Sulbi.objects.filter(id=kk)                                   # Model data
+def detail_pdf(request, pk):
+    files = Sulbi.objects.filter(id=pk)                                   # Model data
     html_string = render_to_string('sulbigram/pdf_detail.html', {'files': files})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                            # Creating http response
-    response['Content-Disposition'] = 'filename=sulbi_detail_{}_{}.pdf'.format(request.user, kk)
+    response['Content-Disposition'] = 'filename=sulbi_detail_{}_{}.pdf'.format(request.user, pk)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response

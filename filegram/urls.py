@@ -14,7 +14,7 @@ urlpatterns = [
     path('detail/<int:pk>/', DetailView.as_view(model=File, template_name='filegram/file_detail.html'), name='file_detail'),
 
     path('makepdf/', generate_pdf, name='generate_pdf'),  # weasyprint
-    path('detailpdf/<int:kk>', detail_pdf, name='detail_pdf'),  # weasyprint ####New
+    path('detailpdf/<int:pk>', detail_pdf, name='detail_pdf'),  # weasyprint ####New
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', file_search, name='file_search'),  # search

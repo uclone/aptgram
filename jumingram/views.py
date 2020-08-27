@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from .models import Jumin, Sjumin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
-from .filters import SearchFilter, GongoFilter
+from .filters import SearchFilter
 from .forms import DateForm
 
 @login_required
@@ -43,75 +43,10 @@ def jumin_search(request):
     Sjumin.objects.all().delete()
 
     for a in x:
-        b = Sjumin(id=a.dong, ho=a.ho, represent=a.represent, family=a.family, phone=a.phone,
+        b = Sjumin(id=a.id, dong=a.dong, ho=a.ho, represent=a.represent, family=a.family, phone=a.phone,
                    car=a.car, date=a.date, remark=a.remark)
         b.save()
     return render(request, 'jumingram/jumin_search.html', {'filter': file_filter})
-
-class GongoUpdateView(LoginRequiredMixin, UpdateView):
-    model = Jumin
-    fields = [ 'dong', 'ho', 'photo', 'file', 'task_apt', 'task_dong', 'task_ho']
-    template_name = 'jumingram/gongo_update.html'
-
-    def jumin_update(self, request, pk):
-        field_author = 'author'
-        field_photo = 'photo'
-        field_file = 'file'
-        obj = Jumin.objects.filter(id=pk).first()
-        author_field = getattr(obj, field_author)
-        photo_field = getattr(obj, field_photo)
-        file_field = getattr(obj, field_file)
-
-        form = Jumin(request.POST)
-        form.instance.author = author_field
-        form.instance.photo = photo_field
-        form.instance.file = file_field
-        if form.is_valid():
-            form.save()
-            #Jumin.objects.filter(id=pk).delete()
-            return redirect('jumingram:jumin_list')
-        return render(request, 'jumingram/gongo_update.html', {'form': form})
-
-@login_required
-def gongo_cast(request):
-    obj = Jumin.objects.filter(author_id=request.user.id).last()
-    dong_field = getattr(obj, 'dong')
-    ho_field = getattr(obj, 'ho')
-    photo_field = getattr(obj, 'photo')
-    file_field = getattr(obj, 'file')
-    task_apt_field = getattr(obj, 'task_apt')
-    task_dong_field = getattr(obj, 'task_dong')
-    task_ho_field = getattr(obj, 'task_ho')
-
-    group_id = request.user.groups.values_list('id', flat=True).first()
-    gongo_all = Jumin.objects.filter(group_id=group_id)
-    gongo_dong = gongo_all.filter(dong=dong_field)
-    gongo_ho = gongo_dong.filter(ho=ho_field)
-    gongo = gongo_all
-    if dong_field != '전체':
-        gongo = gongo_dong
-        if ho_field != '전체':
-            gongo = gongo_ho
-
-    for a in gongo:
-        a.photo = photo_field
-        a.file = file_field
-        a.task_apt = task_apt_field
-        a.task_dong = task_dong_field
-        a.task_ho = task_ho_field
-        a.save()
-
-    else:
-        return render(request, 'jumingram/gongo_cast.html', {'files': gongo})
-    return render(request, 'jumingram/gongo_cast.html', {'files': gongo})
-
-@login_required
-def jumin_detail_mobile(request):
-    group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-    file_list = Jumin.objects.filter(group_id=group_id)
-    form_list = file_list.filter(dong=request.user.last_name)
-    form = form_list.filter(ho=request.user.first_name)                         #.first()   # Model data
-    return render(request, 'jumingram/jumin_detail_mobile.html', {'form': form})
 
 class JuminDeleteView(LoginRequiredMixin, DeleteView):
     model = Jumin
@@ -158,27 +93,26 @@ def generate_pdf(request):
     except:
         files = Jumin.objects.filter(group_id=1)                                    #.order_by('author')
 
-    html_string = render_to_string('jumingram/pdf_list.html', {'files': files})             # Rendered
-    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
+    html_string = render_to_string('jumingram/pdf_list.html', {'files': files})                 # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                    # Creating http response
     response['Content-Disposition'] = 'filename=jumin_list_{}.pdf'.format(request.user)
-    weasyprint.HTML(string=html_string).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS('static/css/pdf.css')])
+    weasyprint.HTML(string=html_string).write_pdf(response, stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
-def detail_pdf(request, kk):
-    files = Jumin.objects.filter(id=kk)                                   # Model data
-    html_string = render_to_string('jumingram/pdf_detail.html', {'files': files})          # Rendered
-    response = HttpResponse(content_type='application/pdf;')                            # Creating http response
-    response['Content-Disposition'] = 'filename=jumin_detail_{}_{}.pdf'.format(request.user, kk)
-    weasyprint.HTML(string=html_string).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS('static/css/pdf.css')])
+def detail_pdf(request, pk):
+    files = Jumin.objects.filter(id=pk)                                                         # Model data
+    html_string = render_to_string('jumingram/pdf_detail.html', {'files': files})               # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                    # Creating http response
+    response['Content-Disposition'] = 'filename=jumin_detail_{}_{}.pdf'.format(request.user, pk)
+    weasyprint.HTML(string=html_string).write_pdf(response, stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
 def search_pdf(request):
     file_filter = Sjumin.objects.all()
-    html_string = render_to_string('jumingram/pdf_search.html', {'filter': file_filter})             # Rendered
-    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
+    html_string = render_to_string('jumingram/pdf_search.html', {'filter': file_filter})        # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                    # Creating http response
     response['Content-Disposition'] = 'filename=jumin_search_{}.pdf'.format(request.user)
-    weasyprint.HTML(string=html_string).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS('static/css/pdf.css')])
+    weasyprint.HTML(string=html_string).write_pdf(response, stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
+
+

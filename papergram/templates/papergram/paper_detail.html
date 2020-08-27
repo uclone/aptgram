@@ -9,9 +9,11 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
+        {% if "관리" in user.last_name %}
         <a href="{% url 'papergram:paper_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
         <a href="{% url 'papergram:paper_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
-        <a href="{% url 'papergram:detail_pdf' kk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+        {% endif %}
+        <a href="{% url 'papergram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
         <a href="{% url 'papergram:paper_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>

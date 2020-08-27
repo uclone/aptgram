@@ -22,11 +22,14 @@
 
                 <ul>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'timegram:schedule' %}">모바일 - 일정관리</a></li>
-                    <li><a href="{% url 'jumingram:meter_detail_mobile' %}">모바일 - 검침추가</a></li>
-                    <li><a href="{% url 'taskgram:task_upload_mobile' %}">모바일 - 일지추가</a></li>
+                        {% if "관리" in user.last_name or "일반" in user.last_name %}
+                        <li><a href="{% url 'timegram:schedule' %}">모바일 - 일정관리</a></li>
+                        <li><a href="{% url 'taskgram:task_upload_mobile' %}">모바일 - 일지추가</a></li>
+                        <li><a href="{% url 'metergram:meter_upload_mobile' %}">모바일 - 검침추가</a></li>
+                        <li><a href="{% url 'metergram:meter_list_mobile' %}">모바일 - 검침확인</a></li>
+                        {% endif %}
                     <li><a href="{% url 'lifegram:life_upload_mobile' %}">모바일 - 민원신청</a></li>
-                    <li><a href="{% url 'metergram:meter_upload_mobile' %}">모바일 - 검침추가</a></li>
+                    <li><a href="{% url 'newsgram:news_list' %}">모바일 - 공고읽기</a></li>
                     {% else %}
                     <li><a href="{% url 'accounts:login' %}">로그인</a></li>
                     <li><a href="{% url 'accounts:register' %}">등록하기</a></li>

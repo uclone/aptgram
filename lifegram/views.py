@@ -33,7 +33,7 @@ def life_list(request):
     return render(request, 'lifegram/life_list.html', {'files':files})
 
 @login_required
-def life_list_mobile(request):
+def life_list_jumin(request):
     try:
         request_user = request.user
         pagefiles = Life.objects.filter(author_id=request_user.id)
@@ -50,7 +50,7 @@ def life_list_mobile(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end
-    return render(request, 'lifegram/life_list_mobile.html', {'files':files})
+    return render(request, 'lifegram/life_list_jumin.html', {'files':files})
 
 @login_required
 def life_search(request):
@@ -70,19 +70,19 @@ def life_search(request):
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
 
 @login_required
-def life_upload_mobile(request):
+def life_upload_jumin(request):
     form = LifeForm(request.POST, request.FILES)
     form.instance.author_id = request.user.id
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
     if form.is_valid():
         form.save()
-        return redirect('lifegram:life_list_mobile')
-    return render(request, 'lifegram/life_upload_mobile.html', {'form': form})
+        return redirect('lifegram:life_list_jumin')
+    return render(request, 'lifegram/life_upload_jumin.html', {'form': form})
 
 @login_required
-def life_detail_mobile(request, kk):
-    form = Life.objects.filter(id=kk)                                   # Model data
-    return render(request, 'lifegram/life_detail_mobile.html', {'form': form})
+def life_detail_jumin(request, pk):
+    form = Life.objects.filter(id=pk)                                   # Model data
+    return render(request, 'lifegram/life_detail_jumin.html', {'form': form})
 
 class LifeDeleteView(LoginRequiredMixin, DeleteView):
     model = Life
@@ -141,11 +141,11 @@ def generate_pdf(request):
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
-def detail_pdf(request, kk):
-    files = Life.objects.filter(id=kk)                                   # Model data
+def detail_pdf(request, pk):
+    files = Life.objects.filter(id=pk)                                   # Model data
     html_string = render_to_string('lifegram/pdf_detail.html', {'files': files})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                            # Creating http response
-    response['Content-Disposition'] = 'filename=life_detail_{}_{}.pdf'.format(request.user, kk)
+    response['Content-Disposition'] = 'filename=life_detail_{}_{}.pdf'.format(request.user, pk)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response

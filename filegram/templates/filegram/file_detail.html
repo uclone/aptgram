@@ -11,7 +11,7 @@
     <div class="btn-group float-right">
         <a href="{% url 'filegram:file_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
         <a href="{% url 'filegram:file_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
-        <a href="{% url 'filegram:detail_pdf' kk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
+        <a href="{% url 'filegram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
     </div>
     <div class="btn-group float-left">
         <a href="{% url 'filegram:file_list' %}" class="btn btn-info btn-sm">전체목록</a></div>

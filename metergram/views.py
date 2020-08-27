@@ -78,8 +78,8 @@ def meter_upload_mobile(request):
     return render(request, 'metergram/meter_upload_mobile.html', {'form': form})
 
 @login_required
-def meter_detail_mobile(request, kk):
-    form = Meter.objects.filter(id=kk)                                   # Model data
+def meter_detail_mobile(request, pk):
+    form = Meter.objects.filter(id=pk)                                   # Model data
     return render(request, 'metergram/meter_detail_mobile.html', {'form': form})
 
 class MeterDeleteView(LoginRequiredMixin, DeleteView):
@@ -121,11 +121,11 @@ def generate_pdf(request):
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
-def detail_pdf(request, kk):
-    files = Meter.objects.filter(id=kk)                                   # Model data
+def detail_pdf(request, pk):
+    files = Meter.objects.filter(id=pk)                                   # Model data
     html_string = render_to_string('metergram/pdf_detail.html', {'files': files})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                            # Creating http response
-    response['Content-Disposition'] = 'filename=meter_detail_{}_{}.pdf'.format(request.user, kk)
+    response['Content-Disposition'] = 'filename=meter_detail_{}_{}.pdf'.format(request.user, pk)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response

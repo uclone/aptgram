@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'bootstrap_datepicker_plus',
     'timegram',
+    'newsgram',
 ]
 
 MIDDLEWARE = [
