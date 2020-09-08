@@ -32,6 +32,10 @@
             <tr><td>수선예정금</td><td>{{post.cost}}</td></tr>
             <tr><td>예정횟수</td><td>{{post.times}}</td></tr>
             <tr><td>총수선예정금</td><td>{{post.amount}}</td></tr>
+            <tr>
+                <td><a href="{{post.file.url}}">문서다운로드</a></td>
+                <td><a href="{{post.file.url}}">{{post.file}}</a></td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>

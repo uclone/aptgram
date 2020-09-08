@@ -30,6 +30,24 @@ def jumin_list(request):
     # pagination - end ----------------
     return render(request, 'jumingram/jumin_list.html', {'files':files})
 
+def jumin_list_date(request):
+    try:
+        group_id = request.user.groups.values_list('id', flat=True).first()
+        pagefiles = Jumin.objects.filter(group_id=group_id).order_by('-date')
+    except:
+        pagefiles = Jumin.objects.filter(group_id=1)
+    # pagination - start --------------
+    page = request.GET.get('page', 1)
+    paginator = Paginator(pagefiles, 10)
+    try:
+        files = paginator.page(page)
+    except PageNotAnInteger:
+        files = paginator.page(1)
+    except EmptyPage:
+        files = paginator.page(paginator.num_pages)
+    # pagination - end ----------------
+    return render(request, 'jumingram/jumin_list_date.html', {'files':files})
+
 @login_required
 def jumin_search(request):
     try:

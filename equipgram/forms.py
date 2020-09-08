@@ -12,7 +12,7 @@ department_choice= [
 class DateForm(forms.ModelForm):
     class Meta:
         model = Equip
-        fields = ['code', 'subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'photo']
+        fields = ['code', 'subject', 'location', 'department', 'manager_1', 'manager_2', 'spec', 'date', 'remark', 'file']
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d'),
             'department': forms.Select(choices=department_choice),

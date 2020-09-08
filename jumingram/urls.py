@@ -8,6 +8,7 @@ app_name = 'jumingram'
 
 urlpatterns = [
     path('', jumin_list, name='jumin_list'),
+    path('date/', jumin_list_date, name='jumin_list_date'),
     path('upload/', JuminUploadView.as_view(), name='jumin_upload'),
     path('delete/<int:pk>/', JuminDeleteView.as_view(), name='jumin_delete'),
     path('update/<int:pk>/', JuminUpdateView.as_view(), name='jumin_update'),

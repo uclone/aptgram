@@ -60,7 +60,7 @@ def equip_search(request):
     Sequip.objects.all().delete()
     for a in x:
         b = Sequip(id=a.id, code=a.code, subject=a.subject, location=a.location, department=a.department,
-                   manager_1=a.manager_1, manager_2=a.manager_2, spec=a.spec, date=a.date, remark=a.remark, photo=a.photo)
+                   manager_1=a.manager_1, manager_2=a.manager_2, spec=a.spec, date=a.date, remark=a.remark, file=a.file)
         b.save()
     return render(request, 'equipgram/equip_search.html', {'filter': file_filter})
 
@@ -91,14 +91,14 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
 
     def equip_update(self, request, pk):
         field_author = 'author'
-        field_photo = 'photo'
+        field_file = 'file'
         obj = Equip.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
-        photo_field = getattr(obj, field_photo)
+        file_field = getattr(obj, field_file)
 
         form = DateForm(request.POST, request.FILES)
         form.instance.author = author_field
-        form.instance.photo = photo_field
+        form.instance.file = file_field
         if form.is_valid():
             form.save()
             Equip.objects.filter(id=pk).delete()

@@ -12,6 +12,7 @@
         {% if "관리" in user.last_name %}
         <a href="{% url 'jumingram:jumin_upload' %}" class="btn btn-info btn-sm">주민추가</a>&nbsp;&nbsp;
         {% endif %}
+        <a href="{% url 'jumingram:jumin_list_date' %}" class="btn btn-info btn-sm">일자분류</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:jumin_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'jumingram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
     </div>

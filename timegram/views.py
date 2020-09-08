@@ -73,4 +73,22 @@ def event(request, event_id=None):
         return HttpResponseRedirect(reverse('timegram:schedule'))
     return render(request, 'timegram/event.html', {'form': form})
 
+@login_required
+def event_list(request, kk):
+    try:
+        group_id = request.user.groups.values_list('id', flat=True).first()
+        pagefiles = Time.objects.filter(group_id=group_id)
+    except:
+        pagefiles = Time.objects.filter(group_id=1)
+
+    #files_per_year_1 = pagefiles.filter(start_time__year__lte=request.year)
+    #files_per_year =files_per_year_1.filter(end_time__year__gte=request.year)
+
+    #files_per_month_1 = files_per_year.filter(start_time__month__lte=request.month)
+    #files_per_month = files_per_month_1.filter(end_time__month__gte=request.month)
+
+    files_per_day_1 = pagefiles.filter(start_time__day__lte=kk)
+    form = files_per_day_1.filter(end_time__day__gte=kk)
+
+    return render(request, 'timegram/event_list.html', {'form': form})
 

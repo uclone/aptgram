@@ -9,6 +9,16 @@ department_choice= [
     ('보안부', '보안부'),
     ]
 
+cycle_choice= [
+    ('일간', '일간'),
+    ('주간', '주간'),
+    ('격주간', '격주간'),
+    ('월간', '월간'),
+    ('분기', '분기'),
+    ('반기', '반기'),
+    ('연간', '연간'),
+    ]
+
 class DateForm(forms.ModelForm):
     class Meta:
         model = Sulbi
@@ -17,5 +27,6 @@ class DateForm(forms.ModelForm):
             'start': DatePickerInput(format='%Y-%m-%d').start_of('event days'),
             'close': DatePickerInput(format='%Y-%m-%d').end_of('event days'),
             'department': forms.Select(choices=department_choice),
+            'cycle': forms.Select(choices=cycle_choice),
         }
 

@@ -55,8 +55,8 @@ def news_list_jumin(request):
         user_dong = request.user.last_name
         user_ho = request.user.first_name
         user_filter_1 = News.objects.filter(group_id=group_id)
-        user_filter_2 = user_filter_1.filter(dong=user_dong).filter(dong='0')
-        pagefiles = user_filter_2.filter(dong=user_ho).filter(ho='0')
+        user_filter_2 = user_filter_1.filter(dong=user_dong).filter(dong='전체')
+        pagefiles = user_filter_2.filter(dong=user_ho).filter(ho='전체')
     except:
         pagefiles = News.objects.filter(group_id=1)
     # pagination - start --------------
@@ -102,11 +102,14 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
 
     def news_update(self, request, pk):
         field_author = 'author'
+        field_file = 'file'
         obj = News.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
+        file_field = getattr(obj, field_file)
 
         form = DateForm(request.POST)
         form.instance.author = author_field
+        form.instance.file = file_field
         if form.is_valid():
             form.save()
             News.objects.filter(id=pk).delete()

@@ -18,6 +18,7 @@ class Susun(models.Model):
     cost = models.IntegerField(default=0, null=True, blank=True,verbose_name='수선예정금(원)')
     times = models.IntegerField(default=0, null=True, blank=True,verbose_name='수선예정회수')
     amount = models.IntegerField(default=0, null=True, blank=True,verbose_name='총수선예정금액')
+    file = models.FileField(upload_to='susun/%Y/%m/%d', null=True, default='susun/SMK.xlsx', verbose_name='견적서')
     created = models.DateTimeField(auto_now_add=True, verbose_name='최초기안일자')
     updated = models.DateTimeField(auto_now_add=True, verbose_name='최근수정일자')
 

@@ -17,15 +17,18 @@
 .calendar td {
   width: 200px;
   height: 150px;
-  padding: 20px 0px 0px 5px;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 .month {
   font-size: 25px;
 }
 
-.date {
-  font-size: 16px;
+.datex {
+  font-size: 20px;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 
 ul {

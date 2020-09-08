@@ -38,6 +38,7 @@ class Ssulbi(models.Model):
     department = models.CharField(max_length=100, null=True, verbose_name='담당부서')
     code = models.CharField(max_length=100, null=True, blank=True, verbose_name='설비번호')
     subject = models.CharField(max_length=100, null=True, verbose_name='설비명칭')
+    location = models.CharField(max_length=100, null=True, blank=True, verbose_name='설치장소')
     action = models.CharField(max_length=100, null=True, verbose_name='관리사항')
     cycle = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리주기')
     start = models.DateField(null=True, verbose_name='시작일자')
