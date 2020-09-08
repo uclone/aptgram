@@ -32,7 +32,6 @@
                 <th scope="col">대표전화</th>
                 <th scope="col">자동차</th>
                 <th scope="col">입주일자</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -42,16 +41,15 @@
                 <td>{{post.group}}</td>
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
+                {% if user.last_name == '관리' %}
+                <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}">{{post.represent}}</a></td>
+                {% else %}
                 <td>{{post.represent}}</td>
+                {% endif %}
                 <td>{{post.family}}</td>
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
                 <td>{{post.date|date:"Y-m-d" }}</td>
-                {% if user.last_name == '관리' %}
-                <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세준비</a></td>
-                {% else %}
-                <td><a href="{% url 'jumingram:jumin_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

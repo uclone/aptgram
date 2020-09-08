@@ -33,7 +33,6 @@
                 <th scope="col">관리자(부)</th>
                 <th scope="col">규격</th>
                 <th scope="col">구입일자</th>
-                <th scope="col">추가작업</th>
             </tr>
         </thead>
 
@@ -42,14 +41,13 @@
                 <tr>
                     <td>{{post.group}}</td>
                     <td>{{post.code}}</td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'equipgram:equip_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.location}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.manager_1}}</td>
                     <td>{{post.manager_2}}</td>
                     <td>{{post.spec}}</td>
                     <td>{{post.date|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'equipgram:equip_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

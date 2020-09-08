@@ -29,7 +29,6 @@
                 <th scope="col">관리내용</th>
                 <th scope="col">시작일자</th>
                 <th scope="col">완료일자</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
         <tbody>
@@ -39,11 +38,10 @@
                     <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.code}}</td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'sulbigram:sulbi_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.action}}</td>
                     <td>{{post.start|date:"Y-m-d"}}</td>
                     <td>{{post.close|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'sulbigram:sulbi_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

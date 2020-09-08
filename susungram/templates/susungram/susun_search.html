@@ -30,7 +30,6 @@
                 <th scope="col">최종수선</th>
                 <th scope="col">최종수정연</th>
                 <th scope="col">수선예정금</th>
-                <th scope="col">상세자료</th>
             </tr>
         </thead>
 
@@ -38,13 +37,12 @@
             {% for post in filter.qs %}
                 <tr>
                     <td>{{post.category}}</td>
-                    <td>{{post.subject}}</td>
-                    <td>{{post.treatment}}</td>
+                    <td><a href="{% url 'susungram:susun_detail' pk=post.id %}">{{post.subject}}</a></td>
+                    <td><a href="{% url 'susungram:susun_detail' pk=post.id %}">{{post.treatment}}</a></td>
                     <td>{{post.cycle}}</td>
                     <td>{{post.last}}</td>
                     <td>{{post.plan}}</td>
                     <td>{{post.cost}}</td>
-                    <td><a href="{% url 'susungram:susun_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

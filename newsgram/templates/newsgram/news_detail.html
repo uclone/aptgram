@@ -40,10 +40,6 @@
             <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
             <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
             <tr>
-                <td><a href="{{object.photo.url}}">공고사진</a></td>
-                <td><img src="{{object.photo.url}}" width="300" height="300"></td>
-            </tr>
-            <tr>
                 <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
                 <td><a href="{{object.file.url}}">{{object.file}}</a></td>
             </tr>

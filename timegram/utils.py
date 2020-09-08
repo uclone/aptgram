@@ -26,7 +26,7 @@ class Calendar(HTMLCalendar):
 		if day != 0:
 			url = reverse('timegram:event_new')
 			#url = reverse('timegram:event_list', args=(events_per_day.subject,))
-			return f"<td> <a class='date' href={url} kk=day>{day}</a>  {d}</td>"		#return f"<td> <span class='date'>{day}</span> <ul>{d}</ul> </td>"
+			return f"<td> <a class='date' href={url}>{day}</a>  {d}</td>"		#return f"<td> <span class='date'>{day}</span> <ul>{d}</ul> </td>"
 		return '<td></td>'
 
 	def formatweek(self, theweek, events):										# formats a week as a tr

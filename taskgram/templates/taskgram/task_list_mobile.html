@@ -21,7 +21,6 @@
                 <th scope="col">작성일자</th>
                 <th scope="col">담당업무</th>
                 <th scope="col">관리일자</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -29,11 +28,10 @@
             {% for post in files %}
                 <tr>
                     <td>{{post.department}}</td>
-                    <td>{{post.charge}}</td>
-                    <td>{{post.created|date:"Y-m-d"}}</td>
-                    <td>{{post.subject}}
+                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.charge}}</a></td>
+                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.created|date:"Y-m-d"}}</a></td>
+                    <td>{{post.subject}}</td>
                     <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'taskgram:task_detail_mobile' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

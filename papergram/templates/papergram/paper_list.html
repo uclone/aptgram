@@ -26,17 +26,15 @@
                 <th scope="col">양식설명</th>
                 <th scope="col">최초등록</th>
                 <th scope="col">수정등록</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
         <tbody>
             {% for post in files %}
                 <tr>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'papergram:paper_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.description}}</td>
                     <td>{{post.created|date:"Y-m-d"}}</td>
                     <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'papergram:paper_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

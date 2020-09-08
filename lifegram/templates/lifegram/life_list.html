@@ -28,7 +28,6 @@
                 <th scope="col">담당자</th>
                 <th scope="col">처리일자</th>
                 <th scope="col">완료일자</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -37,12 +36,11 @@
             <tr>
                 <td>{{post.group}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
-                <td>{{post.subject}}</td>
+                <td><a href="{% url 'lifegram:life_detail' pk=post.id %}">{{post.subject}}</a></td>
                 <td>{{post.department}}</td>
                 <td>{{post.charge}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
                 <td>{{post.close|date:"Y-m-d"}}</td>
-                <td><a href="{% url 'lifegram:life_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
             </tr>
         {% endfor %}
         </tbody>

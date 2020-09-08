@@ -31,8 +31,8 @@
             <tr><td>구입일자</td><td>{{post.date|date:"Y-m-d"}}</td></tr>
             <tr><td>비고</td><td>{{post.remark}}</td></tr>
             <tr>
-                <td><a href="{{post.photo.url}}">사진연결</a></td>
-                <td><img src="{{post.photo.url}}" class="container"></td>
+                <td><a href="{{post.file.url}}">사진연결</a></td>
+                <td><img src="{{post.file.url}}" class="container"></td>
             </tr>
         {% endfor %}
         </tbody>

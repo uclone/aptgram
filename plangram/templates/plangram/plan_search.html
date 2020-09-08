@@ -31,7 +31,6 @@
                 <th scope="col">업무제목</th>
                 <th scope="col">관리자</th>
                 <th scope="col">관리소장</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -43,10 +42,9 @@
                     <td>{{post.close|date:"Y-m-d"}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.charge}}</td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'plangram:plan_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.manager}}</td>
                     <td>{{post.director}}</td>
-                    <td><a href="{% url 'plangram:plan_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

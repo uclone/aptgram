@@ -31,7 +31,6 @@
                 <th scope="col">업무제목</th>
                 <th scope="col">최초작성</th>
                 <th scope="col">수정일자</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -43,10 +42,9 @@
                     <td>{{post.charge}}</td>
                     <td>{{post.manager}}</td>
                     <td>{{post.director}}</td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'filegram:file_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.created|date:"Y-m-d"}}</td>
                     <td>{{post.updated|date:"Y-m-d"}}</td>
-                    <td><a href="{% url 'filegram:file_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
                 </tr>
             {% endfor %}
         </tbody>

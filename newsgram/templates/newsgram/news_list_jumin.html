@@ -17,7 +17,6 @@
                 <th scope="col">호</th>
                 <th scope="col">공고일자</th>
                 <th scope="col">공고제목</th>
-                <th scope="col">상세보기</th>
             </tr>
         </thead>
 
@@ -28,14 +27,7 @@
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
-                <td>{{post.subject}}</td>
-                {% if "관리" in user.last_name %}
-                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% elif "일반" in user.last_name %}
-                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% else %}
-                <td><a href="{% url 'newsgram:news_detail_jumin' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% endif %}
+                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}">{{post.subject}}</a></td>
             </tr>
         {% endfor %}
         </tbody>

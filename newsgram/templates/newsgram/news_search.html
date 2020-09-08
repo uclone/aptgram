@@ -40,16 +40,15 @@
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
+                {% if "관리" in user.last_name %}
+                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}">{{post.subject}}</a></td>
+                {% elif "일반" in user.last_name %}
+                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}">{{post.subject}}</a></td>
+                {% else %}
                 <td>{{post.subject}}</td>
+                {% endif %}
                 <td>{{post.created|date:"Y-m-d" }}</td>
                 <td>{{post.updated|date:"Y-m-d" }}</td>
-                {% if "관리" in user.last_name %}
-                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% elif "일반" in user.last_name %}
-                <td><a href="{% url 'newsgram:news_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% else %}
-                <td><a href="{% url 'newsgram:news_detail_jumin' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
