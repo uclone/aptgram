@@ -41,10 +41,8 @@ def news_search(request):
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
     Snews.objects.all().delete()
-
     for a in x:
-        b = Snews(id=a.dong, ho=a.ho, represent=a.represent, family=a.family, phone=a.phone,
-                   car=a.car, date=a.date, remark=a.remark)
+        b = Snews(id=a.id, dong=a.dong, ho=a.ho, date=a.date, subject=a.subject, created=a.created, updated=a.updated,)
         b.save()
     return render(request, 'newsgram/news_search.html', {'filter': file_filter})
 

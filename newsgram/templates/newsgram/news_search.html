@@ -34,7 +34,7 @@
         </thead>
 
         <tbody>
-        {% for post in files %}
+        {% for post in filter.qs %}
             <tr>
                 <td>{{post.group}}</td>
                 <td>{{post.dong}}</td>
