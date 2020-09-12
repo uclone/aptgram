@@ -23,24 +23,24 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">소속부서</th>
                 <th scope="col">담당자</th>
                 <th scope="col">작성일자</th>
-                <th scope="col">담당업무</th>
+                <th scope="col">제목</th>
                 <th scope="col">관리자</th>
+                <th scope="col">결재일자</th>
             </tr>
         </thead>
 
         <tbody>
             {% for post in filter.qs %}
                 <tr>
-                    <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
-                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.charge}}</a></td>
+                    <td>{{post.charge}}</td>
                     <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.created|date:"Y-m-d"}}</a></td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.manager}}</td>
+                    <td>{{post.updated|date:"Y-m-d"}}</td>
                 </tr>
             {% endfor %}
         </tbody>

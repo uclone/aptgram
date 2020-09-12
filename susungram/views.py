@@ -66,9 +66,11 @@ class SusunUploadView(LoginRequiredMixin, CreateView):
         form = DateForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+        form.instance.amount = form.instance.cost                                                 # calculating Amount
+        form.instance.amount *= form.instance.times
         if form.is_valid():
             form.save()
-            x = Time(subject=instance.subject, description=instance.treatment, remark=instance.method,
+            x = Time(subject=instance.subject, description=instance.treatment, appendix=instance.method,
                      start_time=instance.rule, end_time=instance.plan)
             x.author_id = request.user.id
             x.group_id = request.user.groups.values_list('id', flat=True).first()
@@ -80,6 +82,22 @@ class SusunUpdateView(LoginRequiredMixin, UpdateView):
     model = Susun
     form_class = DateForm
     template_name = 'susungram/susun_update.html'
+
+    def susun_update(self, request, pk):
+        field_author = 'author'
+        field_file = 'file'
+        obj = Susun.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        file_field = getattr(obj, field_file)
+
+        form = DateForm(request.POST, request.FILES)
+        form.instance.author = author_field
+        form.instance.file = file_field
+        if form.is_valid():
+            form.save()
+            Susun.objects.filter(id=pk).delete()
+            return redirect('susungram:susun_list')
+        return render(request, 'susungram/susun_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):

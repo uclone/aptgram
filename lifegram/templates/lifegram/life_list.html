@@ -9,20 +9,21 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'lifegram:life_upload_jumin' %}" class="btn btn-success btn-sm">민원신청</a>&nbsp;&nbsp;
-        <a href="{% url 'lifegram:life_upload' %}" class="btn btn-info btn-sm">민원처리</a>&nbsp;&nbsp;
+        <a href="{% url 'lifegram:life_upload' %}" class="btn btn-success btn-sm">민원신청</a>&nbsp;&nbsp;
         <a href="{% url 'lifegram:life_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'lifegram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
+        {% if "1급" in user.last_name %}
         <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        {% endif %}
         <a href="{% url 'lifegram:life_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">민원일자</th>
+                <th scope="col">신청인</th>
                 <th scope="col">민원안건</th>
                 <th scope="col">담당부서</th>
                 <th scope="col">담당자</th>
@@ -34,8 +35,8 @@
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.group}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.applicant}}</td>
                 <td><a href="{% url 'lifegram:life_detail' pk=post.id %}">{{post.subject}}</a></td>
                 <td>{{post.department}}</td>
                 <td>{{post.charge}}</td>

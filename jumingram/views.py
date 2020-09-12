@@ -81,6 +81,8 @@ class JuminUploadView(LoginRequiredMixin, CreateView):
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
+            if '1급' not in request.user.last_name:
+                form.instance.remark=' '
             form.save()
             return redirect('jumingram:jumin_list')
         return self.render_to_response({'form': form})
@@ -98,6 +100,8 @@ class JuminUpdateView(LoginRequiredMixin, UpdateView):
         form = DateForm(request.POST)
         form.instance.author = author_field
         if form.is_valid():
+            if '1급' not in request.user.last_name:
+                form.instance.remark=' '
             form.save()
             Jumin.objects.filter(id=pk).delete()
             return redirect('jumingram:jumin_list')

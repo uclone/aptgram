@@ -6,7 +6,7 @@ from django.urls import reverse_lazy, reverse
 class RegisterForm(forms.ModelForm):
     group = forms.ModelChoiceField(queryset=Group.objects.all(), required=True)
     email = forms.EmailField()
-    last_name = forms.CharField(label='동/부서', required=True)
+    last_name = forms.CharField(label='동/부서:직책:직급(1급:2급:3급)', required=True)
     first_name = forms.CharField(label='호/이름', required=True)
     password = forms.CharField(label='패스워드', widget=forms.PasswordInput)
     password2 = forms.CharField(label='패스워드 재확인', widget=forms.PasswordInput)
@@ -22,7 +22,7 @@ class RegisterForm(forms.ModelForm):
         return cd['password2']
 
 class UpdateForm(forms.ModelForm):
-    last_name = forms.CharField(label='동/부서', required=True)
+    last_name = forms.CharField(label='동/부서:직책:직급', required=True)
     first_name = forms.CharField(label='호/이름', required=True)
 
     class Meta:

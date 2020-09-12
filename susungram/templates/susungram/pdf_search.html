@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+{% load humanize %}
 <head>
     <meta charset="UTF-8">
     <title>pdf-search</title>
@@ -16,7 +17,8 @@
                 <th>공사종별</th>
                 <th>수선주기</th>
                 <th>최종수선</th>
-                <th>최종수정연</th>
+                <th>법정수선</th>
+                <th>수선계획</th>
                 <th>수선예정금</th>
             </tr>
         </thead>
@@ -29,8 +31,9 @@
                 <td>{{post.treatment}}</td>
                 <td>{{post.cycle}}</td>
                 <td>{{post.last}}</td>
+                <td>{{post.rule}}</td>
                 <td>{{post.plan}}</td>
-                <td>{{post.cost}}</td>
+                <td>{{post.cost|intcomma}}</td>
             </tr>
         {% endfor %}
         </tbody>

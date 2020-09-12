@@ -23,7 +23,12 @@ def equip_list(request):
 
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        pagefiles = Equip.objects.filter(group_id=group_id)
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            pagefiles = Equip.objects.filter(group_id=group_id)
+        else:
+            pagefiles_1 = Equip.objects.filter(group_id=group_id)
+            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
     except:
         pagefiles = Equip.objects.filter(group_id=1)
 
@@ -50,7 +55,12 @@ def equip_search(request):
 
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        file_list = Equip.objects.filter(group_id=group_id)                         #.order_by('author')
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            file_list = Equip.objects.filter(group_id=group_id)
+        else:
+            file_list_1 = Equip.objects.filter(group_id=group_id)
+            file_list = file_list_1.objects.filter(department__icontains=user_dept)
     except:
         file_list = Equip.objects.filter(group_id=1)                                #.order_by('author')
 
@@ -76,11 +86,18 @@ class EquipUploadView(LoginRequiredMixin, CreateView):
     #success_url = reverse_lazy('equipgram:equip_list)
 
     def post(self, request):
-        form = DateForm(request.POST, request.FILES)
+        instance = Equip()
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+
         if form.is_valid():
-            form.save()
+            user_dept = request.user.last_name[0:2]                                                 # check User grade
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
             return redirect('equipgram:equip_list')
         return self.render_to_response({'form': form})
 
@@ -90,17 +107,23 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'equipgram/equip_update.html'
 
     def equip_update(self, request, pk):
+        instance = Equip()
         field_author = 'author'
         field_file = 'file'
         obj = Equip.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         file_field = getattr(obj, field_file)
 
-        form = DateForm(request.POST, request.FILES)
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.file = file_field
         if form.is_valid():
-            form.save()
+            user_dept = request.user.last_name[0:2]  # check User grade
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
             Equip.objects.filter(id=pk).delete()
             return redirect('equipgram:equip_list')
         return render(request, 'equipgram/equip_update.html', {'form': form})
@@ -109,7 +132,12 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
 def generate_pdf(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        files = Equip.objects.filter(group_id=group_id)                             #.order_by('author')
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            files = Equip.objects.filter(group_id=group_id)
+        else:
+            files_1 = Equip.objects.filter(group_id=group_id)
+            files = files_1.objects.filter(department__icontains=user_dept)
     except:
         files = Equip.objects.filter(group_id=1)                                    #.order_by('author')
 
@@ -137,30 +165,4 @@ def search_pdf(request):
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
-
-
-
-    #def get_form(self):
-    #    forms = super().get_form()
-    #    forms.fields['date'].widget = DateTimePickerInput()
-    #    forms.instance.author_id = self.request.user.id
-    #    forms.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
-    #    return forms
-
-    #def form_valid(self, form):
-    #    form.instance.author_id = self.request.user.id
-    #    form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
-    #    if form.is_valid():
-    #        form.instance.save()
-    #        return redirect('taskgram:task_list')
-    #    else:
-    #        return self.render_to_response({'form':form})
-
-    #def form_valid(self, form):
-    #    form.instance.author_id == self.request.user.id
-    #    if form.is_valid():
-    #        form.instance.save()
-    #        return redirect('taskgram:task_list')
-    #    else:
-    #        return self.render_to_response({'form': form})
 

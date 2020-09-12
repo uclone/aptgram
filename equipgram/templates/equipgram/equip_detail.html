@@ -9,8 +9,10 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        {% if "관리" in user.last_name %}
+        {% if "1급" in user.last_name or "2급" in user.last_name %}
         <a href="{% url 'equipgram:equip_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
+        {% endif %}
+        {% if "1급" in user.last_name %}
         <a href="{% url 'equipgram:equip_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
         {% endif %}
         <a href="{% url 'equipgram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
@@ -39,10 +41,10 @@
             <tr><td>관리자(부)</td><td>{{object.manager_2}}</td></tr>
             <tr><td>비품규격</td><td>{{object.spec}}</td></tr>
             <tr><td>구입일자</td><td>{{object.date|date:"M d, Y"}}</td></tr>
-            <tr><td>비고</td><td>{{object.remark}}</td></tr>
+            <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
-                <td><a href="{{object.file.url}}">파일연결</a></td>
-                <td><img src="{{object.file.url}}" width="300" height="300"></td>
+                <td><a href="{{object.file.url}}">문서다운로드</a></td>
+                <td><img src="{{object.file.url}}">{{object.file}}</td>
             </tr>
         </tbody>
     </table>

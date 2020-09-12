@@ -11,8 +11,8 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>아파트명</th>
                 <th>민원일자</th>
+                <th>신청인</th>
                 <th>민원안건</th>
                 <th>담당부서</th>
                 <th>담당자</th>
@@ -24,8 +24,8 @@
         <tbody>
         {% for post in filter %}
             <tr>
-                <td>{{post.group}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
+                <td>{{post.applicant}}</td>
                 <td>{{post.subject}}</td>
                 <td>{{post.department}}</td>
                 <td>{{post.charge}}

@@ -12,6 +12,7 @@
     <table class="container_big">
         <thead>
             <tr>
+                <th>비품번호</th>
                 <th>비품명칭</th>
                 <th>보관장소</th>
                 <th>관리부서</th>
@@ -25,6 +26,7 @@
         <tbody>
         {% for post in files %}
             <tr>
+                <td>{{post.code}}</td>
                 <td>{{post.subject}}</td>
                 <td>{{post.location}}</td>
                 <td>{{post.department}}</td>

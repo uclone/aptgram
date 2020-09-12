@@ -9,7 +9,7 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        {% if "관리" in user.last_name %}
+        {% if "1급" in user.last_name %}
         <a href="{% url 'papergram:paper_upload' %}" class="btn btn-info btn-sm">양식추가</a>&nbsp;&nbsp;
         {% endif %}
         <a href="{% url 'papergram:paper_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;

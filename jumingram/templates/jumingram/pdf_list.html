@@ -11,7 +11,6 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">동</th>
                 <th scope="col">호</th>
                 <th scope="col">세대주</th>
@@ -19,13 +18,13 @@
                 <th scope="col">대표전화</th>
                 <th scope="col">자동차</th>
                 <th scope="col">입주일자</th>
+                <th scope="col">참고사항</th>
             </tr>
         </thead>
 
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.group}}</td>
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
                 <td>{{post.represent}}</td>
@@ -33,6 +32,7 @@
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
+                <td>{{post.note}}</td>
             </tr>
         {% endfor %}
         </tbody>

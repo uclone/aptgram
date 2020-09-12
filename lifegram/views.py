@@ -36,7 +36,7 @@ def life_list(request):
 def life_list_jumin(request):
     try:
         request_user = request.user
-        pagefiles = Life.objects.filter(author_id=request_user.id)
+        pagefiles = Life.objects.filter(author_id=request_user.id).filter(open='공개')
     except:
         pagefiles = Life.objects.filter(author_id=1)
 
@@ -95,11 +95,18 @@ class LifeUploadView(LoginRequiredMixin, CreateView):
     template_name = 'lifegram/life_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST, request.FILES)
+        instance = Life()
+        user_dept = request.user.last_name[0:2]
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.save()
+            if '1급' in request.user.last_name:                                       #or user_dept in instance.department:
+                form.save()
+            elif '2급' in request.user.last_name and user_dept in instance.department:
+                form.save()
+            elif '3급' in request.user.last_name and user_dept in instance.department:
+                form.save()                                                                       # check User grade
             return redirect('lifegram:life_list')
         return self.render_to_response({'form': form})
 
@@ -110,17 +117,28 @@ class LifeUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'lifegram/life_update.html'
 
     def life_update(self, request, pk):
+        instance = Life()
+        user_dept = request.user.last_name[0:2]
         field_author = 'author'
         field_photo_2 = 'photo_2'
         obj = Life.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         photo_2_field = getattr(obj, field_photo_2)
-
-        form = DateForm(request.POST, request.FILES)
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.photo = photo_2_field
         if form.is_valid():
-            form.save()
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name:
+                if '리' not in request.user.last_name:                     # check User grade
+                    form.save()
+                elif user_dept in instance.department:
+                    form.instance.remark = ' '
+                    form.save()                                                                         # check User grade
+            elif '3급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
             Life.objects.filter(id=pk).delete()
             return redirect('lifegram:life_list')
         return render(request, 'lifegram/life_update.html', {'form': form})

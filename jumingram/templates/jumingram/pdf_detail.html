@@ -27,13 +27,9 @@
             <tr><td>대표전화</td><td>{{post.phone}}</td></tr>
             <tr><td>자동차</td><td>{{post.car}}</td></tr>
             <tr><td>입주일자</td><td>{{post.date|date:"Y-m-d"}}</td></tr>
-            <tr><td>비고</td><td>{{post.remark}}</td></tr>
+            <tr><td>참고사항</td><td>{{post.note}}</td></tr>
             <tr><td>최초작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
             <tr><td>수정일자</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
-            <tr>
-                <td><a href="{{post.file.url}}">문서다운로드</a></td>
-                <td><a href="{{post.file.url}}">{{post.file}}</a></td>
-            </tr>
         {% endfor %}
         </tbody>
     </table>

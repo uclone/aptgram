@@ -2,6 +2,7 @@
 <html lang="ko">
 {% extends 'base.html' %}
 {% load bootstrap3 %}
+{% load humanize %}
 <head>
     <meta charset="UTF-8">
     <title>sulbi-search</title>
@@ -28,7 +29,8 @@
                 <th scope="col">공사종별</th>
                 <th scope="col">수선주기</th>
                 <th scope="col">최종수선</th>
-                <th scope="col">최종수정연</th>
+                <th scope="col">법정수선</th>
+                <th scope="col">수정계획</th>
                 <th scope="col">수선예정금</th>
             </tr>
         </thead>
@@ -41,8 +43,9 @@
                     <td><a href="{% url 'susungram:susun_detail' pk=post.id %}">{{post.treatment}}</a></td>
                     <td>{{post.cycle}}</td>
                     <td>{{post.last}}</td>
+                    <td>{{post.rule}}</td>
                     <td>{{post.plan}}</td>
-                    <td>{{post.cost}}</td>
+                    <td>{{post.cost|intcomma}}</td>
                 </tr>
             {% endfor %}
         </tbody>

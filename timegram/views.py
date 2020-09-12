@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 import calendar
 
 from .models import *
-from .utils import Calendar
+from .utils import Calendar, Scalendar
 from .forms import TimeForm
 
 def index(request):
@@ -66,29 +66,32 @@ def event(request, event_id=None):
     form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
 #leebc ----
     if request.POST and form.is_valid():
-        if instance.action=='일정 삭제':                       #leebc
-            instance.delete()                           #leebc
+        if instance.action=='일정 삭제':
+            if '1급' in request.user.last_name:
+                instance.delete()
         else:
-            form.save()
+            if '1급' in request.user.last_name:
+                form.save()
+            elif '2급' in request.user.last_name:
+                form.instance.remark=' '
+                form.save()
         return HttpResponseRedirect(reverse('timegram:schedule'))
     return render(request, 'timegram/event.html', {'form': form})
 
-@login_required
-def event_list(request, kk):
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()
-        pagefiles = Time.objects.filter(group_id=group_id)
-    except:
-        pagefiles = Time.objects.filter(group_id=1)
+class XalendarView(LoginRequiredMixin, generic.ListView):
+    model = Time
+    template_name = 'timegram/schedule2.html'
 
-    #files_per_year_1 = pagefiles.filter(start_time__year__lte=request.year)
-    #files_per_year =files_per_year_1.filter(end_time__year__gte=request.year)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        cal = Scalendar(d.year, d.month, self.kwargs['kk'])
+        group_id = self.request.user.groups.values_list('id', flat=True).first()		#lbc inserted a new line
+        html_cal = cal.formatmonth(group_id, self.kwargs['kk'], withyear=True)                             #lbc inserted 'group_id',
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context
 
-    #files_per_month_1 = files_per_year.filter(start_time__month__lte=request.month)
-    #files_per_month = files_per_month_1.filter(end_time__month__gte=request.month)
 
-    files_per_day_1 = pagefiles.filter(start_time__day__lte=kk)
-    form = files_per_day_1.filter(end_time__day__gte=kk)
-
-    return render(request, 'timegram/event_list.html', {'form': form})
 

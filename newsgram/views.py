@@ -54,7 +54,8 @@ def news_list_jumin(request):
         user_ho = request.user.first_name
         user_filter_1 = News.objects.filter(group_id=group_id)
         user_filter_2 = user_filter_1.filter(dong=user_dong).filter(dong='전체')
-        pagefiles = user_filter_2.filter(dong=user_ho).filter(ho='전체')
+        user_filter_3 = user_filter_2.filter(dong=user_ho).filter(ho='전체')
+        pagefiles = user_filter_3.filter(remark='결재').filter(remark='승인')
     except:
         pagefiles = News.objects.filter(group_id=1)
     # pagination - start --------------
@@ -67,7 +68,7 @@ def news_list_jumin(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end ----------------
-    return render(request, 'newsgram/news_listjumin.html', {'files':files})
+    return render(request, 'newsgram/news_list_jumin.html', {'files':files})
 
 @login_required
 def news_detail_jumin(request, pk):
@@ -89,6 +90,8 @@ class NewsUploadView(LoginRequiredMixin, CreateView):
         form.instance.author_id = self.request.user.id
         form.instance.group_id = self.request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
+            if '1급' not in request.user.last_name:
+                form.instance.remark=' '
             form.save()
             return redirect('newsgram:news_list')
         return self.render_to_response({'form': form})
@@ -109,6 +112,8 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.author = author_field
         form.instance.file = file_field
         if form.is_valid():
+            if '1급' not in request.user.last_name:
+                form.instance.remark=' '
             form.save()
             News.objects.filter(id=pk).delete()
             return redirect('newsgram:news_list')

@@ -11,22 +11,30 @@ category_choice= [
     ('옥외부대복리시설', '옥외부대복리시설'),
     ]
 
+treatment_choice= [
+    ('전면', '전면'),
+    ('부분', '부분'),
+    ]
+
+
 class SusunForm(forms.ModelForm):
     class Meta:
         model = Susun
         fields = ['category', 'subject', 'treatment', 'cycle', 'last', 'rule', 'plan', 'cost']
         widgets = {
-            'cycle': forms.Select(choices=category_choice),
+            'category': forms.Select(choices=category_choice),
+            'treatment': forms.Select(choices=treatment_choice),
         }
 
 class DateForm(forms.ModelForm):
     class Meta:
         model = Susun
         fields = ['category', 'subject', 'treatment', 'method', 'cycle', 'ratio',
-                  'last', 'rule', 'plan', 'cost', 'times', 'amount']
+                  'last', 'rule', 'plan', 'cost', 'times', 'amount', 'file', ]
         widgets = {
             'last': DatePickerInput(format='%Y-%m-%d'),
             'rule': DatePickerInput(format='%Y-%m-%d').start_of('event days'),
             'plan': DatePickerInput(format='%Y-%m-%d').end_of('event days'),
-            'cycle': forms.Select(choices=category_choice),
+            'category': forms.Select(choices=category_choice),
+            'treatment': forms.Select(choices=treatment_choice),
         }

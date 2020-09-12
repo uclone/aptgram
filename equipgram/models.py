@@ -18,8 +18,8 @@ class Equip(models.Model):
     spec = models.CharField(max_length=100, null=True, blank=True, verbose_name='규격')
     date = models.DateField(blank=True, default=timezone.now, verbose_name='구입일자')
     #photo = models.ImageField(upload_to='equips/%Y/%m/%d', null=True, blank=True, default='equips/aptgram.jpg')
-    file = models.FileField(upload_to='equips/%Y/%m/%d', null=True, blank=True, default='equips/SMK.xlsx', verbose_name='관리이력')
-    remark = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
+    file = models.FileField(upload_to='equips/%Y/%m/%d', null=True, blank=True, default='equips/aptgram.xlsx', verbose_name='관리이력')
+    remark = models.CharField(max_length=200, null=True, blank=True, verbose_name='결재')
 
     class Meta:
         ordering = ['-author']
@@ -43,6 +43,7 @@ class Sequip(models.Model):
     group = models.CharField(max_length=100, null=True, blank=True, verbose_name='아파트명')
     code = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품번호')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품명칭')
+    quantity = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품수량')
     location = models.CharField(max_length=100, null=True, blank=True, verbose_name='보관장소')
     department= models.CharField(max_length=100, null=True, blank=True, verbose_name='관리부서')
     manager_1 = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리자(정)')
@@ -51,7 +52,7 @@ class Sequip(models.Model):
     date = models.DateField(null=True, blank=True, default=timezone.now, verbose_name='구입일자')
     #photo = models.ImageField(upload_to='equips/%Y/%m/%d', null=True, blank=True, default='equips/aptgram.jpg')
     file = models.FileField(upload_to='equips/%Y/%m/%d', null=True, blank=True, default='equips/SMK.xlsx', verbose_name='관리이력')
-    remark = models.CharField(max_length=200, null=True, blank=True, verbose_name='비고')
+    remark = models.CharField(max_length=200, null=True, blank=True, verbose_name='결재')
 
     class Meta:
         ordering = ['-author']

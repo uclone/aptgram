@@ -9,36 +9,37 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'taskgram:task_upload_mobile' %}" class="btn btn-success btn-sm">일지쓰기</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:task_upload' %}" class="btn btn-info btn-sm">일지관리</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:task_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'taskgram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
+        {% if "1급" in user.last_name %}
         <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        {% endif %}
         <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">소속부서</th>
                 <th scope="col">담당자</th>
                 <th scope="col">작성일자</th>
-                <th scope="col">담당업무</th>
+                <th scope="col">제목</th>
                 <th scope="col">관리자</th>
+                <th scope="col">결재일자</th>
             </tr>
         </thead>
 
         <tbody>
             {% for post in files %}
                 <tr>
-                    <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
-                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.charge}}</a></td>
+                    <td>{{post.charge}}</td>
                     <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.created|date:"Y-m-d"}}</a></td>
-                    <td>{{post.subject}}</td>
+                    <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.subject}}</a></td>
                     <td>{{post.manager}}</td>
+                    <td>{{post.updated|date:"Y-m-d"}}</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -23,21 +23,24 @@
 
                 <ul>
                     {% if user.is_authenticated %}
-                        {% if "관리" in user.last_name or "일반" in user.last_name %}
+                        {% if "급" in user.last_name %}
                         <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
                         <li><a href="{% url 'filegram:file_list' %}">문서관리</a></li>
                         <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
                         <li><a href="{% url 'susungram:susun_list' %}">장기수선</a></li>
                         <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
                         <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
-                        <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
-                        <li><a href="{% url 'newsgram:news_list' %}">공고관리</a></li>
                         <li><a href="{% url 'lifegram:life_list' %}">민원관리</a></li>
                         <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
                         {% else %}
                         <li><a href="{% url 'newsgram:news_list_jumin' %}">공고읽기</a></li>
                         <li><a href="{% url 'lifegram:life_upload_jumin' %}">민원신청</a></li>
                         {% endif %}
+                        {% if "리" in user.last_name or "1급" in user.last_name %}
+                        <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
+                        <li><a href="{% url 'newsgram:news_list' %}">공고관리</a></li>
+                        {% endif %}
+                    <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
                     {% else %}
                     <li><a href="{% url 'accounts:login' %}">로그인</a></li>
                     <li><a href="{% url 'accounts:register' %}">등록하기</a></li>

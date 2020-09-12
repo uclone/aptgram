@@ -34,6 +34,7 @@
             <tr><td>처리일자</td><td>{{post.date|date:"Y-m-d"}}</td></tr>
             <tr><td>완료일자</td><td>{{post.close|date:"Y-m-d"}}</td></tr>
             <tr><td>처리결과</td><td>{{post.task_2}}</td></tr>
+            <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
                 <td><a href="{{post.photo_2.url}}">처리사진</a></td>
                 <td><img src="{{post.photo_2.url}}" class="container"></td>

@@ -22,7 +22,7 @@
 
                 <ul>
                     {% if user.is_authenticated %}
-                        {% if "관리" in user.last_name or "일반" in user.last_name %}
+                        {% if "1급" in user.last_name %}
                         <li><a href="{% url 'timegram:schedule' %}">모바일 - 일정관리</a></li>
                         <li><a href="{% url 'taskgram:task_upload_mobile' %}">모바일 - 일지추가</a></li>
                         <li><a href="{% url 'metergram:meter_upload_mobile' %}">모바일 - 검침추가</a></li>

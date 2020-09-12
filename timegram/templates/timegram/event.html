@@ -40,7 +40,7 @@
             </div>
             <p></p><br>
 
-            {% if "관리" in user.last_name %}
+            {% if "1급" in user.last_name or "2급" in user.last.name %}
             <form action="" method="post" enctype="multipart/form-data">
                 {% bootstrap_form form %}
                 {% csrf_token %}
@@ -58,11 +58,13 @@
                 <tbody>
                     <tr><td>작성자</td><td>{{object.author}}</td></tr>
                     <tr><td>아파트명</td><td>{{object.group}}</td></tr>
-                    <tr><td>업무</td><td>{{object.subject}}</td></tr>
-                    <tr><td>상세내용</td><td>{{object.description}}</td></tr>
+                    <tr><td>업무제목</td><td>{{object.subject}}</td></tr>
+                    <tr><td>업무내용</td><td>{{object.description}}</td></tr>
+                    <tr><td>추가내용</td><td>{{object.appendix}}</td></tr>
                     <tr><td>공고일자</td><td>{{object.remark}}</td></tr>
                     <tr><td>시작일자</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
                     <tr><td>종료일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+                    <tr><td>결재</td><td>{{object.remark}}</td></tr>
                 </tbody>
             </table>
             {% endif %}

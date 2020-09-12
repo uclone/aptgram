@@ -9,12 +9,12 @@ class Task(models.Model):
     department = models.CharField(max_length=100, default='필수', verbose_name='소속부서')
     charge = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당자')
     created = models.DateTimeField(auto_now_add=True, verbose_name='작성일자')
-    subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='담당업무')
-    task = models.TextField(max_length=500, null=True, blank=True, verbose_name='업무내역')
+    subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='제목')
+    task = models.TextField(max_length=500, null=True, blank=True, verbose_name='업무내용')
     photo = models.ImageField(upload_to='tasks/%Y/%m/%d', null=True, blank=True, verbose_name='참고', default='tasks/aptgram.jpg')
     manager = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리자')
-    director = models.CharField(max_length=100, null=True, blank=True, verbose_name='관리소장')
-    updated = models.DateTimeField(auto_now=True, verbose_name='관리일자')
+    director = models.CharField(max_length=100, null=True, blank=True, verbose_name='결재')
+    updated = models.DateTimeField(auto_now=True, verbose_name='결재일자')
     response = models.CharField(max_length=200, null=True, blank=True, verbose_name='지시사항')
 
     class Meta:

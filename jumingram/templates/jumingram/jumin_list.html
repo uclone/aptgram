@@ -9,7 +9,7 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        {% if "관리" in user.last_name %}
+        {% if "리" in user.last_name or "1급" in user.last_name %}
         <a href="{% url 'jumingram:jumin_upload' %}" class="btn btn-info btn-sm">주민추가</a>&nbsp;&nbsp;
         {% endif %}
         <a href="{% url 'jumingram:jumin_list_date' %}" class="btn btn-info btn-sm">일자분류</a>&nbsp;&nbsp;
@@ -17,14 +17,15 @@
         <a href="{% url 'jumingram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
     </div>
     <div class="btn-group float-left">
+        {% if "1급" in user.last_name %}
         <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        {% endif %}
         <a href="{% url 'jumingram:jumin_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">동</th>
                 <th scope="col">호</th>
                 <th scope="col">세대주</th>
@@ -32,13 +33,13 @@
                 <th scope="col">대표전화</th>
                 <th scope="col">자동차</th>
                 <th scope="col">입주일자</th>
+                <th scope="col">참고사항</th>
             </tr>
         </thead>
 
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.group}}</td>
                 <td>{{post.dong}}</td>
                 <td>{{post.ho}}</td>
                 {% if user.last_name == '관리' %}
@@ -50,6 +51,7 @@
                 <td>{{post.phone}}</td>
                 <td>{{post.car}}</td>
                 <td>{{post.date|date:"Y-m-d" }}</td>
+                <td>{{post.note}}</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -11,24 +11,24 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>아파트명</th>
                 <th>소속부서</th>
                 <th>담당자</th>
                 <th>작성일자</th>
-                <th>담당업무</th>
+                <th>제목</th>
                 <th>관리자</th>
+                <th>결제일자</th>
             </tr>
         </thead>
 
         <tbody>
         {% for post in filter %}
             <tr>
-                <td>{{post.group}}</td>
                 <td>{{post.department}}</td>
                 <td>{{post.charge}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
                 <td>{{post.subject}}
                 <td>{{post.manager}}</td>
+                <td>{{post.updated|date:"Y-m-d"}}</td>
             </tr>
         {% endfor %}
         </tbody>

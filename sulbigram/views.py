@@ -22,8 +22,13 @@ def sulbi_list(request):
     #    pagefiles = Sulbi.objects.filter(group_id=1)
 
     try:
-        group_id = request.user.groups.values_list('id', flat=True).first()
-        pagefiles = Sulbi.objects.filter(group_id=group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            pagefiles = Sulbi.objects.filter(group_id=group_id)
+        else:
+            pagefiles_1 = Sulbi.objects.filter(group_id=group_id)
+            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
     except:
         pagefiles = Sulbi.objects.filter(group_id=1)
 
@@ -49,8 +54,13 @@ def sulbi_search(request):
     #    file_list = Sulbi.objects.filter(group_id=1)
 
     try:
-        group_id = request.user.groups.values_list('id', flat=True).first()
-        file_list = Sulbi.objects.filter(group_id=group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            file_list = Sulbi.objects.filter(group_id=group_id)
+        else:
+            file_list_1 = Sulbi.objects.filter(group_id=group_id)
+            file_list = file_list_1.objects.filter(department__icontains=user_dept)
     except:
         file_list = Sulbi.objects.filter(group_id=1)
 
@@ -79,12 +89,18 @@ class SulbiUploadView(LoginRequiredMixin, CreateView):
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.save()
-            x = Time(subject=instance.subject, description=instance.text, remark=instance.code,
+            user_dept = request.user.last_name[0:2]                                                 #check User grade
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
+            x = Time(subject=instance.subject, description=instance.text, appendix=instance.code,
                      start_time=instance.start, end_time=instance.close)
             x.author_id = request.user.id
             x.group_id = request.user.groups.values_list('id', flat=True).first()
-            x.save()
+            if '1급' in request.user.last_name or user_dept in instance.department:                  #check User grade
+                x.save()                                                                            #check User grade
             return redirect('sulbigram:sulbi_list')
         return self.render_to_response({'form': form})
 
@@ -95,17 +111,23 @@ class SulbiUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'sulbigram/sulbi_update.html'
 
     def sulbi_update(self, request, pk):
+        instance=Sulbi()
         field_author = 'author'
         field_file = 'file'
         obj = Sulbi.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         file_field = getattr(obj, field_file)
 
-        form = DateForm(request.POST, request.FILES)
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.file = file_field
         if form.is_valid():
-            form.save()
+            user_dept = request.user.last_name[0:2]                                                 #check User grade
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
             Sulbi.objects.filter(id=pk).delete()
             return redirect('sulbigram:sulbi_list')
         return render(request, 'sulbigram/sulbi_update.html', {'form': form})
@@ -114,7 +136,12 @@ class SulbiUpdateView(LoginRequiredMixin, UpdateView):
 def generate_pdf(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        files = Sulbi.objects.filter(group_id=group_id)                             #.order_by('author')
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name or '2급' in request.user.last_name:
+            files = Sulbi.objects.filter(group_id=group_id)
+        else:
+            files_1 = Sulbi.objects.filter(group_id=group_id)
+            files = files_1.objects.filter(department__icontains=user_dept)
     except:
         files = Sulbi.objects.filter(group_id=1)                                    #.order_by('author')
 

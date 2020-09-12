@@ -10,8 +10,10 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        {% if "관리" in user.last_name %}
+        {% if "리" in user.last_name or "1급" in user.last_name %}
         <a href="{% url 'newsgram:news_update' pk=object.id %}" class="btn btn-info btn-sm">공고수정</a>&nbsp;&nbsp;
+        {% endif %}
+        {% if "1급" in user.last_name %}
         <a href="{% url 'newsgram:news_delete' pk=object.id %}" class="btn btn-danger btn-sm">공고삭제</a>&nbsp;&nbsp;
         {% endif %}
         <a href="{% url 'newsgram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
@@ -37,8 +39,9 @@
             <tr><td>공고일자</td><td>{{object.date|date:"Y-m-d"}}</td></tr>
             <tr><td>공고제목</td><td>{{object.subject}}</td></tr>
             <tr><td>공고내용</td><td>{{object.text}}</td></tr>
-            <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
-            <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+            <tr><td>작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>결재일</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+            <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
                 <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
                 <td><a href="{{object.file.url}}">{{object.file}}</a></td>

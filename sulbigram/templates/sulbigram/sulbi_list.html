@@ -9,24 +9,26 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        {% if "관리" in user.last_name %}
+        {% if "1급" in user.last_name or "2급" in user.last_name %}
         <a href="{% url 'sulbigram:sulbi_upload' %}" class="btn btn-info btn-sm">설비추가</a>&nbsp;&nbsp;
         {% endif %}
         <a href="{% url 'sulbigram:sulbi_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
         <a href="{% url 'sulbigram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
+        {% if "1급" in user.last_name %}
         <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        {% endif %}
         <a href="{% url 'sulbigram:sulbi_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>
 
     <table class="table">
         <thead>
-            <tr>
-                <th scope="col">아파트명</th>
                 <th scope="col">담당부서</th>
                 <th scope="col">설비번호</th>
                 <th scope="col">설비명칭</th>
+                <th scope="col">설비위치</th>
                 <th scope="col">관리내용</th>
+                <th scope="col">관리주기</th>
                 <th scope="col">시작일자</th>
                 <th scope="col">완료일자</th>
             </tr>
@@ -35,11 +37,12 @@
 
             {% for post in files %}
                 <tr>
-                    <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.code}}</td>
                     <td><a href="{% url 'sulbigram:sulbi_detail' pk=post.id %}">{{post.subject}}</a></td>
+                    <td>{{post.location}}</td>
                     <td>{{post.action}}</td>
+                    <td>{{post.cycle}}</td>
                     <td>{{post.start|date:"Y-m-d"}}</td>
                     <td>{{post.close|date:"Y-m-d"}}</td>
                 </tr>

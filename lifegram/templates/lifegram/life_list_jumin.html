@@ -10,7 +10,9 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'lifegram:life_upload_jumin' %}" class="btn btn-success btn-sm">민원신청</a></div>
+        <a href="{% url 'lifegram:life_upload_jumin' %}" class="btn btn-success btn-sm">민원신청</a></div>&nbsp;&nbsp;
+        <a href="{% url 'index:index' %}" class="btn btn-info btn-sm">초기화면</a>&nbsp;&nbsp;
+    </div>
     <p></p>
 
     <table class="table">
@@ -22,6 +24,7 @@
                 <th scope="col">담당부서</th>
                 <th scope="col">처리일자</th>
                 <th scope="col">완료일자</th>
+                <th scope="col">공개여부</th>
             </tr>
         </thead>
 
@@ -34,6 +37,7 @@
                 <td>{{post.department}}</td>
                 <td>{{post.date|date:"Y-m-d"}}</td>
                 <td>{{post.close|date:"Y-m-d"}}</td>
+                <td>{{post.open}}</td>
             </tr>
         {% endfor %}
         </tbody>

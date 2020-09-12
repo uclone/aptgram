@@ -11,8 +11,8 @@ class News(models.Model):
     date = models.DateField(blank=True, default=timezone.now, verbose_name='공고일자')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='공고제목')
     text = models.TextField(max_length=300, null=True, blank=True, verbose_name='공고내용')
-    #photo = models.ImageField(upload_to='news/%Y/%m/%d', null=True, blank=True, verbose_name='공고사진', default='news/aptgram.jpg')
-    file = models.FileField(upload_to='news/%Y/%m/%d', null=True, blank=True, verbose_name='공고파일', default='news/SMK.xlsx')
+    file = models.FileField(upload_to='news/%Y/%m/%d', null=True, blank=True, verbose_name='공고파일', default='news/aptgram.xlsx')
+    remark = models.CharField(max_length=100, null=True, blank=True, default='결재', verbose_name='결재')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -37,8 +37,9 @@ class Snews(models.Model):
     date = models.DateField(blank=True, default=timezone.now, verbose_name='공고일자')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='세대주')
     text = models.TextField(max_length=300, null=True, blank=True, verbose_name='전체 알림')
-    created = models.DateTimeField(blank=True, default=timezone.now)
-    updated = models.DateTimeField(blank=True, default=timezone.now)
+    remark = models.CharField(max_length=100, null=True, blank=True, default='기안', verbose_name='기안:승인')
+    created = models.DateTimeField(blank=True, default=timezone.now, verbose_name='작성일')
+    updated = models.DateTimeField(blank=True, default=timezone.now, verbose_name='결재일')
 
     class Meta:
         ordering = ['-date', '-updated']

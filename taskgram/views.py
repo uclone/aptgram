@@ -21,8 +21,15 @@ def task_list(request):
     #    pagefiles = Task.objects.filter(group_id=1)
 
     try:
-        group_id = request.user.groups.values_list('id', flat=True).first()
-        pagefiles = Task.objects.filter(group_id=group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name:
+            pagefiles = Task.objects.filter(group_id=group_id)
+        elif '2급' in request.user.last_name:
+            pagefiles_1 = Task.objects.filter(group_id=group_id)
+            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
+        else:
+            pagefiles = Task.objects.filter(author_id=request.user.id)
     except:
         pagefiles = Task.objects.filter(group_id=1)
 
@@ -41,8 +48,15 @@ def task_list(request):
 @login_required
 def task_list_mobile(request):
     try:
-        request_user = request.user
-        pagefiles = Task.objects.filter(author_id=request_user.id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name:
+            pagefiles = Task.objects.filter(group_id=group_id)
+        elif '2급' in request.user.last_name:
+            pagefiles_1 = Task.objects.filter(group_id=group_id)
+            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
+        else:
+            pagefiles = Task.objects.filter(author_id=request.user.id)
     except:
         pagefiles = Task.objects.filter(author_id=1)
 
@@ -61,8 +75,15 @@ def task_list_mobile(request):
 @login_required
 def task_search(request):
     try:
-        group_id = request.user.groups.values_list('id', flat=True).first()
-        file_list= Task.objects.filter(group_id=group_id)
+        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name:
+            file_list = Task.objects.filter(group_id=group_id)
+        elif '2급' in request.user.last_name:
+            file_list_1 = Task.objects.filter(group_id=group_id)
+            file_list = file_list_1.objects.filter(department__icontains=user_dept)
+        else:
+            file_list = Task.objects.filter(author_id=request.user.id)
     except:
         file_list = Task.objects.filter(group_id=1)
 
@@ -101,11 +122,22 @@ class TaskUploadView(LoginRequiredMixin, CreateView):
     template_name = 'taskgram/task_upload.html'
 
     def post(self, request):
-        form = DateForm(request.POST, request.FILES)
+        instance = Task()
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+
         if form.is_valid():
-            form.save()
+            user_dept = request.user.last_name[0:2]  # check User grade
+            user_name = request.user.first_name
+            if '1급' in request.user.last_name:                                       #or user_dept in instance.department:
+                form.save()
+            elif '2급' in request.user.last_name and user_name in instance.charge:
+                form.instance.remark = ' '
+                form.save()
+            elif '3급' in request.user.last_name and user_name in instance.charge:
+                form.instance.remark = ' '
+                form.save()
             return redirect('taskgram:task_list')
         return self.render_to_response({'form': form})
 
@@ -116,17 +148,26 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'taskgram/task_update.html'
 
     def task_update(self, request, pk):
+        instance = Task()
         field_author = 'author'
         field_photo = 'photo'
         obj = Task.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         photo_field = getattr(obj, field_photo)
 
-        form = DateForm(request.POST, request.FILES)
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.photo = photo_field
         if form.is_valid():
-            form.save()
+            user_dept = request.user.last_name[0:2]  # check User grade
+            user_name = request.user.first_name
+            if '1급' in request.user.last_name:                                       #or user_dept in instance.department:
+                form.save()
+            elif '2급' in request.user.last_name and user_dept in instance.department:
+                form.save()
+            elif '3급' in request.user.last_name and user_name in instance.charge:
+                form.instance.remark = ' '
+                form.save()
             Task.objects.filter(id=pk).delete()
             return redirect('taskgram:task_list')
         return render(request, 'taskgram/task_update.html', {'form': form})
@@ -135,7 +176,14 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 def generate_pdf(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        files = Task.objects.filter(group_id=group_id)                             #.order_by('author')
+        user_dept = request.user.last_name[0:2]                                     #for user's department
+        if '1급' in request.user.last_name:
+            files = Task.objects.filter(group_id=group_id)
+        elif '2급' in request.user.last_name:
+            files_1 = Task.objects.filter(group_id=group_id)
+            files = files_1.objects.filter(department__icontains=user_dept)
+        else:
+            files = Task.objects.filter(author_id=request.user.id)
     except:
         files = Task.objects.filter(group_id=1)                                    #.order_by('author')
 

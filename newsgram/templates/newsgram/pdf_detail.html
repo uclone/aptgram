@@ -25,8 +25,9 @@
             <tr><td>공고일자</td><td>{{post.date|date:"Y-m-d"}}</td></tr>
             <tr><td>공고제목</td><td>{{post.subject}}</td></tr>
             <tr><td>공고내용</td><td>{{post.text}}</td></tr>
-            <tr><td>최초작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
-            <tr><td>수정일자</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
+            <tr><td>작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>결재일</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
+            <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
                 <td><a href="{{post.file.url}}">공고문서 다운로드</a></td>
                 <td><a href="{{post.file.url}}">{{post.file}}</a></td>
