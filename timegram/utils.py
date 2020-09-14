@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, date
 from calendar import HTMLCalendar
 from .models import Time
 from django.urls import reverse
+from django.utils import timezone
 
 class Calendar(HTMLCalendar):
 	def __init__(self, year=None, month=None):

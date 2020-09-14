@@ -170,7 +170,8 @@ LANGUAGE_CODE = 'ko-kr'
 
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
+#USE_TZ = True
 
 USE_I18N = True
 
