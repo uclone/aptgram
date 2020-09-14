@@ -34,7 +34,7 @@
                 <td>{{post.last_name}}</td>
                 <td>{{post.first_name}}</td>
                 <td>{{post.email}}</td>
-                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-outline-success btn-sm">사용자 수정</a></td>
+                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-outline-success btn-sm">사용자관리</a></td>
             </tr>
         {% endfor %}
         {% endif %}
