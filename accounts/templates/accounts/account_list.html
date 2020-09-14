@@ -26,7 +26,7 @@
         </thead>
 
         <tbody>
-        {% if "관리" in user.last_name %}
+        {% if "1급" in user.last_name %}
         {% for post in files %}
             <tr>
                 <td>{{post.groups.all.0.name}}</td>
@@ -34,7 +34,7 @@
                 <td>{{post.last_name}}</td>
                 <td>{{post.first_name}}</td>
                 <td>{{post.email}}</td>
-                <td><a href="{% url 'accounts:account_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">권한확인</a></td>
+                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-outline-success btn-sm">사용자 수정</a></td>
             </tr>
         {% endfor %}
         {% endif %}

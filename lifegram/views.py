@@ -79,6 +79,39 @@ def life_upload_jumin(request):
         return redirect('lifegram:life_list_jumin')
     return render(request, 'lifegram/life_upload_jumin.html', {'form': form})
 
+class LifeUpdateJuminView(LoginRequiredMixin, UpdateView):
+    model = Life
+    form_class = LifeForm
+    #fields = ['department', 'charge', 'date', 'close', 'task_2', 'photo_2', 'response']
+    template_name = 'lifegram/life_update_jumin.html'
+
+    def life_update(self, request, pk):
+        instance = Life()
+        user_dept = request.user.last_name[0:2]
+        field_author = 'author'
+        field_photo_1 = 'photo_1'
+        obj = Life.objects.filter(id=pk).first()
+        author_field = getattr(obj, field_author)
+        photo_1_field = getattr(obj, field_photo_1)
+        form = DateForm(request.POST, request.FILES, instance=instance)
+        form.instance.author = author_field
+        form.instance.photo_1 = photo_1_field
+        if form.is_valid():
+            if '1급' in request.user.last_name:                                                      #check User grade
+                form.save()                                                                         #check User grade
+            elif '2급' in request.user.last_name:
+                if '리' not in request.user.last_name:                     # check User grade
+                    form.save()
+                elif user_dept in instance.department:
+                    form.instance.remark = ' '
+                    form.save()                                                                         # check User grade
+            elif '3급' in request.user.last_name and user_dept in instance.department:               # check User grade
+                form.instance.remark = ' '
+                form.save()                                                                         # check User grade
+            Life.objects.filter(id=pk).delete()
+            return redirect('lifegram:life_list')
+        return render(request, 'lifegram/life_update.html', {'form': form})
+
 @login_required
 def life_detail_jumin(request, pk):
     form = Life.objects.filter(id=pk)                                   # Model data
@@ -126,7 +159,7 @@ class LifeUpdateView(LoginRequiredMixin, UpdateView):
         photo_2_field = getattr(obj, field_photo_2)
         form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
-        form.instance.photo = photo_2_field
+        form.instance.photo_2 = photo_2_field
         if form.is_valid():
             if '1급' in request.user.last_name:                                                      #check User grade
                 form.save()                                                                         #check User grade
@@ -142,7 +175,6 @@ class LifeUpdateView(LoginRequiredMixin, UpdateView):
             Life.objects.filter(id=pk).delete()
             return redirect('lifegram:life_list')
         return render(request, 'lifegram/life_update.html', {'form': form})
-
 
 #for weasyprint
 def generate_pdf(request):

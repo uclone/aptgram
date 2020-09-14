@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from calendar import HTMLCalendar
 from .models import Time
 from django.urls import reverse
@@ -9,7 +9,7 @@ class Calendar(HTMLCalendar):
 		self.month = month
 		super(Calendar, self).__init__()
 
-	def formatday(self, day, events):											# formats a day as a td, filter events by day
+	def formatday(self, day, events, color):											# formats a day as a td, filter events by day
 	# by leebc ----------------
 		events_per_year_1 = events.filter(start_time__year__lte = self.year)
 		events_per_year = events_per_year_1.filter(end_time__year__gte = self.year)
@@ -21,18 +21,41 @@ class Calendar(HTMLCalendar):
 		events_per_day = events_per_day_1.filter(end_time__day__gte = day)
 	# by leebc ----------------
 		d = ''
+		count = 0
 		for event in events_per_day:
-			d += f'<div>{event.get_html_url}</div>'								#d += f'<li> {event.get_html_url} </li>'
+			count += 1
+			if count > 3:
+				dx = ""
+			else:
+				dx = event.get_html_url2
+			d += f'<div>{dx}</div>'
+			#d += f'<div>{event.get_html_url}</div>'								#d += '<div>\u2007\u2007<\u2022\u2022\u2022></div>'
 		if day != 0:
 			url = reverse('timegram:schedule2', kwargs={'kk': day})
-			return f"<td> <a class='date' href={url} kk=day>{day}</a>  {d}</td>"
+			day_display = day
+			if day==date.today().day:
+				if color=='red':
+					return f"<td> <a class='red_xdate' href={url} kk=day>{day_display}</a>  {d}</td>"
+				else:
+					return f"<td> <a class='xdate' href={url} kk=day>{day_display}</a>  {d}</td>"
+			else:
+				if color=='red':
+					return f"<td> <a class='red_date' href={url} kk=day>{day_display}</a>  {d}</td>"
+				else:
+					return f"<td> <a class='date' href={url} kk=day>{day_display}</a>  {d}</td>"
 		return '<td></td>'
 
 	def formatweek(self, theweek, events):										# formats a week as a tr
 		week = ''
+		count = 0
 		for d, weekday in theweek:
-			week += self.formatday(d, events)
-		return f'<tr> {week} </tr>'
+			count += 1
+			if count==6 or count==7:
+				color = 'red'
+			else:
+				color = 'blue'
+			week += self.formatday(d, events, color)
+		return f'<tr> {week}</tr>'
 
 	def formatmonth(self, group_id, withyear=True):								# formats a month as a table, filter events by year and month
 #---leebc---
@@ -91,7 +114,7 @@ class Scalendar(HTMLCalendar):
 		# -----------
 		return cal
 
-	def formatday(self, day, events):											# formats a day as a td, filter events by day
+	def formatday(self, day, events, color):											# formats a day as a td, filter events by day
 	# by leebc ----------------
 		events_per_year_1 = events.filter(start_time__year__lte = self.year)
 		events_per_year = events_per_year_1.filter(end_time__year__gte = self.year)
@@ -103,17 +126,39 @@ class Scalendar(HTMLCalendar):
 		events_per_day = events_per_day_1.filter(end_time__day__gte = day)
 	# by leebc ----------------
 		d = ''
+		count = 0
 		for event in events_per_day:
-			d += f'<div>{event.get_html_url}</div>'								#d += f'<li> {event.get_html_url} </li>'
+			count += 1
+			if count > 3:
+				dx = ""
+			else:
+				dx = event.get_html_url2
+			d += f'<div>{dx}</div>'
 		if day != 0:
-			url = reverse('timegram:schedule2', kwargs={'kk':day})
-			return f"<td> <a class='date' href={url} kk=day>{day}</a>  {d}</td>"		#return f"<td> <span class='date'>{day}</span> <ul>{d}</ul> </td>"
+			url = reverse('timegram:schedule2', kwargs={'kk': day})
+			day_display = day
+			if day==date.today().day:
+				if color=='red':
+					return f"<td> <a class='red_xdate' href={url} kk=day>{day_display}</a>  {d}</td>"
+				else:
+					return f"<td> <a class='xdate' href={url} kk=day>{day_display}</a>  {d}</td>"
+			else:
+				if color=='red':
+					return f"<td> <a class='red_date' href={url} kk=day>{day_display}</a>  {d}</td>"
+				else:
+					return f"<td> <a class='date' href={url} kk=day>{day_display}</a>  {d}</td>"
 		return '<td></td>'
 
 	def formatweek(self, theweek, events):										# formats a week as a tr
 		week = ''
+		count = 0
 		for d, weekday in theweek:
-			week += self.formatday(d, events)
+			count += 1
+			if count==6 or count==7:
+				color = 'red'
+			else:
+				color = 'blue'
+			week += self.formatday(d, events, color)
 		return f'<tr> {week} </tr>'
 
 	def formatday2(self, day, events):  # formats a day as a td, filter events by day

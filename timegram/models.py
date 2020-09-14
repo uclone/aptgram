@@ -18,3 +18,9 @@ class Time(models.Model):
     def get_html_url(self):
         url = reverse('timegram:event_edit', args=(self.id,))
         return f'<a href="{url}"> {self.subject} </a>'
+
+    @property
+    def get_html_url2(self):
+        url = reverse('timegram:event_edit', args=(self.id,))
+        xx = self.subject[0:2]
+        return f'<a href="{url}"> {xx} </a>'

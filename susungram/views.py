@@ -71,7 +71,7 @@ class SusunUploadView(LoginRequiredMixin, CreateView):
         if form.is_valid():
             form.save()
             x = Time(subject=instance.subject, description=instance.treatment, appendix=instance.method,
-                     start_time=instance.rule, end_time=instance.plan)
+                     start_time=instance.plan, end_time=instance.rule)
             x.author_id = request.user.id
             x.group_id = request.user.groups.values_list('id', flat=True).first()
             x.save()

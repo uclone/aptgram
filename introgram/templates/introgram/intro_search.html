@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+<head>
+    <meta charset="UTF-8">
+    <title>intro-search</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <form method="get">
+        {% bootstrap_form filter.form %}
+        <div class="btn-group float-right">&nbsp;&nbsp;
+        <a href="{% url 'introgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+        <div class="btn-group float-left">
+        <a href="{% url 'introgram:intro_list' %}" class="btn btn-info btn-sm">공고목록</a></div>
+        <button type="submit" class="btn btn-info btn-sm float-right">공고검색</button>
+    </form>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">아파트명</th>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">공고일자</th>
+                <th scope="col">공고제목</th>
+                <th scope="col">작성일</th>
+                <th scope="col">결재일</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in filter.qs %}
+            <tr>
+                <td>{{post.group}}</td>
+                <td>{{post.dong}}</td>
+                <td>{{post.ho}}</td>
+                <td>{{post.date|date:"Y-m-d"}}</td>
+                {% if "관리" in user.last_name %}
+                <td><a href="{% url 'introgram:intro_detail' pk=post.id %}">{{post.subject}}</a></td>
+                {% elif "일반" in user.last_name %}
+                <td><a href="{% url 'introgram:intro_detail' pk=post.id %}">{{post.subject}}</a></td>
+                {% else %}
+                <td>{{post.subject}}</td>
+                {% endif %}
+                <td>{{post.created|date:"Y-m-d" }}</td>
+                <td>{{post.updated|date:"Y-m-d" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

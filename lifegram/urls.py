@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^search/$', life_search, name='life_search'),                                 # search
 
     path('listjumin/', life_list_jumin, name='life_list_jumin'),
-    url(r'^uploadjumin/$', life_upload_jumin, name='life_upload_jumin'),                                   # mobile
-    path('detailjumin/<int:pk>/', life_detail_jumin, name='life_detail_jumin'),      # mobile
+    url(r'^uploadjumin/$', life_upload_jumin, name='life_upload_jumin'),                # mobile
+    url(r'^updatejumin/$', LifeUpdateJuminView.as_view(), name='life_update_jumin'),         # mobile
+    path('detailjumin/<int:pk>/', life_detail_jumin, name='life_detail_jumin'),         # mobile
 ]

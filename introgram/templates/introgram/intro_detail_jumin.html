@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-{% extends 'base.html' %}
+{% extends 'base_mobile.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>news-detail</title>
+    <title>intro-read_detail</title>
 </head>
 
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-group float-right">
-        {% if "리" in user.last_name or "1급" in user.last_name %}
-        <a href="{% url 'newsgram:news_update' pk=object.id %}" class="btn btn-info btn-sm">공고수정</a>&nbsp;&nbsp;
-        <a href="{% url 'photogram:photo_update' pk=object.id %}" class="btn btn-info btn-sm">홍보수정</a>&nbsp;&nbsp;
-        {% endif %}
-        {% if "1급" in user.last_name %}
-        <a href="{% url 'newsgram:news_delete' pk=object.id %}" class="btn btn-danger btn-sm">공고삭제</a>&nbsp;&nbsp;
-        {% endif %}
-        <a href="{% url 'newsgram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
-    </div>
-
     <div class="btn-group float-left">
-        <a href="{% url 'newsgram:news_list' %}" class="btn btn-info btn-sm">공고목록</a></div>
+        <a href="{% url 'introgram:intro_list_jumin' %}" class="btn btn-info btn-sm">공고목록</a>&nbsp;&nbsp;
+    </div>
     <p></p>
 
     <table class="table">
@@ -32,8 +22,7 @@
             </tr>
         </thead>
 
-        <tbody>
-            <tr><td>작성자</td><td>{{object.author}}</td></tr>
+         <tbody>
             <tr><td>아파트명</td><td>{{object.group}}</td></tr>
             <tr><td>동</td><td>{{object.dong}}</td></tr>
             <tr><td>호</td><td>{{object.ho}}</td></tr>
@@ -42,7 +31,6 @@
             <tr><td>공고내용</td><td>{{object.text}}</td></tr>
             <tr><td>작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
             <tr><td>결재일</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
-            <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
                 <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
                 <td><a href="{{object.file.url}}">{{object.file}}</a></td>

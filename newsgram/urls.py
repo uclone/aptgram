@@ -11,6 +11,7 @@ urlpatterns = [
     path('upload/', NewsUploadView.as_view(), name='news_upload'),
     path('delete/<int:pk>/', NewsDeleteView.as_view(), name='news_delete'),
     path('update/<int:pk>/', NewsUpdateView.as_view(), name='news_update'),
+    path('photoupdate/<int:pk>/', PhotoUpdateView.as_view(), name='photo_update'),
     path('detail/<int:pk>/', DetailView.as_view(model=News, template_name='newsgram/news_detail.html'), name='news_detail'),
 
     path('makepdf/', generate_pdf, name='generate_pdf'),  # weasyprint

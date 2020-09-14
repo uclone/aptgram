@@ -48,8 +48,9 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
         form = User(request.POST)
         form.instance.author = author_field
         if form.is_valid():
-            form.save()
-            User.objects.filter(id=pk).delete()
+            if '1급' in request.user.last_name:
+                form.save()
+                User.objects.filter(id=pk).delete()
             return redirect('accounts:account_list')
         return render(request, 'accounts/account_update.html', {'form': form})
 

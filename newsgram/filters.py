@@ -17,7 +17,7 @@ class SearchFilter(django_filters.FilterSet):
 #            'release_date': ['exact', 'year__gt'],
 #        }
 
-class GongoFilter(django_filters.FilterSet):
+class NewsFilter(django_filters.FilterSet):
     class Meta:
         model = News
         fields = {

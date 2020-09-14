@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-list</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>주민자료<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">동</th>
+                <th scope="col">호</th>
+                <th scope="col">공고일자</th>
+                <th scope="col">공고제목</th>
+                <th scope="col">작성일</th>
+                <th scope="col">결재일</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr>
+                <td>{{post.dong}}</td>
+                <td>{{post.ho}}</td>
+                <td>{{post.date|date:"Y-m-d"}}</td>
+                <td>{{post.subject}}</td>
+                <td>{{post.created|date:"Y-m-d" }}</td>
+                <td>{{post.updated|date:"Y-m-d" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>
