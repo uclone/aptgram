@@ -95,7 +95,7 @@ class SusunUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.file = file_field
         if form.is_valid():
             form.save()
-            Susun.objects.filter(id=pk).delete()
+#            Susun.objects.filter(id=pk).delete()
             return redirect('susungram:susun_list')
         return render(request, 'susungram/susun_update.html', {'form': form})
 

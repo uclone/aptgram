@@ -108,7 +108,7 @@ class LifeUpdateJuminView(LoginRequiredMixin, UpdateView):
             elif '3급' in request.user.last_name and user_dept in instance.department:               # check User grade
                 form.instance.remark = ' '
                 form.save()                                                                         # check User grade
-            Life.objects.filter(id=pk).delete()
+#            Life.objects.filter(id=pk).delete()
             return redirect('lifegram:life_list')
         return render(request, 'lifegram/life_update.html', {'form': form})
 
@@ -157,6 +157,7 @@ class LifeUpdateView(LoginRequiredMixin, UpdateView):
         obj = Life.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         photo_2_field = getattr(obj, field_photo_2)
+
         form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.photo_2 = photo_2_field
@@ -172,7 +173,7 @@ class LifeUpdateView(LoginRequiredMixin, UpdateView):
             elif '3급' in request.user.last_name and user_dept in instance.department:               # check User grade
                 form.instance.remark = ' '
                 form.save()                                                                         # check User grade
-            Life.objects.filter(id=pk).delete()
+#            Life.objects.filter(id=pk).delete()
             return redirect('lifegram:life_list')
         return render(request, 'lifegram/life_update.html', {'form': form})
 

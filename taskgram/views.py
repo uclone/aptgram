@@ -149,15 +149,15 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 
     def task_update(self, request, pk):
         instance = Task()
-        field_author = 'author'
-        field_photo = 'photo'
+        #field_author = 'author'
+        #field_photo = 'photo'
         obj = Task.objects.filter(id=pk).first()
-        author_field = getattr(obj, field_author)
-        photo_field = getattr(obj, field_photo)
-
+        author_field = getattr(obj, 'author')
+        photo_field = getattr(obj, 'photo')
         form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.photo = photo_field
+
         if form.is_valid():
             user_dept = request.user.last_name[0:2]  # check User grade
             user_name = request.user.first_name
@@ -168,7 +168,6 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
             elif '3급' in request.user.last_name and user_name in instance.charge:
                 form.instance.remark = ' '
                 form.save()
-            Task.objects.filter(id=pk).delete()
             return redirect('taskgram:task_list')
         return render(request, 'taskgram/task_update.html', {'form': form})
 

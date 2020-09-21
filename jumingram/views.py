@@ -103,7 +103,7 @@ class JuminUpdateView(LoginRequiredMixin, UpdateView):
             if '1급' not in request.user.last_name:
                 form.instance.remark=' '
             form.save()
-            Jumin.objects.filter(id=pk).delete()
+#            Jumin.objects.filter(id=pk).delete()
             return redirect('jumingram:jumin_list')
         return render(request, 'jumingram/jumin_update.html', {'form': form})
 

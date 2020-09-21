@@ -24,12 +24,10 @@
             <tr>
                 <th scope="col">아파트명</th>
                 <th scope="col">담당부서</th>
-                <th scope="col">담당자</th>
-                <th scope="col">결재자</th>
-                <th scope="col">관리소장</th>
+                <th scope="col">기안자</th>
                 <th scope="col">업무제목</th>
-                <th scope="col">최초작성</th>
-                <th scope="col">수정일자</th>
+                <th scope="col">결재자</th>
+                <th scope="col">결재일시</th>
             </tr>
         </thead>
         <tbody>
@@ -38,12 +36,10 @@
                 <tr>
                     <td>{{post.group}}</td>
                     <td>{{post.department}}</td>
-                    <td>{{post.charge}}</td>
-                    <td>{{post.manager}}</td>
-                    <td>{{post.director}}</td>
+                    <td>{{post.author}}</td>
                     <td><a href="{% url 'filegram:file_detail' pk=post.id %}">{{post.subject}}</a></td>
-                    <td>{{post.created|date:"Y-m-d"}}</td>
-                    <td>{{post.updated|date:"Y-m-d"}}</td>
+                    <td>{{post.approval}}</td>
+                    <td>{{post.created|date:"Y-m-d:H-i-s(T)"}}</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -128,7 +128,7 @@ class SulbiUpdateView(LoginRequiredMixin, UpdateView):
             elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
                 form.instance.remark = ' '
                 form.save()                                                                         # check User grade
-            #Sulbi.objects.filter(id=pk).delete()
+#            Sulbi.objects.filter(id=pk).delete()
             return redirect('sulbigram:sulbi_list')
         return render(request, 'sulbigram/sulbi_update.html', {'form': form})
 

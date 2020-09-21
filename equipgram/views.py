@@ -113,10 +113,10 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
         obj = Equip.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         file_field = getattr(obj, field_file)
-
         form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.file = file_field
+
         if form.is_valid():
             user_dept = request.user.last_name[0:2]  # check User grade
             if '1급' in request.user.last_name:                                                      #check User grade

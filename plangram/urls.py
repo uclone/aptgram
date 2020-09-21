@@ -10,7 +10,8 @@ urlpatterns = [
     path('', plan_list, name='plan_list'),
     path('upload/', PlanUploadView.as_view(), name='plan_upload'),
     path('delete/<int:pk>/', PlanDeleteView.as_view(), name='plan_delete'),
-    path('update/<int:pk>/', PlanUpdateView.as_view(), name='plan_update'),
+    path('issue/<int:pk>/', plan_issue, name='plan_issue'),
+    path('password/', plan_password, name='plan_password'),
     path('detail/<int:pk>/', DetailView.as_view(model=Plan, template_name='plangram/plan_detail.html'), name='plan_detail'),
 
     path('makepdf/', generate_pdf, name='generate_pdf'),                #weasyprint
@@ -18,6 +19,4 @@ urlpatterns = [
 
     url(r'^searchpdf/$', search_pdf, name='search_pdf'),
     url(r'^search/$', plan_search, name='plan_search'),                 # search
-
-    path('schedule/', check_schedule, name='check_schedule'),
 ]

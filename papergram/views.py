@@ -97,7 +97,7 @@ class PaperUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.file = file_field
         if form.is_valid():
             form.save()
-            Paper.objects.filter(id=pk).delete()
+#            Paper.objects.filter(id=pk).delete()
             return redirect('papergram:paper_list')
         return render(request, 'papergram/paper_update.html', {'form': form})
 

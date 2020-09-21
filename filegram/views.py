@@ -47,13 +47,6 @@ def file_list(request):
 
 @login_required
 def file_search(request):
-    #try:
-    #    request_user = request.user
-    #    data = File.objects.filter(author_id=request_user.id).first()
-    #    file_list = File.objects.filter(group_id=data.group_id)
-    #except:
-    #    file_list = File.objects.filter(group_id=1)
-
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
         user_dept = request.user.last_name[0:2]                                     #for user's department
@@ -107,36 +100,60 @@ class FileUploadView(LoginRequiredMixin, CreateView):
             return redirect('filegram:file_list')
         return self.render_to_response({'form': form})
 
-class FileUpdateView(LoginRequiredMixin, UpdateView):
-    model = File
-    form_class = DateForm
-    template_name = 'filegram/file_update.html'
+def file_approval(request, pk):
+    user_job = request.user.last_name
+    instance = File()
+    obj = File.objects.filter(id=pk).last()
+    author_field = getattr(obj, 'author')
+    group_field = getattr(obj, 'group')
+    department_field = getattr(obj, 'department')
+    subject_field = getattr(obj, 'subject')
+    abstract_field = getattr(obj, 'abstract')
+    file_field = getattr(obj, 'file')
+    charge_field = getattr(obj, 'charge')
+    manager_field = getattr(obj, 'manager')
+    director_field = getattr(obj, 'director')
+    board_field = getattr(obj, 'board')
+    super_field = getattr(obj, 'super')
+    visor_field = getattr(obj, 'visor')
 
-    def file_update(self, request, pk):
-        instance = File()
-        field_author = 'author'
-        field_file = 'file'
-        obj = File.objects.filter(id=pk).first()
-        author_field = getattr(obj, field_author)
-        file_field = getattr(obj, field_file)
+    form = DateForm(request.POST, request.FILES, instance=instance)
+    request.POST._mutable = True
+    request.POST['department'] = department_field
+    request.POST['subject'] = subject_field
+    request.POST['abstract'] = abstract_field
+    request.POST['file'] = file_field
 
-        form = DateForm(request.POST, request.FILES, instance=instance)
-        form.instance.author = author_field
-        form.instance.file = file_field
-        if form.is_valid():
-            user_dept = request.user.last_name[0:2]  # check User grade
-            user_name = request.user.first_name
-            if '1급' in request.user.last_name:                                       #or user_dept in instance.department:
-                form.save()
-            elif '2급' in request.user.last_name and user_dept in instance.department:
-                form.save()
-            elif '3급' in request.user.last_name and user_name in instance.charge:
-                form.instance.remark = ' '
-                form.save()
-            File.objects.filter(id=pk).delete()
-            return redirect('filegram:file_list')
-        return render(request, 'filegram/file_update.html', {'form': form})
+    if '반장' not in user_job:
+        request.POST['charge'] = charge_field
+    if '과장' not in user_job:
+        request.POST['manager'] = manager_field
+    if '소장' not in user_job:
+        request.POST['director'] = director_field
+    if '이사' not in user_job:
+        request.POST['board'] = board_field
+    if '감사' not in user_job:
+        request.POST['super'] = super_field
+    if '회장' not in user_job:
+        request.POST['visor'] = visor_field
 
+    form.instance.author_id = request.user.id
+    form.instance.group_id = request.user.groups.values_list('id', flat=True).last()
+    form.instance.author = author_field
+    form.instance.group = group_field
+
+    if form.is_valid():
+        user_dept = request.user.last_name[0:2]  # check User grade
+        #user_name = request.user.first_name
+        if '1급' in request.user.last_name:
+            form.save()
+        elif '2급' in request.user.last_name and user_dept in instance.department:
+            form.save()
+        elif '3급' in request.user.last_name and user_dept in instance.department:
+            form.instance.remark = ' '
+            form.save()
+        return redirect('filegram:file_list')
+    return render(request, 'filegram/file_approval.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):
@@ -177,3 +194,33 @@ def search_pdf(request):
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
+
+####################################################################################
+#class FileUpdateView(LoginRequiredMixin, UpdateView):
+#    model = File
+#    form_class = DateForm
+#    template_name = 'filegram/file_update.html'
+
+#    def file_update(self, request, pk):
+#        instance = File()
+#        field_author = 'author'
+#        field_file = 'file'
+#        obj = File.objects.filter(id=pk).first()
+#        author_field = getattr(obj, field_author)
+#        file_field = getattr(obj, field_file)
+
+#        form = DateForm(request.POST, request.FILES, instance=instance)
+#        form.instance.author = author_field
+#        form.instance.file = file_field
+#        if form.is_valid():
+#            user_dept = request.user.last_name[0:2]  # check User grade
+#            user_name = request.user.first_name
+#            if '1급' in request.user.last_name:                                       #or user_dept in instance.department:
+#                form.save()
+#            elif '2급' in request.user.last_name and user_dept in instance.department:
+#                form.save()
+#            elif '3급' in request.user.last_name and user_name in instance.charge:
+#                form.instance.remark = ' '
+#                form.save()
+#            return redirect('filegram:file_list')
+#        return render(request, 'filegram/file_update.html', {'form': form})

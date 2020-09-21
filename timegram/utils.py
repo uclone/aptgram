@@ -69,7 +69,8 @@ class Calendar(HTMLCalendar):
 		events = event_data.filter(start_time__year=self.year, start_time__month=self.month)
 #---leebc---
 		cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
-		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+		xx = self.formatmonthname(self.year, self.month, withyear=withyear)
+		cal += f'{change_month(xx)}\n'
 		cal += f'{self.formatweekheader()}\n'
 		for week in self.monthdays2calendar(self.year, self.month):
 			cal += f'{self.formatweek(week, events)}\n'
@@ -79,8 +80,35 @@ class Calendar(HTMLCalendar):
 		#------------
 		return cal
 
-#############################################################################################################
-#############################################################################################################
+def change_month(name):
+	if 'Jan' in name:
+		number = name.replace('January', '1월')
+	if 'Feb' in name:
+		number = name.replace('February', '2월')
+	if 'Mar' in name:
+		number = name.replace('March', '3월')
+	if 'Apr' in name:
+		number = name.replace('April', '4월')
+	if 'May' in name:
+		number = name.replace('May', '5월')
+	if 'Jun' in name:
+		number = name.replace('June', '6월')
+	if 'July' in name:
+		number = name.replace('July', '7월')
+	if 'Aug' in name:
+		number = name.replace('August', '8월')
+	if 'Sep' in name:
+		number = name.replace('September', '9월')
+	if 'Oct' in name:
+		number = name.replace('October', '10월')
+	if 'Nov' in name:
+		number = name.replace('November', '11월')
+	if 'Dec' in name:
+		number = name.replace('December', '12월')
+	return number
+
+############################################################################################################
+############################################################################################################
 
 class Scalendar(HTMLCalendar):
 	def __init__(self, year=None, month=None, day=None):
@@ -100,7 +128,9 @@ class Scalendar(HTMLCalendar):
 		events = event_data.filter(start_time__year=self.year, start_time__month=self.month)
 		# ---leebc---
 		cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
-		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+		#cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
+		xx = self.formatmonthname(self.year, self.month, withyear=withyear)
+		cal += f'{change_month(xx)}\n'
 		cal += f'{self.formatweekheader()}\n'
 		for week in self.monthdays2calendar(self.year, self.month):
 			cal += f'{self.formatweek(week, events)}\n'

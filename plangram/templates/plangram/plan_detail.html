@@ -9,11 +9,10 @@
 {% block content %}
     <p></p>
     <div class="btn-group float-right">
-        <a href="{% url 'plangram:plan_update' pk=object.id %}" class="btn btn-info btn-sm">수정하기</a>&nbsp;&nbsp;
-        <a href="{% url 'plangram:plan_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        <a href="{% url 'plangram:plan_issue' pk=object.id %}" class="btn btn-info btn-sm">비번발급</a>&nbsp;&nbsp;
         <a href="{% url 'plangram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-group float-left">
-        <a href="{% url 'plangram:plan_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
+        <a href="{% url 'plangram:plan_list' %}" class="btn btn-info btn-sm">기록보기</a></div>
     <p></p>
 
     <table class="table">
@@ -25,23 +24,14 @@
         </thead>
 
         <tbody>
-            <tr><td>작성자</td><td>{{object.author.username}}</td></tr>
+            <tr><td>사용자</td><td>{{object.author.username}}</td></tr>
             <tr><td>아파트명</td><td>{{object.group}}</td></tr>
-            <tr><td>업무개시</td><td>{{object.start|date:"Y-m-d"}}</td></tr>
-            <tr><td>업무완료</td><td>{{object.close|date:"Y-m-d"}}</td></tr>
-            <tr><td>담당부서</td><td>{{object.department}}</td></tr>
-            <tr><td>담당자</td><td>{{object.charge}}</td></tr>
-            <tr><td>업무제목</td><td>{{object.subject}}</td></tr>
-            <tr><td>업무내역</td><td>{{object.task}}</td></tr>
-            <tr>
-                <td><a href="{{object.photo.url}}">사진연결</a></td>
-                <td><img src="{{object.photo.url}}" width="300" height="300"></td>
-            </tr>
-            <tr><td>관리자</td><td>{{object.manager}}</td></tr>
-            <tr><td>관리소장</td><td>{{object.director}}</td></tr>
-            <tr><td>비고</td><td>{{object.remark}}</td></tr>
-            <tr><td>최초작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
-            <tr><td>수정일자</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+            <tr><td>부서</td><td>{{object.department}}</td></tr>
+            <tr><td>직위직급</td><td>{{object.subject}}</td></tr>
+            <tr><td>기본비번</td><td>{{object.regpsw}}</td></tr>
+            <tr><td>사용비번</td><td>{{object.usepsw}}</td></tr>
+            <tr><td>용도</td><td>{{object.remark}}</td></tr>
+            <tr><td>발급일시</td><td>{{object.created|date:"Y-m-d:H-i-s(T)"}}</td></tr>
         </tbody>
     </table>
 

@@ -54,7 +54,7 @@ def next_month(d):
 
 @login_required
 def event(request, event_id=None):
-    instance = Time()
+    #instance = Time()
     if event_id:
         instance = get_object_or_404(Time, pk=event_id)
     else:

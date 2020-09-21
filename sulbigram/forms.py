@@ -5,8 +5,12 @@ from bootstrap_datepicker_plus import DatePickerInput
 department_choice= [
     ('관리부', '관리부'),
     ('경리부', '경리부'),
+    ('설비부', '설비부'),
+    ('전기부', '전기부'),
+    ('영선부', '영선부'),
+    ('조겅부', '조경부'),
     ('환경부', '환경부'),
-    ('보안부', '보안부'),
+    ('경비부', '경비부'),
     ]
 
 cycle_choice= [

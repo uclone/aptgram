@@ -116,7 +116,7 @@ class NewsUpdateView(LoginRequiredMixin, UpdateView):
             if '1급' not in request.user.last_name:
                 form.instance.remark=' '
             form.save()
-            News.objects.filter(id=pk).delete()
+#            News.objects.filter(id=pk).delete()
             return redirect('newsgram:news_list')
         return render(request, 'newsgram/news_update.html', {'form': form})
 
@@ -126,20 +126,21 @@ class PhotoUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'newsgram/news_update.html'
 
     def photo_update(self, request, pk):
+        instance = News()
         field_author = 'author'
         field_photo = 'photo'
         obj = News.objects.filter(id=pk).first()
         author_field = getattr(obj, field_author)
         photo_field = getattr(obj, field_photo)
 
-        form = DateForm(request.POST)
+        form = DateForm(request.POST, request.FILES, instance=instance)
         form.instance.author = author_field
         form.instance.photo = photo_field
         if form.is_valid():
             if '1급' not in request.user.last_name:
                 form.instance.remark=' '
             form.save()
-            News.objects.filter(id=pk).delete()
+#            News.objects.filter(id=pk).delete()
             return redirect('newsgram:news_list')
         return render(request, 'newsgram/news_update.html', {'form': form})
 
