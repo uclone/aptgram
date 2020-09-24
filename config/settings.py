@@ -30,6 +30,7 @@ SECRET_KEY = '47z6b0hi+&twg!)y&-vrzmue=cf#+y_tmjb2)!t5*_%(4er+)c'
 
 
 # SECURITY WARNING: don't run with debug turned on in production! ---------------Amazon Server AWS EC2
+# for AMAZON
 #DEBUG = False
 #ALLOWED_HOSTS = ['.compute.amazonaws.com']                       #---------------Amazon Server AWS EC2
 # for Heroku

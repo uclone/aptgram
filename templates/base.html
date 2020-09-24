@@ -40,10 +40,11 @@
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'lifegram:life_list' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표 &raquo;</a></li>
                         {% else %}
                         <li class="nav-item"><a href="{% url 'newsgram:news_list_jumin' %}" class="active nav-link">&laquo; 공고읽기 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'lifegram:life_upload_jumin' %}" class="active nav-link">&laquo; 민원접수 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표하기 &raquo;</a></li>
                         {% endif %}
                         {% if "리" in user.last_name or "1급" in user.last_name %}
                         <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">&laquo; 주민 &raquo;</a></li>
