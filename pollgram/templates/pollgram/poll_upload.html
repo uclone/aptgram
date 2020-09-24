@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>life-upload</title>
+
+{% block extrahead %}
+{{ pform.media }}
+{{ cform.media }}
+{% endblock %}
+
+</head>
+<body>
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 panel panel-default">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% bootstrap_form pform %}
+                    {% csrf_token %}
+                    {% for form in cform %}
+                    {% bootstrap_form form %}
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="작성완료">
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+{% endblock %}
+</body>
+</html>

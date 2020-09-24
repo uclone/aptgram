@@ -23,27 +23,26 @@
 
 
         <tbody>
-        {% for post in form %}
-            <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
-            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
-            <tr><td>신청인</td><td>{{post.applicant}}</td></tr>
-            <tr><td>민원일자</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
-            <tr><td>민원제목</td><td>{{post.subject}}</td></tr>
-            <tr><td>민원내용</td><td>{{post.task_1}}</td></tr>
+            <tr><td>작성자</td><td>{{form.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{form.group}}</td></tr>
+            <tr><td>신청인</td><td>{{form.applicant}}</td></tr>
+            <tr><td>민원일자</td><td>{{form.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>민원제목</td><td>{{form.subject}}</td></tr>
+            <tr><td>민원내용</td><td>{{form.task_1}}</td></tr>
             <tr>
-                <td><a href="{{post.photo_1.url}}">민원사진</a></td>
-                <td><img src="{{post.photo_1.url}}" width="300" height="300"></td>
+                <td><a href="{{form.photo_1.url}}">민원사진</a></td>
+                <td><img src="{{form.photo_1.url}}" width="300" height="300"></td>
             </tr>
-            <tr><td>주민후기</td><td>{{post.response}}</td></tr>
-            <tr><td>담당부서</td><td>{{post.department}}</td></tr>
-            <tr><td>담당자</td><td>{{post.charge}}</td></tr>
-            <tr><td>진행상황</td><td>{{post.progress}}</td></tr>
-            <tr><td>처리일자</td><td>{{post.date|date:"Y-m-d"}}</td></tr>
-            <tr><td>완료일자</td><td>{{post.close|date:"Y-m-d"}}</td></tr>
-            <tr><td>처리결과</td><td>{{post.task_2}}</td></tr>
+            <tr><td>주민후기</td><td>{{form.response}}</td></tr>
+            <tr><td>담당부서</td><td>{{form.department}}</td></tr>
+            <tr><td>담당자</td><td>{{form.charge}}</td></tr>
+            <tr><td>진행상황</td><td>{{form.progress}}</td></tr>
+            <tr><td>처리일자</td><td>{{form.date|date:"Y-m-d"}}</td></tr>
+            <tr><td>완료일자</td><td>{{form.close|date:"Y-m-d"}}</td></tr>
+            <tr><td>처리결과</td><td>{{form.task_2}}</td></tr>
             <tr>
-                <td><a href="{{post.photo_2.url}}">처리사진</a></td>
-                <td><img src="{{post.photo_2.url}}" width="300" height="300"></td>
+                <td><a href="{{form.photo_2.url}}">처리사진</a></td>
+                <td><img src="{{form.photo_2.url}}" width="300" height="300"></td>
             </tr>
         {% endfor %}
         </tbody>

@@ -36,6 +36,7 @@ urlpatterns = [
     path('timegram/', include('timegram.urls')),
     path('newsgram/', include('newsgram.urls')),
     path('introgram/', include('introgram.urls')),
+    path('pollgram/', include('pollgram.urls')),
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)        #transfered to Amazon

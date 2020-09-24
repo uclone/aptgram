@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-detail</title>
+</head>
+<body>
+    <h1>Aptgram Publishing</h1>
+    <h3>상세 - 투표결과<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>작성자</td><td>{{pfiles.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{pfiles.group}}</td></tr>
+            <tr><td>투표:선거</td><td>{{pfiles.subject}}</td></tr>
+            <tr><td>공고일자</td><td>{{pfiles.pub_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>개시일자</td><td>{{pfiles.open_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>종료일자</td><td>{{pfiles.close_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>비고</td><td>{{pfiles.remark}}</td></tr>
+            <tr><td>기안일자</td><td>{{pfiles.created|date:"Y-m-d"}}</td></tr>
+        </tbody>
+    </table>
+    <p></p>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th scope="col">선택:후보</th>
+                <th scope="col">득표수</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% csrf_token %}
+            {% for post in cfiles %}
+                {% if "None" not in post.selection %}
+            <tr><td>{{post.selection}}</td><td>{{post.votes}}</td></tr>
+                {% endif %}
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <p></p>
+
+</body>
+</html>

@@ -35,6 +35,7 @@
                         {% else %}
                         <li><a href="{% url 'newsgram:news_list_jumin' %}">공고읽기</a></li>
                         <li><a href="{% url 'lifegram:life_upload_jumin' %}">민원신청</a></li>
+                        <li><a href="{% url 'pollgram:poll_list' %}">투표관리</a></li>
                         {% endif %}
                         {% if "리" in user.last_name or "1급" in user.last_name %}
                         <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>

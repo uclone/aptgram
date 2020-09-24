@@ -19,19 +19,19 @@
 
         <tbody>
         {% for post in files %}
-            <tr><td>작성자</td><td>{{object.author}}</td></tr>
-            <tr><td>아파트명</td><td>{{object.group}}</td></tr>
-            <tr><td>담당부서</td><td>{{object.department}}</td></tr>
-            <tr><td>업무제목</td><td>{{object.subject}}</td></tr>
-            <tr><td>업무내역</td><td>{{object.abstract|linebreaksbr}}</td></tr>
-            <tr><td>결재자(직위, 이름)</td><td>{{object.approval}}</td></tr>
-            <tr><td>반장비번</td><td>{{object.charge}}</td></tr>
-            <tr><td>과장비번</td><td>{{object.manager}}</td></tr>
-            <tr><td>소장비번</td><td>{{object.director}}</td></tr>
-            <tr><td>이사비번</td><td>{{object.super}}</td></tr>
-            <tr><td>감사비번</td><td>{{object.super}}</td></tr>
-            <tr><td>회장비번</td><td>{{object.super}}</td></tr>
-            <tr><td>결재(기안)일시</td><td>{{object.created|date:"Y-m-d:H-i-s(T)"}}</td></tr>
+            <tr><td>작성자</td><td>{{post.author}}</td></tr>
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>담당부서</td><td>{{post.department}}</td></tr>
+            <tr><td>업무제목</td><td>{{post.subject}}</td></tr>
+            <tr><td>업무내역</td><td>{{post.abstract|linebreaksbr}}</td></tr>
+            <tr><td>결재자(직위, 이름)</td><td>{{post.approval}}</td></tr>
+            <tr><td>반장비번</td><td>{{post.charge}}</td></tr>
+            <tr><td>과장비번</td><td>{{post.manager}}</td></tr>
+            <tr><td>소장비번</td><td>{{post.director}}</td></tr>
+            <tr><td>이사비번</td><td>{{post.super}}</td></tr>
+            <tr><td>감사비번</td><td>{{post.super}}</td></tr>
+            <tr><td>회장비번</td><td>{{post.super}}</td></tr>
+            <tr><td>결재(기안)일시</td><td>{{post.created|date:"Y-m-d:H-i-s(T)"}}</td></tr>
             <tr>
                 <td><a href="{{post.file.url}}">문서다운로드</a></td>
                 <td><a href="{{post.file.url}}">{{post.file}}</a></td>

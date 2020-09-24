@@ -30,6 +30,28 @@ def jumin_list(request):
     # pagination - end ----------------
     return render(request, 'jumingram/jumin_list.html', {'files':files})
 
+@login_required
+def jumin_ticket(request):
+    group_id = request.user.groups.values_list('id', flat=True).first()
+    pagefiles = Jumin.objects.filter(group_id=group_id)
+    # ticket distribution -------------
+    if '1급' in request.user.last_name:
+        for x in pagefiles:
+            if '급' not in x.dong:
+                x.ticket += 1
+                x.save()
+    # pagination - start --------------
+    page = request.GET.get('page', 1)
+    paginator = Paginator(pagefiles, 10)
+    try:
+        files = paginator.page(page)
+    except PageNotAnInteger:
+        files = paginator.page(1)
+    except EmptyPage:
+        files = paginator.page(paginator.num_pages)
+    # pagination - end ----------------
+    return render(request, 'jumingram/jumin_list.html', {'files':files})
+
 def jumin_list_date(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()

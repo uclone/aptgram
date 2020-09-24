@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'newsgram',
     'django.contrib.humanize',
     'introgram',
+    'pollgram',
 ]
 
 MIDDLEWARE = [

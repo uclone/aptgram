@@ -22,23 +22,25 @@
             </tr>
         </thead>
 
-         <tbody>
-            <tr><td>아파트명</td><td>{{object.group}}</td></tr>
-            <tr><td>동</td><td>{{object.dong}}</td></tr>
-            <tr><td>호</td><td>{{object.ho}}</td></tr>
-            <tr><td>공고일자</td><td>{{object.date|date:"Y-m-d"}}</td></tr>
-            <tr><td>공고제목</td><td>{{object.subject}}</td></tr>
-            <tr><td>공고내용</td><td>{{object.text}}</td></tr>
-            <tr><td>작성일</td><td>{{object.created|date:"Y-m-d"}}</td></tr>
-            <tr><td>결재일</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
+        <tbody>
+
+            <tr><td>아파트명</td><td>{{form.group}}</td></tr>
+            <tr><td>동</td><td>{{form.dong}}</td></tr>
+            <tr><td>호</td><td>{{form.ho}}</td></tr>
+            <tr><td>공고일자</td><td>{{form.date|date:"Y-m-d"}}</td></tr>
+            <tr><td>공고제목</td><td>{{form.subject}}</td></tr>
+            <tr><td>공고내용</td><td>{{form.text}}</td></tr>
+            <tr><td>작성일</td><td>{{form.created|date:"Y-m-d"}}</td></tr>
+            <tr><td>결재일</td><td>{{form.updated|date:"Y-m-d"}}</td></tr>
             <tr>
-                <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
-                <td><a href="{{object.file.url}}">{{object.file}}</a></td>
+                <td><a href="{{form.file.url}}">공고문서</a></td>
+                <td><a href="{{form.file.url}}">{{form.file}}</a></td>
             </tr>
             <tr>
-                <td><a href="{{object.photo.url}}">자세히보기</a></td>
-                <td><a href="{{object.photo.url}}">{{object.photo}}</a></td>
+                <td><a href="{{form.photo.url}}">첨부사진</a></td>
+                <td><a href="{{form.photo.url}}">{{form.photo}}</a></td>
             </tr>
+
         </tbody>
     </table>
 

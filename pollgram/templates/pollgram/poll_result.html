@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>polle-detail</title>
+</head>
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-group float-right">
+        <a href="{% url 'pollgram:poll_update' pk=object.id %}" class="btn btn-info btn-sm">민원처리</a>&nbsp;&nbsp;
+        {% if "1급" in user.last_name %}
+        <a href="{% url 'pollgram:poll_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        {% endif %}
+        <a href="{% url 'pollgram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
+    </div>
+    <div class="btn-group float-left">
+        <a href="{% url 'pollgram:poll_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
+    <p></p>
+
+
+
+
+    <h1>{{poll.subject}}</h1>
+    {% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
+
+    <ul>
+        {% for x in form.choice_set_all %}
+        <li>{{choice.selection}} -- {{choice.votes}} vote{{choice.votes|pluralize}}</li>
+        {% endfor %}
+    </ul>
+
+    <a ref="{% url 'pollgram:poll_detail' object.id %}">재투표?</a>
+
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+        {% for post in form %}
+            <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
+            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
+            <tr><td>투표:선거</td><td>{{post.subject}}</td></tr>
+            <tr><td>공고일자</td><td>{{post.pub_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>개시일자</td><td>{{post.open_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>종료일자</td><td>{{post.close_date|date:"Y-m-d"}}</td></tr>
+            <tr><td>비고</td><td>{{object.remark}}</td></tr>
+            <tr><td>기안일자</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+<head>
+    <meta charset="UTF-8">
+    <title>poll-search</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <form method="get">
+        {% bootstrap_form filter.form %}
+
+        {% if "급" in user.last_name %}
+        <div class="btn-group float-right">&nbsp;&nbsp;
+        <a href="{% url 'pollgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+        {% endif %}
+
+        <div class="btn-group float-left">
+        <a href="{% url 'pollgram:poll_list' %}" class="btn btn-info btn-sm">투표:선거목록</a></div>
+
+        <button type="submit" class="btn btn-info btn-sm float-right">검색하기</button>
+    </form>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">아파트</th>
+                <th scope="col">투표:선거제목</th>
+                <th scope="col">비고</th>
+                <th scope="col">투표공개</th>
+                <th scope="col">투표개시</th>
+                <th scope="col">투표완료</th>
+                <th scope="col">투표기안</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in filter.qs %}
+            <tr>
+                <td>{{post.group}}</td>
+                <td><a href="{% url 'pollgram:poll_detail' pk=post.id %}">{{post.title}}</a></td>
+                <td>{{post.remark}}</td>
+                <td>{{post.pub_date|date:"Y-m-d"}}</td>
+                <td>{{post.open_date|date:"Y-m-d:H-i-s(T)"}}</td>
+                <td>{{post.close_date|date:"Y-m-d:H-i-s(T)"}}</td>
+                <td>{{post.created|date:"Y-m-d"}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+</body>
+</html>

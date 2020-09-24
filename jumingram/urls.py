@@ -14,6 +14,7 @@ urlpatterns = [
     path('update/<int:pk>/', JuminUpdateView.as_view(), name='jumin_update'),
     path('detail/<int:pk>/', DetailView.as_view(model=Jumin, template_name='jumingram/jumin_detail.html'), name='jumin_detail'),
 
+    path('ticket', jumin_ticket, name='jumin_ticket'),
     path('makepdf/', generate_pdf, name='generate_pdf'),  # weasyprint
     path('detailpdf/<int:pk>', detail_pdf, name='detail_pdf'),  # weasyprint ####New
 

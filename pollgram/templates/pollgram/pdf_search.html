@@ -2,11 +2,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>pdf-list</title>
+    <title>pdf-search</title>
 </head>
 <body>
     <h1>Aptgram Publishing</h1>
-    <h3>문서목록<span class="secondary">{{ myDate | date:"M d, Y" }}</span></h3>
+    <h3>투표목록<span class="secondary">{{ myDate | date:"Y-m-d" }}</span></h3>
 
     <table class="container_big">
         <thead>
@@ -22,7 +22,7 @@
         </thead>
 
         <tbody>
-        {% for post in files %}
+        {% for post in filter %}
             <tr>
                 <td>{{post.group}}</td>
                 <td>{{post.title}}</td>
@@ -31,6 +31,7 @@
                 <td>{{post.open_date|date:"Y-m-d:H-i-s(T)"}}</td>
                 <td>{{post.close_date|date:"Y-m-d:H-i-s(T)"}}</td>
                 <td>{{post.created|date:"Y-m-d"}}</td>
+
             </tr>
         {% endfor %}
         </tbody>

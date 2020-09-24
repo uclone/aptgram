@@ -12,7 +12,7 @@
     <div class="btn-group float-right">
         {% if "리" in user.last_name or "1급" in user.last_name %}
         <a href="{% url 'newsgram:news_update' pk=object.id %}" class="btn btn-info btn-sm">공고수정</a>&nbsp;&nbsp;
-        <a href="{% url 'photogram:photo_update' pk=object.id %}" class="btn btn-info btn-sm">홍보수정</a>&nbsp;&nbsp;
+        <a href="{% url 'newsgram:photo_update' pk=object.id %}" class="btn btn-info btn-sm">홍보수정</a>&nbsp;&nbsp;
         {% endif %}
         {% if "1급" in user.last_name %}
         <a href="{% url 'newsgram:news_delete' pk=object.id %}" class="btn btn-danger btn-sm">공고삭제</a>&nbsp;&nbsp;
@@ -44,11 +44,11 @@
             <tr><td>결재일</td><td>{{object.updated|date:"Y-m-d"}}</td></tr>
             <tr><td>결재</td><td>{{object.remark}}</td></tr>
             <tr>
-                <td><a href="{{object.file.url}}">공고문서 다운로드</a></td>
+                <td><a href="{{object.file.url}}">공고문서</a></td>
                 <td><a href="{{object.file.url}}">{{object.file}}</a></td>
             </tr>
             <tr>
-                <td><a href="{{object.photo.url}}">자세히보기</a></td>
+                <td><a href="{{object.photo.url}}">첨부사진</a></td>
                 <td><a href="{{object.photo.url}}">{{object.photo}}</a></td>
             </tr>
         </tbody>
