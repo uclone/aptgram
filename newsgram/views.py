@@ -12,6 +12,10 @@ from .filters import SearchFilter
 from .forms import DateForm, NewsForm, PhotoForm
 
 @login_required
+def broadcasting(request):
+    return redirect("https://papago.naver.com")
+
+@login_required
 def news_list(request):
     try:
         group_id = request.user.groups.values_list('id', flat=True).first()

@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from .views import *
 from django.conf.urls import url
 from .models import News, Snews
+from .views import broadcasting
 
 app_name = 'newsgram'
 
@@ -22,4 +23,6 @@ urlpatterns = [
 
     path('detailjummin/<int:pk>', news_detail_jumin, name='news_detail_jumin'),  # mobile
     path('listjumin/', news_list_jumin, name='news_list_jumin'),
+
+    path('broadcasting/', broadcasting, name='broadcasting'),
 ]
