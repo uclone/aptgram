@@ -62,10 +62,11 @@ def life_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Slife.objects.all().delete()
+    Slife.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Slife(id=a.id, applicant=a.applicant, created=a.created, subject=a.subject, task_1=a.task_1, photo_1=a.photo_1,
-                  charge=a.charge, department=a.department, date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
+        b = Slife(id=a.id, author=a.author.username, group=a.group.name, applicant=a.applicant, created=a.created,
+                  subject=a.subject, task_1=a.task_1, photo_1=a.photo_1, charge=a.charge, department=a.department,
+                  date=a.date, close=a.close, task_2=a.task_2, photo_2=a.photo_2)
         b.save()
     return render(request, 'lifegram/life_search.html', {'filter': file_filter})
 
@@ -202,7 +203,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Slife.objects.all()
+    file_filter = Slife.objects.filter(author=request.user.username)
     html_string = render_to_string('lifegram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=life_search_{}.pdf'.format(request.user)

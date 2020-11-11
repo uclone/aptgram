@@ -67,14 +67,10 @@ def event(request, event_id=None):
 #leebc ----
     if request.POST and form.is_valid():
         if instance.action=='일정 삭제':
-            if '1급' in request.user.last_name:
-                instance.delete()
+            instance.delete()
         else:
-            if '1급' in request.user.last_name:
-                form.save()
-            elif '2급' in request.user.last_name:
-                form.instance.remark=' '
-                form.save()
+            form.save()
+
         return HttpResponseRedirect(reverse('timegram:schedule'))
     return render(request, 'timegram/event.html', {'form': form})
 
@@ -85,9 +81,16 @@ class XalendarView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        cal = Scalendar(d.year, d.month, self.kwargs['kk'])
+
+        #cal = Scalendar(d.year, d.month, self.kwargs['kk'])
+        xyear = int(self.kwargs['kk'] / 10000) + 2000
+        xmonth = int(self.kwargs['kk'] / 100) % 100
+        xday = self.kwargs['kk'] % 100
+        cal = Scalendar(xyear, xmonth, xday)
+
         group_id = self.request.user.groups.values_list('id', flat=True).first()		#lbc inserted a new line
-        html_cal = cal.formatmonth(group_id, self.kwargs['kk'], withyear=True)                             #lbc inserted 'group_id',
+        #html_cal = cal.formatmonth(group_id, self.kwargs['kk'], withyear=True)         #lbc inserted 'group_id',
+        html_cal = cal.formatmonth(group_id, xday, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)

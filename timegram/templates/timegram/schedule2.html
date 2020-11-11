@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     {% block title %} 일정보기 {% endblock %}
 
-
 </head>
 
 <body>
@@ -15,14 +14,12 @@
         <div class="col-md-2"></div>
         <div class="col-md-8 panel panel-default">
 
-
-        <div class="clearfix">
-            <a class="btn btn-primary left" href="{% url 'index:index' %}"> 초기화면 </a>
-            {% if "1급" in user.last_name or "2급" in user.last_name%}
-            <a class="btn btn-primary left" href="{% url 'timegram:event_new' %}"> 일정추가 </a>
-            {% endif %}
-            <a class="btn btn-success right" href="{% url 'timegram:schedule' %}?{{ prev_month }}"> 이전달 </a>
-            <a class="btn btn-success right" href="{% url 'timegram:schedule' %}?{{ next_month }}"> 다음달 </a>
+        <div class="btn-toolbar float-left">
+            <a class="btn btn-primary btn-sm" href="{% url 'index:index' %}"> 초기화면 </a>
+            <a class="btn btn-danger btn-sm" href="{% url 'timegram:event_new' %}"> 일정추가 </a></div>
+        <div class="btn-toolbar float-right">
+            <a class="btn btn-success btn-sm" href="{% url 'timegram:schedule' %}?{{ prev_month }}"> 이전달 </a>
+            <a class="btn btn-success btn-sm" href="{% url 'timegram:schedule' %}?{{ next_month }}"> 다음달 </a>
         </div>
 	    <p></p>
 

@@ -14,7 +14,7 @@ class TimeForm(ModelForm):
     # datetime-local is a HTML5 input type, format to make date time show on fields
 
     #fields = '__all__'
-    fields = ['action', 'subject', 'description', 'remark', 'start_time', 'end_time',]
+    fields = ['action', 'subject', 'description', 'appendix', 'remark', 'start_time', 'end_time',]
 
     widgets = {
      # 'start_time': DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'), #T%H:%M'),

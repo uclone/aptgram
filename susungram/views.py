@@ -44,10 +44,11 @@ def susun_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Ssusun.objects.all().delete()
+    Ssusun.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Ssusun(id=a.id, category=a.category, subject=a.subject, treatment=a.treatment, method=a.method, cycle=a.cycle,
-                   ratio=a.ratio, last=a.last, rule=a.rule, plan=a.plan, cost=a.cost, times=a.times, amount=a.amount)
+        b = Ssusun(id=a.id, author=a.author.username, group=a.group.name, category=a.category, subject=a.subject,
+                   treatment=a.treatment, method=a.method, cycle=a.cycle, ratio=a.ratio, last=a.last, rule=a.rule,
+                   plan=a.plan, cost=a.cost, times=a.times, amount=a.amount)
         b.save()
     return render(request, 'susungram/susun_search.html', {'filter': file_filter})
 
@@ -124,7 +125,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Ssusun.objects.all()
+    file_filter = Ssusun.objects.filter(author=request.user.username)
     html_string = render_to_string('susungram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=susun_search_{}.pdf'.format(request.user)

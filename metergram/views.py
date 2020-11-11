@@ -60,10 +60,10 @@ def meter_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Smeter.objects.all().delete()
+    Smeter.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Smeter(id=a.id, dong=a.dong, ho=a.ho, mtr=a.mtr, cor=a.cor, elec=a.elec, water=a.water,
-                   action=a.action, charge=a.charge, manager=a.manager)
+        b = Smeter(id=a.id, author=a.author.username, group=a.group.name, dong=a.dong, ho=a.ho, mtr=a.mtr, cor=a.cor,
+                   elec=a.elec, water=a.water, action=a.action, charge=a.charge, manager=a.manager)
         b.save()
     return render(request, 'metergram/meter_search.html', {'filter': file_filter})
 
@@ -131,7 +131,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Smeter.objects.all()
+    file_filter = Smeter.objects.filter(author=request.user.username)
     html_string = render_to_string('metergram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=meter_search_{}.pdf'.format(request.user)

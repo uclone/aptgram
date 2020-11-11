@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>양식장 관리상태</title>
+</head>
+
+<body>
+<div id="container">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+
+    function setChart() {
+        Highcharts.setOption({
+            global: {
+                useUTC: false
+            }
+        });
+    };
+
+    $.ajax({
+        url: "{% url 'shrimpgram:shrimp_api' idd=form.group %}",
+        dataType: 'json',
+        success: function (data) {
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+
+            Highcharts.stockChart("container", {
+                chart: {
+                    height: 600,
+                    zoomType: 'x',
+                    resetZoomButton: {
+                        position: {
+                            align: 'left',
+                            verticalAlign: 'top',
+                            x: 0,
+                            y: 0
+                        },
+                        relativeTo: 'chart'
+                    }
+                },
+
+                title: {
+                    text: '양식장 관리상태',
+                    style: {
+                        "color": "#333333",
+                        "fontSize": "26px"
+                    },
+                },
+
+                rangeSelector: {
+                    selected: 5,
+                    inputEnabled: false
+                },
+
+                xAxis: {
+                    type: 'date',
+                    labels:{
+                        formatter: function(){
+                            return Highcharts.dateFormat('%Y-%m-%d %H:%M', this.value);
+                        },
+                        step: 3
+                    }
+                },
+
+                yAxis: {
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: 'rgba(0,0,0,.6)',
+                        },
+                        x: 30,
+                    },
+                    opposite: false,
+                    tickInterval: 50,
+                },
+
+                tooltip: {
+                    xDateFormat: '%Y-%m-%d %H:%M',
+                        split: true
+                },
+
+                series: [
+                    {
+                        name: '온도(x10*C)',
+                        data: data.temp,
+                        color: 'rgba(100,0,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: 'pH(x10)',
+                        data: data.ph,
+                        color: 'rgba(0,100,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '알칼리도(ppm)',
+                        data: data.alkali,
+                        color: 'rgba(0,0,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '염도(ppt)',
+                        data: data.salt,
+                        color: 'rgba(100,0,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '용존산소(ppt)',
+                        data: data.do,
+                        color: 'rgba(100,100,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '암모니아(ppm)',
+                        data: data.nh4,
+                        color: 'rgba(0,100,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '아질산(ppm)',
+                        data: data.no2,
+                        color: 'rgba(100,100,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '탁도(ppt)',
+                        data: data.turbid,
+                        color: 'rgba(0,0,0,.6)',
+                        lineWidth: 2
+                    },
+                ],
+
+                legend: {
+                    enabled: true,
+                    align: 'right',
+                    verticalAlign: 'top',
+                    floating: true,
+                    x: 0,
+                    y: 40
+                },
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 600
+                        },
+
+                        chartOptions: {
+                            chart: {
+                                height: 600
+                            },
+
+                            navigator: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
+            });
+        }
+    });
+
+    </script>
+</div>
+</body>
+
+</html>

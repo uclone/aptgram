@@ -65,12 +65,16 @@ INSTALLED_APPS = [
     'papergram',
     'susungram',
     'bootstrap3',
+    'bootstrap4',
     'bootstrap_datepicker_plus',
     'timegram',
     'newsgram',
     'django.contrib.humanize',
     'introgram',
     'pollgram',
+    'shrimpgram',
+    'rest_framework',
+    'nameapp',
 ]
 
 MIDDLEWARE = [

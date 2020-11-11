@@ -80,11 +80,11 @@ def jumin_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Sjumin.objects.all().delete()
+    Sjumin.objects.filter(author=request.user.username).delete()
 
     for a in x:
-        b = Sjumin(id=a.id, dong=a.dong, ho=a.ho, represent=a.represent, family=a.family, phone=a.phone,
-                   car=a.car, date=a.date, remark=a.remark)
+        b = Sjumin(id=a.id, author=a.author.username, group=a.group.name, dong=a.dong, ho=a.ho, represent=a.represent,
+                   family=a.family, phone=a.phone, car=a.car, date=a.date, remark=a.remark)
         b.save()
     return render(request, 'jumingram/jumin_search.html', {'filter': file_filter})
 
@@ -152,7 +152,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Sjumin.objects.all()
+    file_filter = Sjumin.objects.filter(author=request.user.username)
     html_string = render_to_string('jumingram/pdf_search.html', {'filter': file_filter})        # Rendered
     response = HttpResponse(content_type='application/pdf;')                                    # Creating http response
     response['Content-Disposition'] = 'filename=jumin_search_{}.pdf'.format(request.user)

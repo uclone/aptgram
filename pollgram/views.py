@@ -39,10 +39,10 @@ def poll_search(request):
     # filtering routine
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Spoll.objects.all().delete()
+    Spoll.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Spoll(id=a.id, subject=a.subject, pub_date=a.pub_date, open_date=a.open_date,
-                  close_date=a.close_date, remark=a.remark, created=a.created, updated=a.updated)
+        b = Spoll(id=a.id, author=a.author.username, group=a.group.name, subject=a.subject, pub_date=a.pub_date,
+                  open_date=a.open_date, close_date=a.close_date, remark=a.remark, created=a.created, updated=a.updated)
         b.save()
     return render(request, 'pollgram/poll_search.html', {'filter': file_filter})
 
@@ -129,7 +129,7 @@ def generate_pdf(request):
     return response
 
 def search_pdf(request):
-    file_filter = Spoll.objects.all()
+    file_filter = Spoll.objects.filter(author=request.user.username)
     html_string = render_to_string('pollgram/pdf_search.html', {'filter': file_filter})     # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=poll_search_{}.pdf'.format(request.user)

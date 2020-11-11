@@ -8,14 +8,14 @@
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-group float-right">
-        <a href="{% url 'filegram:file_approval' pk=object.id %}" class="btn btn-info btn-sm">결재하기</a>&nbsp;&nbsp;
+    <div class="btn-toolbar float-right">
+        <a href="{% url 'filegram:file_approval' pk=object.id %}" class="btn btn-info btn-sm">결재하기</a>
         {% if "1급" in user.last_name %}
-        <a href="{% url 'filegram:file_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>&nbsp;&nbsp;
+        <a href="{% url 'filegram:file_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a>
         {% endif %}
         <a href="{% url 'filegram:detail_pdf' pk=object.id %}" class="btn btn-success btn-sm">pdf 출력</a>
     </div>
-    <div class="btn-group float-left">
+    <div class="btn-toolbar float-left">
         <a href="{% url 'filegram:file_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>
 

@@ -63,10 +63,10 @@ def file_search(request):
     #django-filter - start
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Sfile.objects.all().delete()
+    Sfile.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Sfile(id=a.id, department=a.department, charge=a.charge, manager=a.manager, director=a.director,
-                  super=a.super, subject=a.subject, abstract=a.abstract, file=a.file, remark=a.remark)
+        b = Sfile(id=a.id, author=a.author.username, group=a.group.name, department=a.department, charge=a.charge,
+                  manager=a.manager, director=a.director, super=a.super, subject=a.subject, abstract=a.abstract)
         b.save()
     return render(request, 'filegram/file_search.html', {'filter': file_filter})
 
@@ -187,7 +187,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Sfile.objects.all()
+    file_filter = Sfile.objects.filter(author=request.user.username)
     html_string = render_to_string('filegram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=file_search_{}.pdf'.format(request.user)

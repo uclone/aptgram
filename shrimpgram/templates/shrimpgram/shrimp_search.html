@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+<head>
+    <meta charset="UTF-8">
+    <title>shrimp-search</title>
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <form method="get">
+        {% bootstrap_form filter.form %}
+        <p></p>
+        <div class="btn-toolbar float-right">
+            <a href="{% url 'shrimpgram:shrimp_chart' %}" class="btn btn-secondary btn-sm">차트출력</a>
+            <a href="{% url 'shrimpgram:search_xls' %}" class="btn btn-warning btn-sm">엑셀출력</a>
+            <a href="{% url 'shrimpgram:search_pdf' %}" class="btn btn-success btn-sm">pdf출력</a></div>
+        <div class="btn-toolbar float-left">
+            <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-primary btn-sm">전체측정자료</a>
+            <button type="submit" class="btn btn-info btn-sm">검색하기</button></div>
+        <p></p>
+    </form>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">호지구분</th>
+                <th scope="col">장치번호</th>
+                <th scope="col">온도</th>
+                <th scope="col">pH</th>
+                <th scope="col">알칼리도</th>
+                <th scope="col">염도</th>
+                <th scope="col">용존산소</th>
+                <th scope="col">암모니아</th>
+                <th scope="col">아질산</th>
+                <th scope="col">탁도</th>
+                <th scope="col">보안</th>
+                <th scope="col">해당일시</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for post in filter.qs %}
+                <tr>
+                    <td>{{post.location}}</td>
+                    <td><a href="{% url 'shrimpgram:shrimp_detail' pk=post.id %}">{{post.serial}}</a></td>
+                    <td>{{post.temp}}</td>
+                    {% if post.ph > 80 or post.ph < 75 %}
+                    <td style="color:red">{{post.ph}}</td>
+                    {% else %}
+                    <td style="color:blue">{{post.ph}}</td>
+                    {% endif %}
+                    <td>{{post.alkali}}</td>
+                    <td>{{post.salt}}</td>
+                    <td>{{post.do}}</td>
+                    <td>{{post.nh4}}</td>
+                    <td>{{post.no2}}</td>
+                    <td>{{post.turbid}}</td>
+                    <td>{{post.security}}</td>
+                    <td>{{post.date|date:"Y-m-d"}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+</body>
+</html>

@@ -11,26 +11,24 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import DateForm
+from django.db.models import Q
 
 @login_required
 def sulbi_list(request):
     #try:
-    #    request_user = request.user
-    #    data = Sulbi.objects.filter(author_id=request_user.id).first()
-    #    pagefiles = Sulbi.objects.filter(group_id=data.group_id)
+    #    group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+    #    user_dept = request.user.last_name[0:2]                                     #for user's department
+    #    if '1급' in request.user.last_name or '2급' in request.user.last_name:
+    #        pagefiles = Sulbi.objects.filter(group_id=group_id)
+    #    else:
+    #        pagefiles_1 = Sulbi.objects.filter(group_id=group_id)
+    #        pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
     #except:
     #    pagefiles = Sulbi.objects.filter(group_id=1)
 
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            pagefiles = Sulbi.objects.filter(group_id=group_id)
-        else:
-            pagefiles_1 = Sulbi.objects.filter(group_id=group_id)
-            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
-    except:
-        pagefiles = Sulbi.objects.filter(group_id=1)
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    pagefiles = Sulbi.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+    #pagefiles = Sulbi.objects.filter(author_id=request.user.id)
 
     # pagination - start
     page = request.GET.get('page', 1)
@@ -53,23 +51,21 @@ def sulbi_search(request):
     #except:
     #    file_list = Sulbi.objects.filter(group_id=1)
 
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            file_list = Sulbi.objects.filter(group_id=group_id)
-        else:
-            file_list_1 = Sulbi.objects.filter(group_id=group_id)
-            file_list = file_list_1.objects.filter(department__icontains=user_dept)
-    except:
-        file_list = Sulbi.objects.filter(group_id=1)
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    file_list = Sulbi.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+    #file_list = Sulbi.objects.filter(author_id=request.user.id)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
+    # - Save in the other Table
     x = file_filter.qs
-    Ssulbi.objects.all().delete()
+
+    group_name = request.user.groups.values_list('name', flat=True).first()
+    Ssulbi.objects.filter(Q(author=request.user.username) & Q(group=group_name)).delete()
+    #Ssulbi.objects.filter(author=request.user.username).delete()
+
     for a in x:
-        b = Ssulbi(id=a.id, department=a.department, subject=a.subject, action=a.action, start=a.start,
-                   close=a.close, text=a.text, file=a.file, remark=a.remark)
+        b = Ssulbi(id=a.id, author=a.author.username, group=a.group.name, department=a.department, subject=a.subject,
+                   action=a.action, start=a.start, close=a.close, text=a.text, file=a.file, remark=a.remark)
         b.save()
     return render(request, 'sulbigram/sulbi_search.html', {'filter': file_filter})
 
@@ -89,18 +85,12 @@ class SulbiUploadView(LoginRequiredMixin, CreateView):
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            user_dept = request.user.last_name[0:2]                                                 #check User grade
-            if '1급' in request.user.last_name:                                                      #check User grade
-                form.save()                                                                         #check User grade
-            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
-                form.instance.remark = ' '
-                form.save()                                                                         # check User grade
+            form.save()                                                                         # check User grade
             x = Time(subject=instance.subject, description=instance.text, appendix=instance.code,
                      start_time=instance.start, end_time=instance.close)
             x.author_id = request.user.id
             x.group_id = request.user.groups.values_list('id', flat=True).first()
-            if '1급' in request.user.last_name or user_dept in instance.department:                  #check User grade
-                x.save()                                                                            #check User grade
+            x.save()                                                                            #check User grade
             return redirect('sulbigram:sulbi_list')
         return self.render_to_response({'form': form})
 
@@ -122,48 +112,35 @@ class SulbiUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.author = author_field
         form.instance.file = file_field
         if form.is_valid():
-            user_dept = request.user.last_name[0:2]                                                 #check User grade
-            if '1급' in request.user.last_name:                                                      #check User grade
-                form.save()                                                                         #check User grade
-            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
-                form.instance.remark = ' '
-                form.save()                                                                         # check User grade
-#            Sulbi.objects.filter(id=pk).delete()
+            form.save()                                                                         # check User grade
+            #Sulbi.objects.filter(id=pk).delete()
             return redirect('sulbigram:sulbi_list')
         return render(request, 'sulbigram/sulbi_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            files = Sulbi.objects.filter(group_id=group_id)
-        else:
-            files_1 = Sulbi.objects.filter(group_id=group_id)
-            files = files_1.objects.filter(department__icontains=user_dept)
-    except:
-        files = Sulbi.objects.filter(group_id=1)                                    #.order_by('author')
-
-    html_string = render_to_string('sulbigram/pdf_list.html', {'files': files})          # Rendered
-    response = HttpResponse(content_type='application/pdf;')                            # Creating http response
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    files = Sulbi.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+    html_string = render_to_string('sulbigram/pdf_list.html', {'files': files})             # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=sulbi_list_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
 def detail_pdf(request, pk):
-    files = Sulbi.objects.filter(id=pk)                                   # Model data
-    html_string = render_to_string('sulbigram/pdf_detail.html', {'files': files})          # Rendered
-    response = HttpResponse(content_type='application/pdf;')                            # Creating http response
+    files = Sulbi.objects.filter(id=pk)                                                     # Model data
+    html_string = render_to_string('sulbigram/pdf_detail.html', {'files': files})           # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=sulbi_detail_{}_{}.pdf'.format(request.user, pk)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
 
 def search_pdf(request):
-    file_filter = Ssulbi.objects.all()
-    html_string = render_to_string('sulbigram/pdf_search.html', {'filter': file_filter})             # Rendered
+    group_name = request.user.groups.values_list('name', flat=True).first()
+    file_filter = Ssulbi.objects.filter(Q(author=request.user.username) & Q(group=group_name))
+    html_string = render_to_string('sulbigram/pdf_search.html', {'filter': file_filter})    # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=sulbi_search_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,

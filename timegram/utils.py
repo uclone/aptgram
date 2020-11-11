@@ -32,7 +32,10 @@ class Calendar(HTMLCalendar):
 			d += f'<div>{dx}</div>'
 			#d += f'<div>{event.get_html_url}</div>'								#d += '<div>\u2007\u2007<\u2022\u2022\u2022></div>'
 		if day != 0:
-			url = reverse('timegram:schedule2', kwargs={'kk': day})
+			yearmonthday = (self.year - 2000) * 10000 + self.month * 100 + day
+			url = reverse('timegram:schedule2', kwargs={'kk': yearmonthday})
+			#url = reverse('timegram:schedule2', kwargs={'kk': day})
+
 			day_display = day
 			if day==date.today().day:
 				if color=='red':
@@ -166,7 +169,9 @@ class Scalendar(HTMLCalendar):
 				dx = event.get_html_url2
 			d += f'<div>{dx}</div>'
 		if day != 0:
-			url = reverse('timegram:schedule2', kwargs={'kk': day})
+			yearmonthday = (self.year - 2000) * 10000 + self.month * 100 + day
+			url = reverse('timegram:schedule2', kwargs={'kk': yearmonthday})
+
 			day_display = day
 			if day==date.today().day:
 				if color=='red':

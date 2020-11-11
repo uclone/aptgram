@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% extends 'base.html' %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
 <head>
     <meta charset="UTF-8">
     <title>task-search</title>
@@ -12,17 +12,18 @@
     <p></p>
     <form method="get">
         {% bootstrap_form filter.form %}
-        <div class="btn-group float-right">&nbsp;&nbsp;
-        <a href="{% url 'taskgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
-        <div class="btn-group float-left">
-        <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
-        <button type="submit" class="btn btn-info btn-sm float-right">검색하기</button>
+        <div class="btn-toolbar float-left">
+            <a href="{% url 'taskgram:task_list' %}" class="btn btn-primary btn-sm">전체자료</a>
+            <button type="submit" class="btn btn-info btn-sm">검색하기</button></div>
+        <div class="btn-toolbar float-right">
+            <a href="{% url 'taskgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     </form>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">회원ID</th>
                 <th scope="col">소속부서</th>
                 <th scope="col">담당자</th>
                 <th scope="col">작성일자</th>
@@ -35,6 +36,7 @@
         <tbody>
             {% for post in filter.qs %}
                 <tr>
+                    <td>{{post.author}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.charge}}</td>
                     <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.created|date:"Y-m-d"}}</a></td>

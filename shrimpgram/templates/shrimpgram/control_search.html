@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+<head>
+    <meta charset="UTF-8">
+    <title>control-search</title>
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <form method="get">
+        {% bootstrap_form filter.form %}
+        <div class="btn-toolbar float-left">
+            <a href="{% url 'shrimpgram:control_list' %}" class="btn btn-primary btn-sm">전체작업자료</a>
+            <button type="submit" class="btn btn-info btn-sm">검색하기</button></div>
+        <div class="btn-toolbar float-right">&nbsp;&nbsp;
+            <a href="{% url 'shrimpgram:control_search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
+    </form>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">호지구분</th>
+                <th scope="col">알칼리</th>
+                <th scope="col">당밀</th>
+                <th scope="col">블로워</th>
+                <th scope="col">보일러</th>
+                <th scope="col">비고</th>
+                <th scope="col">해당일시</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for post in filter.qs %}
+                <tr>
+                    <td>{{post.location}}</td>
+                    <td>{{post.naoh}}</td>
+                    <td>{{post.dang}}</td>
+                    <td>{{post.blower}}</td>
+                    <td>{{post.boiler}}</td>
+                    <td>{{post.remark}}</td>
+                    <td>{{post.created|date:"Y-m-d H:i"}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+</body>
+</html>

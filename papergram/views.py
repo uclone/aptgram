@@ -55,9 +55,9 @@ def paper_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Spaper.objects.all().delete()
+    Spaper.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Spaper(id=a.id, subject=a.subject, description=a.description,)
+        b = Spaper(id=a.id, author=a.author.username, group=a.group.name, subject=a.subject, description=a.description,)
         b.save()
     return render(request, 'papergram/paper_search.html', {'filter': file_filter})
 
@@ -126,7 +126,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Spaper.objects.all()
+    file_filter = Spaper.objects.filter(author=request.user.username)
     html_string = render_to_string('papergram/pdf_search.html', {'filter': file_filter})       # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=paper_search_{}.pdf'.format(request.user)

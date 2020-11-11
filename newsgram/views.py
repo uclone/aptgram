@@ -44,9 +44,10 @@ def news_search(request):
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Snews.objects.all().delete()
+    Snews.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Snews(id=a.id, dong=a.dong, ho=a.ho, date=a.date, subject=a.subject, created=a.created, updated=a.updated,)
+        b = Snews(id=a.id, author=a.author.username, group=a.group.name, dong=a.dong, ho=a.ho, date=a.date,
+                  subject=a.subject, created=a.created, updated=a.updated,)
         b.save()
     return render(request, 'newsgram/news_search.html', {'filter': file_filter})
 
@@ -173,7 +174,7 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    file_filter = Snews.objects.all()
+    file_filter = Snews.objects.filter(author=request.user.username)
     html_string = render_to_string('newsgram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=news_search_{}.pdf'.format(request.user)

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>양식장 관리상태</title>
+</head>
+<body>
+
+
+<div id="container">
+
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+
+    function setChart() {
+      Highcharts.setOption({
+        global: {
+          useUTC: false
+        }
+      });
+    };
+
+    $.ajax({
+      url: "{% url 'nameapp:predict_kospi_api' %}",
+      dataType: 'json',
+      success: function (data) {
+
+        Highcharts.setOptions({
+          global: {
+            useUTC: false
+          }
+        });
+
+        Highcharts.stockChart("container", {
+
+          chart: {
+            height: 500
+          },
+
+          title: {
+            text: '양식장 관리상태'
+          },
+
+          rangeSelector: {
+            selected: 5,
+            inputEnabled: false
+          },
+
+          xAxis: {
+            type: 'datetime',
+            labels:{
+              formatter: function(){
+                return Highcharts.dateFormat('%y-%m-%d %H:%M', this.value);
+              },
+              step: 3
+            }
+          },
+
+          yAxis: {
+            labels: {
+              format: '{value}ppm',
+              style: {
+                color: 'rgba(0,0,0,.6)',
+              },
+              x: 30,
+            },
+            opposite: false,
+            tickInterval: 50,
+          },
+
+          tooltip: {
+            xDateFormat: '%Y-%m-%d %H:%M',
+            split: true
+          },
+
+          series: [
+            {
+              name: 'pH',
+              data: data.open,
+              color: 'rgba(0,200,0,.6)',
+              lineWidth: 2
+            },
+            {
+              name: 'DO',
+              data: data.close,
+              lineWidth: 3
+            }
+          ],
+
+          legend: {
+            enabled: true,
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,
+            x: 30,
+            y: 30
+          },
+
+          responsive: {
+            rules: [{
+              condition: {
+                maxWidth: 600
+              },
+              chartOptions: {
+                chart: {
+                  height: 300
+                },
+                navigator: {
+                  enabled: false
+                }
+              }
+            }]
+          }
+        });
+      }
+    });
+
+  </script>
+</div>
+
+
+</body>
+</html>

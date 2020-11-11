@@ -9,15 +9,15 @@
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-group float-right">
-        <a href="{% url 'metergram:meter_upload_mobile' %}" class="btn btn-success btn-sm">검침입력</a>&nbsp;&nbsp;
-        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-info btn-sm">자료관리</a>&nbsp;&nbsp;
-        <a href="{% url 'metergram:meter_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
-        <a href="{% url 'metergram:search_xls' %}" class="btn btn-success btn-sm">exel 출력</a>&nbsp;&nbsp;
+    <div class="btn-toolbar float-right">
+        <a href="{% url 'metergram:meter_upload_mobile' %}" class="btn btn-success btn-sm">검침입력</a>
+        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-info btn-sm">자료관리</a>
+        <a href="{% url 'metergram:meter_search' %}" class="btn btn-info btn-sm">검색화면</a>
+        <a href="{% url 'metergram:search_xls' %}" class="btn btn-success btn-sm">exel 출력</a>
         <a href="{% url 'metergram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
-    <div class="btn-group float-left">
+    <div class="btn-toolbar float-left">
         {% if "1급" in user.last_name %}
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>
         {% endif %}
         <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
     <p></p>

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Aptgram{% block title %}{% endblock %}</title>
+    <title>Uclone^gram{% block title %}{% endblock %}</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,11 +27,11 @@
     <div class="container">
         <header class="head clearfix">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/index/">Aptgram</a><br>
+                <a class="navbar-brand" href="/index/">Uclone^gram</a><br>
                 <ul class="nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a href="#" class="nav-link">"{{user.get_username}}"</a></li>
-                        {% if "급" in user.last_name %}
+                        {% if "아파트관리" in user.last_name %}
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'filegram:file_list' %}" class="active nav-link">&laquo; 문서 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
@@ -41,14 +41,18 @@
                         <li class="nav-item"><a href="{% url 'lifegram:life_list' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표 &raquo;</a></li>
-                        {% else %}
                         <li class="nav-item"><a href="{% url 'newsgram:news_list_jumin' %}" class="active nav-link">&laquo; 공고읽기 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'lifegram:life_upload_jumin' %}" class="active nav-link">&laquo; 민원접수 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표하기 &raquo;</a></li>
-                        {% endif %}
-                        {% if "리" in user.last_name or "1급" in user.last_name %}
                         <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">&laquo; 주민 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">&laquo; 공고 &raquo;</a></li>
+                        {% else %}
+                        <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">&laquo; 설비 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">&laquo; 양식 &raquo;</a></li>
                         {% endif %}
                     <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">&laquo;로그아웃&raquo;</a></li>
                     {% else %}
@@ -71,7 +75,7 @@
         {% endblock %}
 
         <footer class="footer">
-            <p>&copy; Aptgram</p>
+            <p>&copy; Uclone^gram</p>
         </footer>
     </div>
 </body>

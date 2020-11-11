@@ -10,28 +10,25 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from .filters import SearchFilter
 from .forms import DateForm
+from django.db.models import Q
 from django.contrib.auth.models import User, Group
 
 @login_required
 def equip_list(request):
     #try:
-    #    request_user = request.user
-    #    data = Equip.objects.filter(author_id=request_user.id).first()
-    #    pagefiles = Equip.objects.filter(group_id=data.group_id)
+    #    group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
+    #    user_dept = request.user.last_name[0:2]                                     #for user's department
+    #    if '1급' in request.user.last_name or '2급' in request.user.last_name:
+    #        pagefiles = Equip.objects.filter(group_id=group_id)
+    #    else:
+    #        pagefiles_1 = Equip.objects.filter(group_id=group_id)
+    #        pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
     #except:
     #    pagefiles = Equip.objects.filter(group_id=1)
 
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            pagefiles = Equip.objects.filter(group_id=group_id)
-        else:
-            pagefiles_1 = Equip.objects.filter(group_id=group_id)
-            pagefiles = pagefiles_1.objects.filter(department__icontains=user_dept)
-    except:
-        pagefiles = Equip.objects.filter(group_id=1)
-
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    pagefiles = Equip.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+    #pagefiles = Equip.objects.filter(author_id=request.user.id)
 # - pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -52,25 +49,22 @@ def equip_search(request):
     #    file_list = Equip.objects.filter(group_id=data.group_id)
     #except:
     #    file_list = Equip.objects.filter(group_id=1)
-
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            file_list = Equip.objects.filter(group_id=group_id)
-        else:
-            file_list_1 = Equip.objects.filter(group_id=group_id)
-            file_list = file_list_1.objects.filter(department__icontains=user_dept)
-    except:
-        file_list = Equip.objects.filter(group_id=1)                                #.order_by('author')
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    file_list = Equip.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+    #file_list = Equip.objects.filter(author_id=request.user.id)
 
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
-    Sequip.objects.all().delete()
+
+    group_name = request.user.groups.values_list('name', flat=True).first()
+    Sequip.objects.filter(Q(author=request.user.username) & Q(group=group_name)).delete()
+    #Sequip.objects.filter(author=request.user.username).delete()      #filter(id=request.user.id).delete()
+
     for a in x:
-        b = Sequip(id=a.id, code=a.code, subject=a.subject, location=a.location, department=a.department,
-                   manager_1=a.manager_1, manager_2=a.manager_2, spec=a.spec, date=a.date, remark=a.remark, file=a.file)
+        b = Sequip(id=a.id, author=a.author.username, group=a.group.name, code=a.code, subject=a.subject,
+                   location=a.location, department=a.department, manager_1=a.manager_1, manager_2=a.manager_2,
+                   spec=a.spec, date=a.date, remark=a.remark, file=a.file)
         b.save()
     return render(request, 'equipgram/equip_search.html', {'filter': file_filter})
 
@@ -92,12 +86,7 @@ class EquipUploadView(LoginRequiredMixin, CreateView):
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
 
         if form.is_valid():
-            user_dept = request.user.last_name[0:2]                                                 # check User grade
-            if '1급' in request.user.last_name:                                                      #check User grade
-                form.save()                                                                         #check User grade
-            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
-                form.instance.remark = ' '
-                form.save()                                                                         # check User grade
+            form.save()                                                                         #check User grade
             return redirect('equipgram:equip_list')
         return self.render_to_response({'form': form})
 
@@ -118,29 +107,15 @@ class EquipUpdateView(LoginRequiredMixin, UpdateView):
         form.instance.file = file_field
 
         if form.is_valid():
-            user_dept = request.user.last_name[0:2]  # check User grade
-            if '1급' in request.user.last_name:                                                      #check User grade
-                form.save()                                                                         #check User grade
-            elif '2급' in request.user.last_name and user_dept in instance.department:               # check User grade
-                form.instance.remark = ' '
-                form.save()                                                                         # check User grade
+            form.save()                                                                         #check User grade
             Equip.objects.filter(id=pk).delete()
             return redirect('equipgram:equip_list')
         return render(request, 'equipgram/equip_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):
-    try:
-        group_id = request.user.groups.values_list('id', flat=True).first()         #for group_name, replace 'id' with 'name'
-        user_dept = request.user.last_name[0:2]                                     #for user's department
-        if '1급' in request.user.last_name or '2급' in request.user.last_name:
-            files = Equip.objects.filter(group_id=group_id)
-        else:
-            files_1 = Equip.objects.filter(group_id=group_id)
-            files = files_1.objects.filter(department__icontains=user_dept)
-    except:
-        files = Equip.objects.filter(group_id=1)                                    #.order_by('author')
-
+    group_id = request.user.groups.values_list('id', flat=True).first()                    #for group_name, replace 'id' with 'name'
+    files = Equip.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
     html_string = render_to_string('equipgram/pdf_list.html', {'files': files})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=equip_list_{}.pdf'.format(request.user)
@@ -158,8 +133,9 @@ def detail_pdf(request, pk):
     return response
 
 def search_pdf(request):
-    files_filter = Sequip.objects.all()
-    html_string = render_to_string('equipgram/pdf_search.html', {'filter': files_filter})             # Rendered
+    group_name = request.user.groups.values_list('name', flat=True).first()
+    file_filter = Sequip.objects.filter(Q(author=request.user.username) & Q(group=group_name))
+    html_string = render_to_string('equipgram/pdf_search.html', {'filter': file_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=equip_search_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,

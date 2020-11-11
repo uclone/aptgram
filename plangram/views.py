@@ -34,9 +34,10 @@ def plan_search(request):
     file_list = Plan.objects.filter(author_id=request.user.id)
     file_filter = SearchFilter(request.GET, queryset=file_list)
     x = file_filter.qs
-    Splan.objects.all().delete()
+    Splan.objects.filter(author=request.user.username).delete()
     for a in x:
-        b = Splan(id=a.id, department=a.department, subject=a.subject, created=a.created, updated=a.updated)
+        b = Splan(id=a.id, author=a.author.username, group=a.group.name, department=a.department, subject=a.subject,
+                  created=a.created, updated=a.updated)
         b.save()
     return render(request, 'plangram/plan_search.html', {'filter': file_filter})
 
@@ -147,7 +148,7 @@ def generate_pdf(request):
     return response
 
 def search_pdf(request):
-    file_filter = Splan.objects.all()
+    file_filter = Splan.objects.filter(author=request.user.username)
     html_string = render_to_string('plangram/pdf_search.html', {'filter': file_filter})       # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=plan_search_{}.pdf'.format(request.user)

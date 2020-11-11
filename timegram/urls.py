@@ -10,9 +10,8 @@ urlpatterns = [
     url(r'^schedule/$', views.CalendarView.as_view(), name='schedule'),
     url(r'^event/new/$', views.event, name='event_new'),
 	url(r'^event/edit/(?P<event_id>\d+)/$', views.event, name='event_edit'),
-
-    #path('event/list/', event_list, name='event_list'),
     path('schedule2/<int:kk>', views.XalendarView.as_view(), name='schedule2'),
+    #path('event/list/', event_list, name='event_list'),
     #path('delete/<int:pk>/', views.delete, name='time_delete'),
 ]
 

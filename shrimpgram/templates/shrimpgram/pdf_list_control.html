@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf-list</title>
+</head>
+
+<body>
+    <h1>Shrimpgram Publishing</h1>
+    <h3>전체자료<span class="secondary">{{ created | date:"Y-m-d H:i" }}</span></h3>
+
+    <table class="container_big">
+        <thead>
+            <tr>
+                <th>호지구분</th>
+                <th>알칼리</th>
+                <th>당밀</th>
+                <th>블로워</th>
+                <th>보일러</th>
+                <th>비고</th>
+                <th>해당일시</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for post in files %}
+            <tr>
+                <td>{{post.location}}</td>
+                <td>{{post.naoh}}</td>
+                <td>{{post.dang}}</td>
+                <td>{{post.blower}}</td>
+                <td>{{post.boiler}}</td>
+                <td>{{post.remark}}</td>
+                <td>{{post.created|date:"Y-m-d H:i"}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</body>
+</html>

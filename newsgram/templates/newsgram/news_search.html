@@ -12,9 +12,9 @@
     <p></p>
     <form method="get">
         {% bootstrap_form filter.form %}
-        <div class="btn-group float-right">&nbsp;&nbsp;
+        <div class="btn-toolbar float-right">&nbsp;&nbsp;
         <a href="{% url 'newsgram:search_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
-        <div class="btn-group float-left">
+        <div class="btn-toolbar float-left">
         <a href="{% url 'newsgram:news_list' %}" class="btn btn-info btn-sm">공고목록</a></div>
         <button type="submit" class="btn btn-info btn-sm float-right">공고검색</button>
     </form>

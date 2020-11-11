@@ -8,13 +8,13 @@
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-group float-right">
-        <a href="{% url 'filegram:file_upload' %}" class="btn btn-info btn-sm">업무추가</a>&nbsp;&nbsp;
-        <a href="{% url 'filegram:file_search' %}" class="btn btn-info btn-sm">검색화면</a>&nbsp;&nbsp;
+    <div class="btn-toolbar float-right">
+        <a href="{% url 'filegram:file_upload' %}" class="btn btn-info btn-sm">업무추가</a>
+        <a href="{% url 'filegram:file_search' %}" class="btn btn-info btn-sm">검색화면</a>
         <a href="{% url 'filegram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
-    <div class="btn-group float-left">
+    <div class="btn-toolbar float-left">
         {% if "1급" in user.last_name %}
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>&nbsp;&nbsp;
+        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>
         {% endif %}
         <a href="{% url 'filegram:file_list' %}" class="btn btn-info btn-sm">전체목록</a></div>
     <p></p>

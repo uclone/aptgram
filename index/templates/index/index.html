@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome to Aptgram!!{% endblock %}</title>
+    <title>{% block title %}Welcome to Uclone_gram!!{% endblock %}</title>
 </head>
 <body>
 {% block content %}
@@ -13,7 +13,7 @@
             <div class="col-md-3"></div>
             <div class="col-md-5 panel panel-default">
                 <p></p><p></p><p></p>
-                <h2>*아파트 관리*</h2>
+                <h2>*유클론 업무관리*</h2>
                 <h3><span class="secondary"></span></h3>
                 {% if user.is_authenticated %}
                 <div class="alert alert-info">"{{user.get_username}}"님, 환영합니다!</div>
@@ -23,7 +23,7 @@
 
                 <ul>
                     {% if user.is_authenticated %}
-                        {% if "급" in user.last_name %}
+                        {% if "아파트관리" in user.last_name %}
                         <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
                         <li><a href="{% url 'filegram:file_list' %}">문서관리</a></li>
                         <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
@@ -33,14 +33,18 @@
                         <li><a href="{% url 'lifegram:life_list' %}">민원관리</a></li>
                         <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
                         <li><a href="{% url 'pollgram:poll_list' %}">투표관리</a></li>
-                        {% else %}
                         <li><a href="{% url 'newsgram:news_list_jumin' %}">공고읽기</a></li>
                         <li><a href="{% url 'lifegram:life_upload_jumin' %}">민원신청</a></li>
                         <li><a href="{% url 'pollgram:poll_list' %}">투표하기</a></li>
-                        {% endif %}
-                        {% if "리" in user.last_name or "1급" in user.last_name %}
                         <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
                         <li><a href="{% url 'newsgram:news_list' %}">공고관리</a></li>
+                        {% else %}
+                        <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
+                        <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
+                        <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
+                        <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
+                        <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
+                        <li><a href="{% url 'shrimpgram:shrimp_list' %}">새우양식</a></li>
                         {% endif %}
                     <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
                     {% else %}

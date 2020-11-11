@@ -9,13 +9,14 @@
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-group float-right">
+    <div class="btn-toolbar float-right">
         <a href="{% url 'taskgram:task_upload_mobile' %}" class="btn btn-success btn-sm">일지쓰기</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">회원ID</th>
                 <th scope="col">소속부서</th>
                 <th scope="col">담당자</th>
                 <th scope="col">작성일자</th>
@@ -27,6 +28,7 @@
         <tbody>
             {% for post in files %}
                 <tr>
+                    <td>{{post.author}}</td>
                     <td>{{post.department}}</td>
                     <td>{{post.charge}}</td>
                     <td><a href="{% url 'taskgram:task_detail' pk=post.id %}">{{post.created|date:"Y-m-d"}}</a></td>
