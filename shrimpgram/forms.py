@@ -32,3 +32,5 @@ class ControlForm(forms.ModelForm):
             #'date': DatePickerInput(format='%Y-%m-%d'),
             'subject': forms.Select(choices=subject_choice),
         }
+
+        

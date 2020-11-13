@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% load bootstrap4 %}
 <head>
     <meta charset="UTF-8">
     <title>양식장 관리상태</title>
 </head>
 
+
 <body>
+{% block content %}
+<div>
+    <a href="{% url 'shrimpgram:shrimp_list' %}"><img src="http://www.smarteolife.com/image01/list.jpg" width="80" height="30" alt="" border="0"></a>
+    <a href="{% url 'shrimpgram:shrimp_search' %}"><img src="http://www.smarteolife.com/image01/search.jpg" width="80" height="30" alt="" border="0" /></a>
+</div>
+
 <div id="container">
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -176,6 +184,8 @@
 
     </script>
 </div>
+
+{% endblock %}
 </body>
 
 </html>
