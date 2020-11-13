@@ -233,17 +233,24 @@ def search_xls(request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    columns = ['호지', '장치번호', '온도', 'ph', '알칼리도', '염도', '용존산소', '암모니아', '아질산', '탁도', '보안',]
+    columns = ['호지', '장치번호', '온도(*C)', 'ph', '알칼리도(ppm)', '염도(ppt)', '용존산소(ppm)', '암모니아(ppm)', '아질산(ppm)', '탁도(ppm)', '보안',]
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     rows = Sshrimp.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).values_list('location', 'serial',
                                             'temp', 'ph', 'alkali', 'salt', 'do', 'nh4', 'no2', 'turbid', 'security')
+
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
-            ws.write(row_num, col_num, row[col_num], font_style)
+            if col_num==2 or col_num==3 or col_num==6:
+                ws.write(row_num, col_num, row[col_num]/10, font_style)
+            elif col_num==7 or col_num==8:
+                ws.write(row_num, col_num, row[col_num]/1000, font_style)
+            else:
+                ws.write(row_num, col_num, row[col_num], font_style)
+            #ws.write(row_num, col_num, row[3]/10, font_style)
     wb.save(response)
     return response
 
