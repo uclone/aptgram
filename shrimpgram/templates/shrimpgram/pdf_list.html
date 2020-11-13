@@ -32,22 +32,22 @@
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.location}}</td>
-                <td>{{post.serial}}</td>
-                <td>{{post.temp}}</td>
+                <td align="center">{{post.location}}</td>
+                <td align="center">{{post.serial}}</td>
+                <td align="center">{{post.temp|div:10}}</td>
                 {% if post.ph > 80 or post.ph < 75 %}
-                <td style="color:red">{{post.ph|div:10}}</td>
+                <td align="center" style="color:red">{{post.ph|div:10}}</td>
                 {% else %}
-                <td style="color:blue">{{post.ph|div:10}}</td>
+                <td align="center" style="color:blue">{{post.ph|div:10}}</td>
                 {% endif %}
-                <td>{{post.alkali}}</td>
-                <td>{{post.salt}}</td>
-                <td>{{post.do|div:10}}</td>
-                <td>{{post.nh4|div:1000}}</td>
-                <td>{{post.no2|div:1000}}</td>
-                <td>{{post.turbid}}</td>
-                <td>{{post.security}}</td>
-                <td>{{post.date|date:"Y-m-d H:i"}}</td>
+                <td align="center">{{post.alkali}}</td>
+                <td align="center">{{post.salt}}</td>
+                <td align="center">{{post.do|div:10}}</td>
+                <td align="center">{{post.nh4|div:1000}}</td>
+                <td align="center">{{post.no2|div:1000}}</td>
+                <td align="center">{{post.turbid}}</td>
+                <td align="center">{{post.security}}</td>
+                <td align="center">{{post.date|date:"y-m-d H:i"}}</td>
             </tr>
         {% endfor %}
         </tbody>
