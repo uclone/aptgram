@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'shrimpgram',
     'rest_framework',
     'nameapp',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [

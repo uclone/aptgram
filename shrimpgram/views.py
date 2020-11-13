@@ -267,7 +267,7 @@ class ShrimpAPIView(LoginRequiredMixin, APIView):
             new_date = org_date[:19]
             time_tuple = strptime(new_date, '%Y-%m-%d %H:%M:%S')
             utc_now = mktime(time_tuple) * 1000
-            temp_list.append([utc_now, file.temp])
+            temp_list.append([utc_now, file.temp/10])
             ph_list.append([utc_now, file.ph])
             alkali_list.append([utc_now, file.alkali])
             salt_list.append([utc_now, file.salt])

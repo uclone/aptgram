@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
+{% load mathfilters %}
+
 <head>
     <meta charset="UTF-8">
     <title>pdf-search</title>
@@ -14,14 +16,14 @@
             <tr>
                 <th>호지구분</th>
                 <th>장치번호</th>
-                <th>온도</th>
+                <th>온도(*C)</th>
                 <th>pH</th>
-                <th>알칼리도</th>
-                <th>염도</th>
-                <th>용존산소</th>
-                <th>암모니아</th>
-                <th>아질산</th>
-                <th>탁도</th>
+                <th>알칼리도(ppm)</th>
+                <th>염도(ppt)</th>
+                <th>용존산소(ppm)</th>
+                <th>암모니아(ppm)</th>
+                <th>아질산(ppm)</th>
+                <th>탁도(ppm)</th>
                 <th>보안</th>
                 <th>해당일시</th>
             </tr>
@@ -34,15 +36,15 @@
                 <td>{{post.serial}}</td>
                 <td>{{post.temp}}</td>
                 {% if post.ph > 80 or post.ph < 75 %}
-                <td style="color:red">{{post.ph}}</td>
+                <td style="color:red">{{post.ph|div:10}}</td>
                 {% else %}
-                <td style="color:blue">{{post.ph}}</td>
+                <td style="color:blue">{{post.ph|div:10}}</td>
                 {% endif %}
                 <td>{{post.alkali}}</td>
                 <td>{{post.salt}}</td>
-                <td>{{post.do}}</td>
-                <td>{{post.nh4}}</td>
-                <td>{{post.no2}}</td>
+                <td>{{post.do|div:10}}</td>
+                <td>{{post.nh4|div:1000}}</td>
+                <td>{{post.no2|div:1000}}</td>
                 <td>{{post.turbid}}</td>
                 <td>{{post.security}}</td>
                 <td>{{post.date|date:"Y-m-d H:i"}}</td>
