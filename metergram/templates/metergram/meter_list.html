@@ -48,8 +48,8 @@
                     <td align="center">{{post.elec|div:100}}</td>
                     <td align="center">{{post.water|div:100}}</td>
                     <td align="center">{{post.temp|div:10}}</td>
-                    {% if post.humidity > 8000 or post.ph < 200 %}
-                    <td align="center" style="color:red">{{post.humidity|div:10}}</td>
+                    {% if post.humidity > 80 or post.humidity < 30 %}
+                    <td align="center" style="color:red">{{post.humidity}}</td>
                     {% else %}
                     <td align="center" style="color:blue">{{post.humidity}}</td>
                     {% endif %}
