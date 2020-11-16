@@ -9,6 +9,6 @@ class SearchFilter(django_filters.FilterSet):
         fields = {
             'location': ['icontains'],
             'subject': ['exact'],
-            'serial': ['icontains'],
+            'serial': ['exact'],
             'created': ['range'],
         }

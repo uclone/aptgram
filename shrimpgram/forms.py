@@ -20,7 +20,7 @@ class MeterForm(forms.ModelForm):
         model = Shrimp
         fields = ['serial', 'temp', 'ph', 'alkali', 'salt', 'do', 'nh4', 'no2', 'turbid', 'security', 'date']
         widgets = {
-            'xdate': DatePickerInput(format='%Y-%m-%d'),
+            'date': DatePickerInput(format='%Y-%m-%d'),
             'subject': forms.Select(choices=subject_choice),
         }
 

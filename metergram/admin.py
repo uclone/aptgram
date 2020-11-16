@@ -2,10 +2,10 @@ from django.contrib import admin
 from .models import Meter
 
 class MeterAdmin(admin.ModelAdmin):
-    list_display = ['id', 'group', 'author', 'dong', 'ho', 'mtr', 'cor', 'elec', 'water', 'created', 'action', 'charge']
-    #raw_id_fields = ['id']      #
-    list_filter = ['dong', 'charge', 'action']
-    search_fields = ['dong', 'charge', 'created']
-    ordering = ['-created', '-dong', '-ho']
+    list_display = ['id', 'group', 'author', 'location', 'subject', 'serial', 'created']
+    raw_id_fields = ['author']
+    list_filter = ['group', 'author', 'location', 'subject', 'serial', 'created']
+    search_fields = ['group', 'author', 'location', 'subject', 'serial', 'created']
+    ordering = ['-group', '-author', 'location', '-subject', '-serial', '-created']
 
 admin.site.register(Meter, MeterAdmin)

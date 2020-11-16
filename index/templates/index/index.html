@@ -11,50 +11,48 @@
 
         <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-5 panel panel-default">
+            <div class="col-md-4 panel panel-default">
                 <p></p><p></p><p></p>
-                <h2>*유클론 업무관리*</h2>
+                <h2>*유클론+관리*</h2>
                 <h3><span class="secondary"></span></h3>
                 {% if user.is_authenticated %}
-                <div class="alert alert-info">"{{user.get_username}}"님, 환영합니다!</div>
+                <div class="alert alert-primary">"{{user.get_username}}"님, 환영합니다!</div>
                 {% else %}
-                <div class="alert alert-info">먼저 '로그인' 하신 후에, 업무를 선택하세요!!</div>
+                <div class="alert alert-primary">먼저 '로그인' 하신 후에, 업무를 선택하세요!!</div>
                 {% endif %}
 
-                <ul>
                     {% if user.is_authenticated %}
                         {% if "아파트관리" in user.last_name %}
-                        <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
-                        <li><a href="{% url 'filegram:file_list' %}">문서관리</a></li>
-                        <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
-                        <li><a href="{% url 'susungram:susun_list' %}">장기수선</a></li>
-                        <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
-                        <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
-                        <li><a href="{% url 'lifegram:life_list' %}">민원관리</a></li>
-                        <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
-                        <li><a href="{% url 'pollgram:poll_list' %}">투표관리</a></li>
-                        <li><a href="{% url 'newsgram:news_list_jumin' %}">공고읽기</a></li>
-                        <li><a href="{% url 'lifegram:life_upload_jumin' %}">민원신청</a></li>
-                        <li><a href="{% url 'pollgram:poll_list' %}">투표하기</a></li>
-                        <li><a href="{% url 'jumingram:jumin_list' %}">주민관리</a></li>
-                        <li><a href="{% url 'newsgram:news_list' %}">공고관리</a></li>
+                        <a href="{% url 'timegram:schedule' %}" class="btn btn-info btn-block">일정관리</a>
+                        <a href="{% url 'filegram:file_list' %}" class="btn btn-info btn-block">문서관리</a>
+                        <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-block">일지관리</a>
+                        <a href="{% url 'susungram:susun_list' %}" class="btn btn-info btn-block">장기수선</a>
+                        <a href="{% url 'sulbigram:sulbi_list' %}" class="btn btn-info btn-block">설비관리</a>
+                        <a href="{% url 'equipgram:equip_list' %}" class="btn btn-info btn-block">비품관리</a>
+                        <a href="{% url 'lifegram:life_list' %}" class="btn btn-info btn-block">민원관리</a>
+                        <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-block">검침관리</a>
+                        <a href="{% url 'pollgram:poll_list' %}" class="btn btn-info btn-block">투표관리</a>
+                        <a href="{% url 'newsgram:news_list_jumin' %}" class="btn btn-info btn-block">공고읽기</a>
+                        <a href="{% url 'lifegram:life_upload_jumin' %}" class="btn btn-info btn-block">민원신청</a>
+                        <a href="{% url 'pollgram:poll_list' %}" class="btn btn-info btn-block">투표하기</a>
+                        <a href="{% url 'jumingram:jumin_list' %}" class="btn btn-info btn-block">주민관리</a>
+                        <a href="{% url 'newsgram:news_list' %}" class="btn btn-info btn-block">공고관리</a>
                         {% else %}
-                        <li><a href="{% url 'timegram:schedule' %}">일정관리</a></li>
-                        <li><a href="{% url 'taskgram:task_list' %}">일지관리</a></li>
-                        <li><a href="{% url 'sulbigram:sulbi_list' %}">설비관리</a></li>
-                        <li><a href="{% url 'equipgram:equip_list' %}">비품관리</a></li>
-                        <li><a href="{% url 'metergram:meter_list' %}">검침관리</a></li>
-                        <li><a href="{% url 'shrimpgram:shrimp_list' %}">새우양식</a></li>
+                        <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-block">가정안전</a><p></p>
+                        <a href="{% url 'timegram:schedule' %}" class="btn btn-info btn-block">일정관리</a><p></p>
+                        <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-block">일지관리</a><p></p>
+                        <a href="{% url 'sulbigram:sulbi_list' %}" class="btn btn-info btn-block">설비관리</a><p></p>
+                        <a href="{% url 'equipgram:equip_list' %}" class="btn btn-info btn-block">비품관리</a><p></p>
+                        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-info btn-block">양식업무</a><p></p>
                         {% endif %}
-                    <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
+                        <p></p>
                     {% else %}
-                    <li><a href="{% url 'accounts:login' %}">로그인</a></li>
-                    <li><a href="{% url 'accounts:register' %}">등록하기</a></li>
+                    <a href="{% url 'accounts:login' %}" class="btn btn-info btn-block">로그인</a><p></p>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-info btn-block">등록하기</a><p></p>
                     {% endif %}
-                </ul>
 
                 {% if user.is_authenticated %}
-                <div class="alert alert-info"><a href="{% url 'accounts:logout' %}">로그아웃</a></div>
+                <div class="alert alert-primary"><a href="{% url 'accounts:logout' %}">로그아웃</a></div>
                 {% endif %}
 
             </div>

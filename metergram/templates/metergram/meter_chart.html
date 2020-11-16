@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load bootstrap4 %}
+<head>
+    <meta charset="UTF-8">
+    <title>우리집 관리상황</title>
+</head>
+
+
+<body>
+{% block content %}
+<div>
+    <a href="{% url 'metergram:meter_list' %}"><img src="http://www.smarteolife.com/image01/list.jpg" width="80" height="30" alt="" border="0"></a>
+    <a href="{% url 'metergram:meter_search' %}"><img src="http://www.smarteolife.com/image01/search.jpg" width="80" height="30" alt="" border="0" /></a>
+</div>
+
+<div id="container">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+
+    function setChart() {
+        Highcharts.setOption({
+            global: {
+                useUTC: false
+            }
+        });
+    };
+
+    $.ajax({
+        url: "{% url 'metergram:meter_api' idd=form.group %}",
+        dataType: 'json',
+        success: function (data) {
+
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+
+            Highcharts.stockChart("container", {
+                chart: {
+                    height: 600,
+                    zoomType: 'x',
+                    resetZoomButton: {
+                        position: {
+                            align: 'left',
+                            verticalAlign: 'top',
+                            x: 0,
+                            y: 0
+                        },
+                        relativeTo: 'chart'
+                    }
+                },
+
+                title: {
+                    text: '우리집 관리상황',
+                    style: {
+                        "color": "#333333",
+                        "fontSize": "26px"
+                    },
+                },
+
+                rangeSelector: {
+                    selected: 5,
+                    inputEnabled: false
+                },
+
+                xAxis: {
+                    type: 'date',
+                    labels:{
+                        formatter: function(){
+                            return Highcharts.dateFormat('%Y-%m-%d %H:%M', this.value);
+                        },
+                        step: 3
+                    }
+                },
+
+                yAxis: {
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: 'rgba(0,0,0,.6)',
+                        },
+                        x: 30,
+                    },
+                    opposite: false,
+                    tickInterval: 50,
+                },
+
+                tooltip: {
+                    xDateFormat: '%Y-%m-%d %H:%M',
+                        split: true
+                },
+
+                series: [
+                    {
+                        name: '계량사용량',
+                        data: data.mtr,
+                        color: 'rgba(100,0,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '보정사용량',
+                        data: data.cor,
+                        color: 'rgba(0,100,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '전기사용량',
+                        data: data.elec,
+                        color: 'rgba(0,0,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '수도사용량',
+                        data: data.water,
+                        color: 'rgba(100,0,100,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '온도(*C)',
+                        data: data.temp,
+                        color: 'rgba(100,100,0,.6)',
+                        lineWidth: 2
+                    },
+
+                    {
+                        name: '습도(%)',
+                        data: data.humidity,
+                        color: 'rgba(0,100,100,.6)',
+                        lineWidth: 2
+                    },
+                ],
+
+                legend: {
+                    enabled: true,
+                    align: 'right',
+                    verticalAlign: 'top',
+                    floating: true,
+                    x: 0,
+                    y: 40
+                },
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 600
+                        },
+
+                        chartOptions: {
+                            chart: {
+                                height: 600
+                            },
+
+                            navigator: {
+                                enabled: false
+                            }
+                        }
+                    }]
+                }
+            });
+        }
+    });
+
+    </script>
+</div>
+
+{% endblock %}
+</body>
+
+</html>

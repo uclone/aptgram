@@ -47,11 +47,11 @@
                         <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">&laquo; 주민 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">&laquo; 공고 &raquo;</a></li>
                         {% else %}
+                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 안전 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">&laquo; 설비 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">&laquo; 양식 &raquo;</a></li>
                         {% endif %}
                     <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">&laquo;로그아웃&raquo;</a></li>

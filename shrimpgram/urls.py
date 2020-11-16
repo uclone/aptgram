@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic.detail import DetailView
-from .views import *
+from shrimpgram.views import *
 from django.conf.urls import url
 from .models import Shrimp, Sshrimp
 from . import views

@@ -130,7 +130,8 @@ def control_search(request):
     for a in x:
         b = Sshrimp(id=a.id, author=a.author.username, group=a.group.name, location=a.location, subject=a.subject, serial=a.serial,
                     temp=a.temp, ph=a.ph, alkali=a.alkali, salt=a.salt, do=a.do, nh4=a.nh4, no2=a.no2, turbid=a.turbid,
-                    security=a.security, naoh=a.naoh, dang=a.dang, blower=a.blower,  boiler=a.boiler, remark=a.remark, created=a.created)
+                    security=a.security, naoh=a.naoh, dang=a.dang, blower=a.blower,  boiler=a.boiler, remark=a.remark,
+                    created=a.created, date=a.date)
         b.save()
     return render(request, 'shrimpgram/control_search.html', {'filter': file_filter})
 
@@ -250,7 +251,6 @@ def search_xls(request):
                 ws.write(row_num, col_num, row[col_num]/1000, font_style)
             else:
                 ws.write(row_num, col_num, row[col_num], font_style)
-            #ws.write(row_num, col_num, row[3]/10, font_style)
     wb.save(response)
     return response
 
@@ -273,7 +273,7 @@ class ShrimpAPIView(LoginRequiredMixin, APIView):
             org_date = str(file.date)
             new_date = org_date[:19]
             time_tuple = strptime(new_date, '%Y-%m-%d %H:%M:%S')
-            utc_now = mktime(time_tuple) * 1000
+            utc_now = (mktime(time_tuple) + 32400) * 1000
             temp_list.append([utc_now, file.temp/10])
             ph_list.append([utc_now, file.ph])
             alkali_list.append([utc_now, file.alkali])

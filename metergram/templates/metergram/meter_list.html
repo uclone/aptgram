@@ -1,60 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 {% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load mathfilters %}
+
 <head>
     <meta charset="UTF-8">
-    <title>meter-list</title>
+    <title>safety-list</title>
 </head>
 
 <body>
 {% block content %}
     <p></p>
-    <div class="btn-toolbar float-right">
-        <a href="{% url 'metergram:meter_upload_mobile' %}" class="btn btn-success btn-sm">검침입력</a>
-        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-info btn-sm">자료관리</a>
-        <a href="{% url 'metergram:meter_search' %}" class="btn btn-info btn-sm">검색화면</a>
-        <a href="{% url 'metergram:search_xls' %}" class="btn btn-success btn-sm">exel 출력</a>
-        <a href="{% url 'metergram:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a></div>
     <div class="btn-toolbar float-left">
-        {% if "1급" in user.last_name %}
-        <a href="{% url 'papergram:paper_list' %}" class="btn btn-success btn-sm">양식목록</a>
-        {% endif %}
-        <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-sm">전체자료</a></div>
+        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-danger btn-sm">장치추가</a>
+        <a href="{% url 'metergram:meter_search' %}" class="btn btn-info btn-sm">측정검색</a>
+        <a href="{% url 'metergram:control_list' %}" class="btn btn-primary btn-sm">조작자료</a></div>
+    <div class="btn-toolbar float-right">
+        <a href="{% url 'metergram:generate_pdf' %}" class="btn btn-success btn-sm">pdf출력</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">동</th>
-                <th scope="col">호</th>
-                <th scope="col">가스미터검침</th>
-                <th scope="col">가스보정검침</th>
-                <th scope="col">전기검침</th>
-                <th scope="col">수도검침</th>
-                <th scope="col">검침일자</th>
-                <th scope="col">진행상황</th>
-                <th scope="col">상세보기</th>
+                <th class="text-center" scope="col">동:호</th>
+                <th class="text-center" scope="col">장치번호</th>
+                <th class="text-center" scope="col">가스계량(M3)</th>
+                <th class="text-center" scope="col">가스보정(M3)</th>
+                <th class="text-center" scope="col">전력계량(kW)</th>
+                <th class="text-center" scope="col">수도계량(M3)</th>
+                <th class="text-center" scope="col">온도(*C)</th>
+                <th class="text-center" scope="col">습도(%)</th>
+                <th class="text-center" scope="col">가스사용</th>
+                <th class="text-center" scope="col">수도사용</th>
+                <th class="text-center" scope="col">경보</th>
+                <th class="text-center" scope="col">해당일시</th>
             </tr>
         </thead>
 
         <tbody>
-        {% for post in files %}
-            <tr>
-                <td>{{post.dong}}</td>
-                <td>{{post.ho}}</td>
-                <td>{{post.mtr}}</td>
-                <td>{{post.cor}}</td>
-                <td>{{post.elec}}</td>
-                <td>{{post.water}}</td>
-                <td>{{post.created|date:"Y-m-d"}}</td>
-                <td>{{post.action}}</td>
-                <td><a href="{% url 'metergram:meter_detail' pk=post.id %}" class="btn btn-outline-success btn-sm">상세보기</a></td>
-            </tr>
-        {% endfor %}
+            {% for post in files %}
+                <tr>
+                    <td align="center">{{post.location}}</td>
+                    <td><a href="{% url 'metergram:meter_detail' pk=post.id %}">{{post.serial}}</a></td>
+                    <td align="center">{{post.mtr|div:100}}</td>
+                    <td align="center">{{post.cor|div:100}}</td>
+                    <td align="center">{{post.elec|div:100}}</td>
+                    <td align="center">{{post.water|div:100}}</td>
+                    <td align="center">{{post.temp|div:10}}</td>
+                    {% if post.humidity > 8000 or post.ph < 200 %}
+                    <td align="center" style="color:red">{{post.humidity|div:10}}</td>
+                    {% else %}
+                    <td align="center" style="color:blue">{{post.humidity}}</td>
+                    {% endif %}
+                    <td align="center">{{post.usegas}}</td>
+                    <td align="center">{{post.usewater}}</td>
+                    <td align="center">{{post.alarm}}</td>
+                    <td align="center">{{post.date|date:"y-m-d H:i"}}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
-
 
 {% block pagination %}
 {% if files.has_other_pages %}
@@ -62,9 +69,9 @@
     <ul class="pagination justify-content-center pagination-sm">
 
         {% if files.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ files.previous_page_number }}">&laquo; 이전 </a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ files.previous_page_number }}">&laquo; 이전 </a></li>
         {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">&laquo; 이전 </a></li>
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">&laquo; 이전 </a></li>
         {% endif %}
 
     {% for i in files.paginator.page_range %}
@@ -75,17 +82,15 @@
         {% endif %}
     {% endfor %}
 
-    {% if files.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ files.next_page_number }}"> 다음 &raquo;</a></li>
-    {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#">다음 &raquo;</a></li>
-    {% endif %}
+        {% if files.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ files.next_page_number }}"> 다음 &raquo;</a></li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link" href="#">다음 &raquo;</a></li>
+        {% endif %}
 
     </ul>
 </div>
 {% endif %}
 {% endblock %}
-
-
 </body>
 </html>

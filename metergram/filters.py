@@ -7,14 +7,8 @@ class SearchFilter(django_filters.FilterSet):
     class Meta:
         model = Meter
         fields = {
-            'dong': ['exact'],
-            'ho': ['exact'],
-            'action': ['icontains'],
-            'charge': ['icontains'],
-            'manager': ['icontains'],
+            'location': ['icontains'],
+            'subject': ['exact'],
+            'serial': ['exact'],
             'created': ['range'],
         }
-#        fields = {
-#            'price': ['lt', 'gt'],
-#            'release_date': ['exact', 'year__gt'],
-#        }
