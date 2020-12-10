@@ -38,12 +38,12 @@
                         <a href="{% url 'jumingram:jumin_list' %}" class="btn btn-info btn-block">주민관리</a>
                         <a href="{% url 'newsgram:news_list' %}" class="btn btn-info btn-block">공고관리</a>
                         {% else %}
-                        <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-block">가정안전</a><p></p>
+                        <a href="{% url 'metergram:meter_list' %}" class="btn btn-info btn-block">스마트홈</a><p></p>
                         <a href="{% url 'timegram:schedule' %}" class="btn btn-info btn-block">일정관리</a><p></p>
                         <a href="{% url 'taskgram:task_list' %}" class="btn btn-info btn-block">일지관리</a><p></p>
                         <a href="{% url 'sulbigram:sulbi_list' %}" class="btn btn-info btn-block">설비관리</a><p></p>
                         <a href="{% url 'equipgram:equip_list' %}" class="btn btn-info btn-block">비품관리</a><p></p>
-                        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-info btn-block">양식업무</a><p></p>
+                        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-info btn-block">양식관리</a><p></p>
                         {% endif %}
                         <p></p>
                     {% else %}
@@ -52,6 +52,7 @@
                     {% endif %}
 
                 {% if user.is_authenticated %}
+                <div class="alert alert-primary"><a href="{% url 'accounts:account_read' %}">계정확인:계정수정</a></div>
                 <div class="alert alert-primary"><a href="{% url 'accounts:logout' %}">로그아웃</a></div>
                 {% endif %}
 

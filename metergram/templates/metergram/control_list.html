@@ -12,21 +12,26 @@
 {% block content %}
     <p></p>
     <div class="btn-toolbar float-left">
-        <a href="{% url 'metergram:control_upload' %}" class="btn btn-danger btn-sm">조작등록</a>
-        <a href="{% url 'metergram:control_search' %}" class="btn btn-info btn-sm">작업검색</a>
-        <a href="{% url 'metergram:meter_list' %}" class="btn btn-primary btn-sm">측정자료</a></div>
+        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-danger btn-sm">등록:계량기</a>
+        <a href="{% url 'metergram:control_upload' %}" class="btn btn-danger btn-sm">등록:차단기</a>
+        <a href="{% url 'metergram:control_search' %}" class="btn btn-info btn-sm">기록검색</a>
+        <a href="{% url 'metergram:meter_list' %}" class="btn btn-primary btn-sm">기록:계량기</a></div>
     <div class="btn-toolbar float-right">
-        <a href="{% url 'metergram:control_pdf' %}" class="btn btn-success btn-sm">pdf출력</a></div>
+        <a href="{% url 'metergram:valve_close' %}" class="btn btn-danger btn-sm">밸브:작동</a>
+        <a href="{% url 'metergram:control_pdf' %}" class="btn btn-success btn-sm">pdf:출력</a></div>
     <p></p>
 
     <table class="table">
         <thead>
             <tr>
-                <th class="text-center" scope="col">동:호</th>
-                <th class="text-center" scope="col">가스안전조치</th>
-                <th class="text-center" scope="col">경보안전조치</th>
-                <th class="text-center" scope="col">비고</th>
-                <th class="text-center" scope="col">해당일시</th>
+                <th class="text-center" scope="col">사용장소</th>
+                <th class="text-center" scope="col">기기번호</th>
+                <th class="text-center" scope="col">온도(*C)</th>
+                <th class="text-center" scope="col">습도(kPa)</th>
+                <th class="text-center" scope="col">알림</th>
+                <th class="text-center" scope="col">밸브상태</th>
+                <th class="text-center" scope="col">밸브조작</th>
+                <th class="text-center" scope="col">일시</th>
             </tr>
         </thead>
 
@@ -34,9 +39,12 @@
             {% for post in files %}
                 <tr>
                     <td align="center">{{post.location}}</td>
-                    <td align="center">{{post.actgas}}</td>
-                    <td align="center">{{post.actalarm}}</td>
-                    <td align="center">{{post.remark}}</td>
+                    <td><a href="{% url 'metergram:meter_detail' pk=post.id %}">{{post.serial}}</a></td>
+                    <td align="center">{{post.hometmp}}</td>
+                    <td align="center">{{post.homehumid}}</td>
+                    <td align="center">{{post.homealarm}}</td>
+                    <td align="center">{{post.valvestatus}}</td>
+                    <td align="center">{{post.valveaction}}</td>
                     <td align="center">{{post.created|date:"y-m-d H:i"}}</td>
                 </tr>
             {% endfor %}

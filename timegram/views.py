@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.safestring import mark_safe
 import calendar
-
+from django.db.models import Q
 from .models import *
 from .utils import Calendar, Scalendar
 from .forms import TimeForm
@@ -27,7 +27,8 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         d = get_date(self.request.GET.get('month', None))
         cal = Calendar(d.year, d.month)
         group_id = self.request.user.groups.values_list('id', flat=True).first()		#lbc inserted a new line
-        html_cal = cal.formatmonth(group_id, withyear=True)                             #lbc inserted 'group_id',
+        author_id = self.request.user.id                                                 # lbc inserted a new line
+        html_cal = cal.formatmonth(group_id, author_id, withyear=True)                             #lbc inserted 'group_id',
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
@@ -89,8 +90,9 @@ class XalendarView(LoginRequiredMixin, generic.ListView):
         cal = Scalendar(xyear, xmonth, xday)
 
         group_id = self.request.user.groups.values_list('id', flat=True).first()		#lbc inserted a new line
+        author_id = self.request.user.id
         #html_cal = cal.formatmonth(group_id, self.kwargs['kk'], withyear=True)         #lbc inserted 'group_id',
-        html_cal = cal.formatmonth(group_id, xday, withyear=True)
+        html_cal = cal.formatmonth(group_id, author_id, xday, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)

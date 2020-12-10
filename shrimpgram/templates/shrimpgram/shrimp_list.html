@@ -13,9 +13,10 @@
 {% block content %}
     <p></p>
     <div class="btn-toolbar float-left">
-        <a href="{% url 'shrimpgram:shrimp_upload' %}" class="btn btn-danger btn-sm">장치추가</a>
-        <a href="{% url 'shrimpgram:shrimp_search' %}" class="btn btn-info btn-sm">측정검색</a>
-        <a href="{% url 'shrimpgram:control_list' %}" class="btn btn-primary btn-sm">작업자료</a></div>
+        <a href="{% url 'shrimpgram:shrimp_upload' %}" class="btn btn-danger btn-sm">등록:수질측정기</a>
+        <a href="{% url 'shrimpgram:shrimp_upload' %}" class="btn btn-danger btn-sm">등록:원격조정기</a>
+        <a href="{% url 'shrimpgram:shrimp_search' %}" class="btn btn-info btn-sm">검색:차트</a>
+        <a href="{% url 'shrimpgram:control_list' %}" class="btn btn-primary btn-sm">자료:원격조정기</a></div>
     <div class="btn-toolbar float-right">
         <a href="{% url 'shrimpgram:generate_pdf' %}" class="btn btn-success btn-sm">pdf출력</a></div>
     <p></p>

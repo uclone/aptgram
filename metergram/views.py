@@ -9,8 +9,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from django.db.models import Q
 from .filters import SearchFilter
-from .forms import ControlForm, MeterForm, RegistForm
+from .forms import ControlForm, MeterForm, RegistForm, CloseForm
 import xlwt
+import requests
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -21,65 +22,133 @@ from time import mktime, strptime
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class IndexView(View):
+class MeterDataView(View):
     def post(self, request):
-        #instance = Shrimp()
-        #form = MeterForm(request.POST, instance=instance)
-        #Iserial = form.instance.serial
         Iserial = request.POST['serial']
-        form = Meter(serial = request.POST['serial'],
-                      mtr = request.POST['mtr'],
-                      cor = request.POST['cor'],
-                      elec = request.POST['elec'],
-                      water = request.POST['water'],
-                      temp = request.POST['temp'],
-                      humidity= request.POST['humidity'],
-                      usegas = request.POST['usegas'],
-                      usewater = request.POST['usewater'],
-                      alarm = request.POST['alarm'],)
-
         obj = Meter.objects.filter(serial=Iserial).last()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
-        location_field = getattr(obj, 'location')
-
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Meter(subject='스마트계량기',
+                     serial=Iserial,
+                     monmtr=request.POST['monmtr'],
+                     moncor=request.POST['moncor'],
+                     amtmonmtr=request.POST['amtmonmtr'],
+                     amtmoncor=request.POST['amtmoncor'],
+                     accmtr=request.POST['accmtr'],
+                     acccor=request.POST['acccor'],
+                     gastmp=request.POST['gastmp'],
+                     gasprs=request.POST['gasprs'],
+                     gasalarm=request.POST['gasalarm'], )
         form.group = group_field
         form.author = author_field
         form.location = location_field
-        form.serial = Iserial
-
         form.save()
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        form = Meter(serial = Iserial,
-                     mtr=request.GET['mtr'],
-                     cor=request.GET['cor'],
-                     elec=request.GET['elec'],
-                     water=request.GET['water'],
-                     temp=request.GET['temp'],
-                     humidity=request.GET['humidity'],
-                     usegas=request.GET['usegas'],
-                     usewater=request.GET['usewater'],
-                     alarm=request.GET['alarm'], )
-
         obj = Meter.objects.filter(serial=Iserial).last()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
-        location_field = getattr(obj, 'location')
-
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Meter(subject = '스마트계량기',
+                      serial = Iserial,
+                      monmtr = request.GET['monmtr'],
+                      moncor = request.GET['moncor'],
+                      amtmonmtr=request.GET['amtmonmtr'],
+                      amtmoncor=request.GET['amtmoncor'],
+                      accmtr=request.GET['accmtr'],
+                      acccor=request.GET['acccor'],
+                      gastmp = request.GET['gastmp'],
+                      gasprs = request.GET['gasprs'],
+                      gasalarm = request.GET['gasalarm'],)
         form.group = group_field
         form.author = author_field
         form.location = location_field
-        form.serial = Iserial
-
         form.save()
         return HttpResponse(status=200)
 
+@method_decorator(csrf_exempt, name='dispatch')
+class ValveDataView(View):
+    def post(self, request):
+        Iserial = request.POST['serial']
+        obj = Meter.objects.filter(serial=Iserial).last()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Meter(subject = '스마트차단기',
+                      serial = Iserial,
+                      hometmp = request.POST['hometmp'],
+                      homeprs = request.POST['homeprs'],
+                      homealarm = request.POST['homealarm'],
+                      valvestatus = request.POST['valvestatus'],
+                      valveaction = request.POST['valveaction'],)
+        form.group = group_field
+        form.author = author_field
+        form.location = location_field
+        form.save()
+        return HttpResponse(status=200)
+
+    def get(self, request):
+        Iserial = request.GET['serial']
+        obj = Meter.objects.filter(serial=Iserial).last()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Meter(subject = '스마트차단기',
+                      serial = Iserial,
+                      hometmp = request.GET['hometmp'],
+                      homeprs = request.GET['homeprs'],
+                      homealarm = request.GET['homealarm'],
+                      valvestatus=request.POST['valvestatus'],
+                      valveaction=request.POST['valveaction'], )
+        form.group = group_field
+        form.author = author_field
+        form.location = location_field
+        form.save()
+        return HttpResponse(status=200)
+
+class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기 작동
+    model = Meter
+    form_class = CloseForm
+    template_name = 'metergram/valve_close.html'
+
+    def post(self, request):
+        obj = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기')).first()
+        location_field = obj.location
+        serial_field = obj.serial
+        instance = Meter()
+        form = CloseForm(request.POST, instance=instance)
+        form.instance.author_id = request.user.id
+        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+        if form.is_valid():
+            form.save(commit=False)
+            form.instance.location = location_field
+            form.instance.serial = serial_field
+            form.instance.subject = '스마트차단기'
+            form.instance.valveaction = '가스밸브 차단작동'
+            form.save()
+            # -------- for App -----------
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_TLK",
+                "TOKEN_TYP": "gop",
+                "TOKEN_SER": serial_field,
+                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_USR": request.user.username,                   # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                      # request.POST['email'],
+                "TOKEN_TLK": "afrtsclose",
+            }
+            requests.get(url, params=data_dict)                 # response = requests.get(url, params=data_dict)
+            # --------------------------
+            return redirect('metergram:control_list')
+        return self.render_to_response({'form': form})
+
 @login_required
 def meter_list(request):
-    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
+    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -94,7 +163,7 @@ def meter_list(request):
 
 @login_required
 def control_list(request):
-    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
+    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
     # pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -109,32 +178,31 @@ def control_list(request):
 
 @login_required
 def meter_search(request):
-    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
+    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
     xid = request.user.id
-    Smeter.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).delete()
+    Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기')).delete()
     for a in x:
         b = Smeter(id=a.id, author=a.author.username, group=xid, location=a.location, subject=a.subject, serial=a.serial,
-                   mtr=a.mtr, cor=a.cor, elec=a.elec, water=a.water, temp=a.temp, humidity=a.humidity, usegas=a.usegas,
-                   usewater=a.usewater, alarm=a.alarm, actgas=a.actgas, actalarm=a.actalarm, remark=a.remark,
-                   created=a.created, date=a.date)
+                   monmtr=a.monmtr, moncor=a.moncor, amtmonmtr=a.amtmonmtr, amtmoncor=a.amtmoncor, accmtr=a.accmtr,
+                   acccor=a.acccor, gastmp=a.gastmp, gasprs=a.gasprs, gasalarm=a.gasalarm, created=a.created, date=a.date)
         b.save()
     return render(request, 'metergram/meter_search.html', {'filter': file_filter})
 
 @login_required
 def control_search(request):
-    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
+    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
-    Smeter.objects.filter(Q(author=request.user.username) & Q(subject='조작장치')).delete()
+    xid = request.user.id
+    Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트차단기')).delete()
     for a in x:
-        b = Smeter(id=a.id, author=a.author.username, group=a.group.name, location=a.location, subject=a.subject, serial=a.serial,
-                   mtr=a.mtr, cor=a.cor, elec=a.elec, water=a.water, temp=a.temp, humidity=a.humidity, usegas=a.usegas,
-                   usewater=a.usewater, alarm=a.alarm, actgas=a.actgas, actalarm=a.actalarm, remark=a.remark,
-                   created=a.created, date=a.date)
+        b = Smeter(id=a.id, author=a.author.username, group=xid, location=a.location, subject=a.subject, serial=a.serial,
+                   hometmp=a.hometmp, homehumid=a.homehumid, homealarm=a.homealarm, valvestatus=a.valvestatus,
+                   valveaction=a.valveaction, created=a.created, date=a.date)
         b.save()
     return render(request, 'metergram/control_search.html', {'filter': file_filter})
 
@@ -143,7 +211,35 @@ class MeterDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('metergram:meter_list')
     template_name = 'metergram/meter_delete.html'
 
-class MeterUploadView(LoginRequiredMixin, CreateView):
+    def smart_delete(self, request, pk):
+        obj = Meter.objects.filter(id=pk).first()
+        pretype = obj.subject
+        instance = Meter()
+        form = RegistForm(request.POST, instance=instance)          #MeterForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            # -------- for App -----------
+            if "차단기" in pretype:
+                type = "gop"
+            else:
+                type = "gvc"
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_DEL",
+                "TOKEN_TYP": type,
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_USR": request.user.username,                   # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                      # request.POST['email'],
+                "TOKEN_TLK": " ",
+            }
+            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
+            # --------------------------
+            return redirect('metergram:control_list')
+        return render(request, 'metergram/meter_delete.html', {'form': form})
+
+class MeterUploadView(LoginRequiredMixin, CreateView):              #스마트계량기 등록
     model = Meter
     form_class = RegistForm
     template_name = 'metergram/meter_upload.html'
@@ -155,41 +251,87 @@ class MeterUploadView(LoginRequiredMixin, CreateView):
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
             form.save()
+            #-------- for App -----------
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": "gvc",
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_USR": request.user.username,                   # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                      # request.POST['email'],
+                "TOKEN_TLK": " ",
+            }
+            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
+            #--------------------------
             return redirect('metergram:meter_list')
         return self.render_to_response({'form': form})
 
-class ControlUploadView(LoginRequiredMixin, CreateView):
+class ControlUploadView(LoginRequiredMixin, CreateView):            #스마트차단기 등록
     model = Meter
-    form_class = ControlForm
+    form_class = RegistForm
     template_name = 'metergram/control_upload.html'
 
     def post(self, request):
         instance = Meter()
-        form = ControlForm(request.POST, instance=instance)
+        form = RegistForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.save()                                                                         #check User grade
+            form.save()
+            # -------- for App -----------
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": "gop",
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_USR": request.user.username,                   # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                      # request.POST['email'],
+                "TOKEN_TLK": " ",
+            }
+            requests.get(url, params=data_dict)                 # response = requests.get(url, params=data_dict)
+            # --------------------------
             return redirect('metergram:control_list')
         return self.render_to_response({'form': form})
 
-class MeterUpdateView(LoginRequiredMixin, UpdateView):
+class MeterUpdateView(LoginRequiredMixin, UpdateView):              #스마트계량기, 스마트차단기 등록사항 변경 --> 불필요??
     model = Meter
-    form_class = MeterForm
+    form_class = RegistForm                                         #MeterForm
     template_name = 'metergram/meter_update.html'
 
     def meter_update(self, request, pk):
         instance = Meter()
-        form = MeterForm(request.POST, instance=instance)
+        form = RegistForm(request.POST, instance=instance)          #MeterForm(request.POST, instance=instance)
         if form.is_valid():
-            form.save()                                                                         # check User grade
-            #Shrimp.objects.filter(id=pk).delete()
+            form.save()
+            # -------- for App -----------
+            typ = request.POST['subject']
+            if "차단기" in typ:
+                type = "gop"
+            else:
+                type = "gvc"
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": type,
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_USR": request.user.username,                   # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                      # request.POST['email'],
+                "TOKEN_TLK": " ",
+            }
+            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
+            # --------------------------
             return redirect('metergram:meter_list')
         return render(request, 'metergram/meter_update.html', {'form': form})
 
 #for weasyprint
 def generate_pdf(request):
-    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
+    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
     html_string = render_to_string('metergram/pdf_list.html', {'files': files})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                            # Creating http response
     response['Content-Disposition'] = 'filename=meter_list_{}.pdf'.format(request.user)
@@ -198,7 +340,7 @@ def generate_pdf(request):
     return response
 
 def control_pdf(request):
-    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
+    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
     html_string = render_to_string('metergram/pdf_list_control.html', {'files': files})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=control_list_{}.pdf'.format(request.user)
@@ -207,7 +349,7 @@ def control_pdf(request):
     return response
 
 def search_pdf(request):
-    files_filter = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='측정장치'))
+    files_filter = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기'))
     html_string = render_to_string('metergram/pdf_search.html', {'filter': files_filter})             # Rendered
     response = HttpResponse(content_type='application/pdf;')                                # Creating http response
     response['Content-Disposition'] = 'filename=meter_search_{}.pdf'.format(request.user)
@@ -216,7 +358,7 @@ def search_pdf(request):
     return response
 
 def control_search_pdf(request):
-    files_filter = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='조작장치'))
+    files_filter = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트차단기'))
     html_string = render_to_string('metergram/pdf_search_control.html', {'filter': files_filter})          # Rendered
     response = HttpResponse(content_type='application/pdf;')                                                # Creating http response
     response['Content-Disposition'] = 'filename=control_search_{}.pdf'.format(request.user)
@@ -225,31 +367,32 @@ def control_search_pdf(request):
     return response
 
 def search_xls(request):
-    obj = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).first()
+    obj = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기')).first()
     #author_name = getattr(obj, 'author')
     # Exel format
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=meter_search_{}.xls'.format(id)        #(author_name)
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('측정자료')
+    ws = wb.add_sheet('계량자료')
     # Sheet header, first row
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    columns = ['동/호', '장치번호', '계량값', '보정값', '전기미터', '수도미터', '온도(*C)', '습도(%)', '가스사용', '수도사용', '경보',]
+    columns = ['동/호', '장치번호', '계량사용량', '보정사용량', '누적계량값', '누적보정값', '가스온도(*C)', '가스압력(kPa)',
+               '가스알림', '시간',]
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
-    rows = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).values_list('location', 'serial',
-                                            'mtr', 'cor', 'elec', 'water', 'temp', 'humidity', 'usegas', 'usewater', 'alarm')
+    rows = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기')).values_list('location',
+                'serial', 'monmtr', 'moncor', 'accmtr', 'acccor', 'gastmp', 'gasprs', 'gasalarm', 'created')
 
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
             if col_num>1 and col_num<6:
                 ws.write(row_num, col_num, row[col_num]/100, font_style)
-            elif col_num==6:
+            elif col_num>5 and col_num<7:
                 ws.write(row_num, col_num, row[col_num]/10, font_style)
             else:
                 ws.write(row_num, col_num, row[col_num], font_style)
@@ -261,37 +404,37 @@ class MeterAPIView(LoginRequiredMixin, APIView):
     permission_classes = []
 
     def get(self, request, idd):
-        files = Smeter.objects.filter(Q(group=idd) & Q(subject='측정장치')).order_by('date')
-        mtr_list = []
-        cor_list = []
-        elec_list = []
-        water_list = []
-        temp_list = []
-        humidity_list = []
+        files = Smeter.objects.filter(Q(group=idd) & Q(subject='스마트계량기')).order_by('created')
+        monmtr_list = []
+        moncor_list = []
+        accmtr_list = []
+        acccor_list = []
+        gastmp_list = []
+        gasprs_list = []
 
         for file in files:
-            org_date = str(file.date)
+            org_date = str(file.created)
             new_date = org_date[:19]
             time_tuple = strptime(new_date, '%Y-%m-%d %H:%M:%S')
             utc_now = (mktime(time_tuple) + 32400) * 1000
-            mtr_list.append([utc_now, file.mtr/100])
-            cor_list.append([utc_now, file.cor/100])
-            elec_list.append([utc_now, file.elec/100])
-            water_list.append([utc_now, file.water/100])
-            temp_list.append([utc_now, file.temp/10])
-            humidity_list.append([utc_now, file.humidity])
+            monmtr_list.append([utc_now, file.monmtr/100])
+            moncor_list.append([utc_now, file.moncor/100])
+            accmtr_list.append([utc_now, file.accmtr/100])
+            acccor_list.append([utc_now, file.acccor/100])
+            gastmp_list.append([utc_now, file.gastmp/10])
+            gasprs_list.append([utc_now, file.gasprs/10])
 
         data = {
-            'mtr': mtr_list,
-            'cor': cor_list,
-            'elec': elec_list,
-            'water': water_list,
-            'temp': temp_list,
-            'humidity': humidity_list,
+            'monmtr': monmtr_list,
+            'moncor': moncor_list,
+            'accmtr': accmtr_list,
+            'acccor': acccor_list,
+            'gastmp': gastmp_list,
+            'gasprs': gasprs_list,
         }
         return Response(data)
 
 class MeterChartView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        form = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).first()
+        form = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기')).first()
         return render(request, 'metergram/meter_chart.html', {'form': form})

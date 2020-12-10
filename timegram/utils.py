@@ -3,6 +3,7 @@ from calendar import HTMLCalendar
 from .models import Time
 from django.urls import reverse
 from django.utils import timezone
+from django.db.models import Q
 
 class Calendar(HTMLCalendar):
 	def __init__(self, year=None, month=None):
@@ -61,13 +62,14 @@ class Calendar(HTMLCalendar):
 			week += self.formatday(d, events, color)
 		return f'<tr> {week}</tr>'
 
-	def formatmonth(self, group_id, withyear=True):								# formats a month as a table, filter events by year and month
+	def formatmonth(self, group_id, author_id, withyear=True):								# formats a month as a table, filter events by year and month
 #---leebc---
-		try:
-			#group_id = request.user.groups.values_list('id', flat=True).first()					#lbc inserted 'group_id'
-			event_data = Time.objects.filter(group_id=group_id)
-		except:
-			event_data = Time.objects.filter(group_id=1)
+
+#group_id = request.user.groups.values_list('id', flat=True).first()  # for group_name, replace 'id' with 'name'
+#pagefiles = Task.objects.filter(Q(author_id=request.user.id) & Q(group_id=group_id))
+
+
+		event_data = Time.objects.filter(Q(group_id=group_id) & Q(author_id=author_id))
 		#events = Time.objects.filter(start_time__year=self.year, start_time__month=self.month)		#original
 		events = event_data.filter(start_time__year=self.year, start_time__month=self.month)
 #---leebc---

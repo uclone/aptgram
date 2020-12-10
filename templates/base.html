@@ -34,7 +34,7 @@
                         {% if "아파트관리" in user.last_name %}
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'filegram:file_list' %}" class="active nav-link">&laquo; 문서 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일기 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'susungram:susun_list' %}" class="active nav-link">&laquo; 수선 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">&laquo; 설비 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
@@ -47,9 +47,9 @@
                         <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">&laquo; 주민 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">&laquo; 공고 &raquo;</a></li>
                         {% else %}
-                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 안전 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 생활 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일기 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">&laquo; 설비 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
                         <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">&laquo; 양식 &raquo;</a></li>
@@ -80,7 +80,9 @@
         {% endblock %}
 
         <footer class="footer">
-            <p>&copy; Uclone^gram</p>
+            <div class="text-center">
+                <p>&copy; Uclone^gram</p>
+            </div>
         </footer>
     </div>
 </body>

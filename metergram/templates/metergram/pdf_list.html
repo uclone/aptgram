@@ -14,17 +14,15 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>동:호</th>
+                <th>사용장소</th>
                 <th>장치번호</th>
-                <th>가스계량값</th>
-                <th>가스보정값</th>
-                <th>전력사용량</th>
-                <th>수도사용량</th>
-                <th>온도(*C)</th>
-                <th>습도(%)</th>
-                <th>가스사용</th>
-                <th>수도사용</th>
-                <th>경보</th>
+                <th>계량사용량(M3)</th>
+                <th>보정사용량(M3)</th>
+                <th>누적계량값(M3)</th>
+                <th>누적보정값(M3)</th>
+                <th>가스온도(*C)</th>
+                <th>가스압력(kPa)</th>
+                <th>가스알림</th>
                 <th>해당일시</th>
             </tr>
         </thead>
@@ -33,21 +31,19 @@
         {% for post in files %}
             <tr>
                 <td align="center">{{post.location}}</td>
-                <td align="center">{{post.serial}}</a></td>
-                <td align="center">{{post.mtr|div:100}}</td>
-                <td align="center">{{post.cor|div:100}}</td>
-                <td align="center">{{post.elec|div:100}}</td>
-                <td align="center">{{post.water|div:100}}</td>
-                <td align="center">{{post.temp|div:10}}</td>
-                {% if post.humidity > 80 or post.ph < 20 %}
-                <td align="center" style="color:red">{{post.humidity}}</td>
+                <td><a href="{% url 'metergram:meter_detail' pk=post.id %}">{{post.serial}}</a></td>
+                <td align="center">{{post.monmtr|div:100}}</td>
+                <td align="center">{{post.moncor|div:100}}</td>
+                <td align="center">{{post.accmtr|div:100}}</td>
+                <td align="center">{{post.acccor|div:100}}</td>
+                {% if post.gastmp > 500 or post.gastmp < 0 %}
+                <td align="center" style="color:red">{{post.gastmp|div:10}}</td>
                 {% else %}
-                <td align="center" style="color:blue">{{post.humidity}}</td>
+                <td align="center" style="color:blue">{{post.gastmp|div:10}}</td>
                 {% endif %}
-                <td align="center">{{post.usegas}}</td>
-                <td align="center">{{post.usewater}}</td>
-                <td align="center">{{post.alarm}}</td>
-                <td align="center">{{post.date|date:"y-m-d H:i"}}</td>
+                <td align="center">{{post.gasprs|div:10}}</td>
+                <td align="center">{{post.gasalarm}}</td>
+                <td align="center">{{post.created|date:"y-m-d H:i"}}</td>
             </tr>
         {% endfor %}
         </tbody>

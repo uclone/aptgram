@@ -55,7 +55,7 @@
                 },
 
                 title: {
-                    text: '우리집 관리상황',
+                    text: '가스사용내역',
                     style: {
                         "color": "#333333",
                         "fontSize": "26px"
@@ -97,42 +97,42 @@
                 series: [
                     {
                         name: '계량사용량',
-                        data: data.mtr,
+                        data: data.monmtr,
                         color: 'rgba(100,0,0,.6)',
                         lineWidth: 2
                     },
 
                     {
                         name: '보정사용량',
-                        data: data.cor,
+                        data: data.moncor,
                         color: 'rgba(0,100,0,.6)',
                         lineWidth: 2
                     },
 
                     {
-                        name: '전기사용량',
-                        data: data.elec,
+                        name: '누적사용량',
+                        data: data.accmtr,
                         color: 'rgba(0,0,100,.6)',
                         lineWidth: 2
                     },
 
                     {
-                        name: '수도사용량',
-                        data: data.water,
+                        name: '누적보정량',
+                        data: data.acccor,
                         color: 'rgba(100,0,100,.6)',
                         lineWidth: 2
                     },
 
                     {
-                        name: '온도(*C)',
-                        data: data.temp,
+                        name: '가스온도(*C)',
+                        data: data.gastmp,
                         color: 'rgba(100,100,0,.6)',
                         lineWidth: 2
                     },
 
                     {
-                        name: '습도(%)',
-                        data: data.humidity,
+                        name: '가스압력(kPa)',
+                        data: data.gasprs,
                         color: 'rgba(0,100,100,.6)',
                         lineWidth: 2
                     },

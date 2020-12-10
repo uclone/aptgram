@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
-{% extends 'base.html' %}
+{% extends 'base_mobile.html' %}
 {% load bootstrap4 %}
 
 <head>
@@ -18,13 +18,16 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 panel panel-default">
+                <div class="text-center">
                 <form action="" method="post" enctype="multipart/form-data" >
                     <p></p>
                     {% bootstrap_form form %}
                     {% csrf_token %}
-                    <input type="submit" class="btn btn-primary" value="등록하기">
+                    <input type="submit" class="btn btn-danger btn-lg" value="가스밸브 차단명령">
+                    <a href="{% url 'metergram:control_list' %}" class="btn btn-primary btn-lg">스마트차단기 기록</a>
                     <p></p>
                 </form>
+                </div>
             </div>
             <div class="col-md-2"></div>
         </div>

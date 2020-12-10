@@ -4,16 +4,15 @@ from django import forms
 from django.urls import reverse_lazy, reverse
 
 class RegisterForm(forms.ModelForm):
-    group = forms.ModelChoiceField(queryset=Group.objects.all(), required=True)
-    email = forms.EmailField()
-    last_name = forms.CharField(label='부서:직위', required=True)
-    first_name = forms.CharField(label='이름', required=True)
-    password = forms.CharField(label='패스워드', widget=forms.PasswordInput)
+    group = forms.ModelChoiceField(queryset=Group.objects.all(), label='사용목적', required=True)
+    email = forms.EmailField(label='이메일')
+    last_name = forms.CharField(label='스마트폰번호: (-)은 생략', required=True)
+    password = forms.CharField(label='패스워드(구글계정 패스워드와 동일해야 합니다.)', widget=forms.PasswordInput)
     password2 = forms.CharField(label='패스워드 재확인', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['group', 'username', 'last_name', 'first_name', 'email']
+        fields = ['username', 'password', 'password2', 'group', 'last_name', 'email']
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -22,12 +21,14 @@ class RegisterForm(forms.ModelForm):
         return cd['password2']
 
 class UpdateForm(forms.ModelForm):
-    last_name = forms.CharField(label='부서:직위', required=True)
-    first_name = forms.CharField(label='이름', required=True)
+    group = forms.ModelChoiceField(queryset=Group.objects.all(), label='사용목적', required=True)
+    email = forms.EmailField(label='이메일')
+    last_name = forms.CharField(label='스마트폰번호: (-)은 생략', required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'last_name', 'first_name',]
+        #fields = ['username', 'password', 'password2', 'group', 'first_name', 'last_name', 'email']
+        fields = ['username', 'group', 'last_name', 'email']
 
 
 

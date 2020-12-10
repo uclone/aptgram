@@ -12,11 +12,14 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>동:호</th>
-                <th>가스안전조치</th>
-                <th>경보안전조치</th>
-                <th>비고</th>
-                <th>해당일시</th>
+                <th>사용장소</th>
+                <th>기기번호</th>
+                <th>온도(*C)</th>
+                <th>습도(kPa)</th>
+                <th>알림</th>
+                <th>밸브상태</th>
+                <th>밸브조작</th>
+                <th>일시</th>
             </tr>
         </thead>
 
@@ -24,9 +27,12 @@
         {% for post in filter %}
             <tr>
                 <td align="center">{{post.location}}</td>
-                <td align="center">{{post.actgas}}</td>
-                <td align="center">{{post.actalarm}}</td>
-                <td align="center">{{post.remark}}</td>
+                <td align="center">{{post.serial}}</td>
+                <td align="center">{{post.hometmp}}</td>
+                <td align="center">{{post.homehumid}}</td>
+                <td align="center">{{post.homealarm}}</td>
+                <td align="center">{{post.valvestatus}}</td>
+                <td align="center">{{post.valveaction}}</td>
                 <td align="center">{{post.created|date:"y-m-d H:i"}}</td>
             </tr>
         {% endfor %}

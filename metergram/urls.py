@@ -1,14 +1,18 @@
 from django.urls import path
 from django.views.generic.detail import DetailView
-from metergram.views import *
+from .views import *
 from django.conf.urls import url
 from .models import Meter, Smeter
-from . import views
+from metergram import views
+from . import *
 
 app_name = 'metergram'
 
 urlpatterns = [
-    path('aindex', views.IndexView.as_view(), name='aindex'),
+    path('mindex/', MeterDataView.as_view(), name='mindex'),
+    path('vindex/', ValveDataView.as_view(), name='vindex'),
+
+    path('vclose/', ValveCloseView.as_view(), name='valve_close'),
 
     path('', meter_list, name='meter_list'),
     path('control/', control_list, name='control_list'),
@@ -16,9 +20,10 @@ urlpatterns = [
     path('upload/', MeterUploadView.as_view(), name='meter_upload'),
     path('control_upload/', ControlUploadView.as_view(), name='control_upload'),
 
-    path('delete/<int:pk>/', MeterDeleteView.as_view(), name='meter_delete'),
     path('update/<int:pk>/', MeterUpdateView.as_view(), name='meter_update'),
-    path('detail/<int:pk>/', DetailView.as_view(model=Meter, template_name='metergram/meter_detail.html'), name='meter_detail'),
+    path('delete/<int:pk>/', MeterDeleteView.as_view(), name='meter_delete'),
+    path('detail/<int:pk>/', DetailView.as_view(model=Meter, template_name='metergram/meter_detail.html'),
+         name='meter_detail'),
 
     url(r'^search/$', meter_search, name='meter_search'),                               # search
     url(r'^control_search/$', control_search, name='control_search'),                   # search

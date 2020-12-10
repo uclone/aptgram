@@ -12,21 +12,19 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>단지:단체</th>
-                <th>사용자 ID</th>
-                <th>부서:직위</th>
-                <th>이름</th>
-                <th>이메일</th>
+                <th scope="col">사용자(ID)</th>
+                <th scope="col">사용목적</th>
+                <th scope="col">스마트폰번호</th>
+                <th scope="col">설치장소:주소</th>
             </tr>
         </thead>
 
         <tbody>
         {% for post in files %}
             <tr>
-                <td>{{post.groups.all.0.name}}</td>
                 <td>{{post.username}}</td>
+                <td>{{post.groups.all.0.name}}</td>
                 <td>{{post.last_name}}</td>
-                <td>{{post.first_name}}</td>
                 <td>{{post.email}}</td>
             </tr>
         {% endfor %}

@@ -26,24 +26,10 @@
 
     <div class="container">
         <header class="head clearfix">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/index/">Aptgram</a><br>
-                <ul class="nav">
-                    {% if user.is_authenticated %}
-                        {% if "1급" in user.last_name %}
-                        <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'taskgram:task_upload_mobile' %}" class="active nav-link">&laquo; 일지 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'metergram:meter_upload_mobile' %}" class="active nav-link">&laquo;검침추가&raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'metergram:meter_list_mobile' %}" class="active nav-link">&laquo;검침확인&raquo;</a></li>
-                        {% endif %}
-                    <li class="nav-item"><a href="{% url 'lifegram:life_upload_jumin' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
-                    <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">&laquo; 공고 &raquo;</a></li>
-                    <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">&laquo;로그아웃&raquo;</a></li>
-                    {% else %}
-                    <li class="nav-item"><a href="{% url 'accounts:login' %}" class="nav-link">&laquo; 로그인 &raquo;</a></li>
-                    <li class="nav-item"><a href="{% url 'accounts:register' %}" class="nav-link">&laquo;등록하기&raquo;</a></li>
-                    {% endif %}
-                </ul>
+            <nav class="navbar navbar-lg navbar-light bg-light">
+
+                <a class="navbar-brand" href="/index/">Uclone^gram</a>
+
             </nav>
         </header>
 
@@ -59,7 +45,9 @@
         {% endblock %}
 
         <footer class="footer">
-            <p>&copy; Aptgram</p>
+            <div class="text-center">
+            <p>&copy; Uclone^gram</p>
+            </div>
         </footer>
     </div>
 </body>

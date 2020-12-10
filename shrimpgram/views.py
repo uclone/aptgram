@@ -12,6 +12,7 @@ from .filters import SearchFilter
 from .forms import RegistForm, MeterForm, ControlForm
 from django.contrib.auth.models import User, Group
 import xlwt
+import requests
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -151,7 +152,20 @@ class ShrimpUploadView(LoginRequiredMixin, CreateView):
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
-            form.save()                                                                         #check User grade
+            form.save()
+            # -------- for App -----------
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": "sec",
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": "blank",  # request.POST['password'],
+                "TOKEN_USR": form.instance.user.username,  # request.POST['username'],
+                "TOKEN_TEL": "blank",  # request.POST['last_name'],
+                "TOKEN_EML": "blank",  # request.POST['email'],
+            }
+            requests.get(url, params=data_dict)  # response = requests.get(url, params=data_dict)
+            # --------------------------
             return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
 
@@ -167,7 +181,20 @@ class ControlUploadView(LoginRequiredMixin, CreateView):
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         form.instance.serial = 'control'
         if form.is_valid():
-            form.save()                                                                         #check User grade
+            form.save()
+            # -------- for App -----------
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": "sop",
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": "blank",  # request.POST['password'],
+                "TOKEN_USR": form.instance.user.username,  # request.POST['username'],
+                "TOKEN_TEL": "blank",  # request.POST['last_name'],
+                "TOKEN_EML": "blank",  # request.POST['email'],
+            }
+            requests.get(url, params=data_dict)  # response = requests.get(url, params=data_dict)
+            # --------------------------
             return redirect('shrimpgram:control_list')
         return self.render_to_response({'form': form})
 
@@ -180,8 +207,24 @@ class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
         instance = Shrimp()
         form = MeterForm(request.POST, instance=instance)
         if form.is_valid():
-            form.save()                                                                         # check User grade
-            #Shrimp.objects.filter(id=pk).delete()
+            form.save()                                                                         # -------- for App -----------
+            typ = request.POST['subject']
+            if "측정기" in typ:
+                type = "sop"
+            else:
+                type = "sec"
+            url = "http://www.smarteolife.com/push/register.php"
+            data_dict = {
+                "CMD": "COMMAND_REG",
+                "TOKEN_TYP": type,
+                "TOKEN_SER": request.POST['serial'],
+                "TOKEN_PSW": "blank",                               # request.POST['password'],
+                "TOKEN_USR": form.instance.user.username,           # request.POST['username'],
+                "TOKEN_TEL": "blank",                               # request.POST['last_name'],
+                "TOKEN_EML": "blank",                               # request.POST['email'],
+            }
+            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
+            # --------------------------
             return redirect('shrimpgram:shrimp_list')
         return render(request, 'shrimpgram/shrimp_update.html', {'form': form})
 

@@ -20,8 +20,8 @@
         <tbody>
         {% for post in files %}
             <tr><td>작성자</td><td>{{post.author.username}}</td></tr>
-            <tr><td>아파트명</td><td>{{post.group}}</td></tr>
-            <tr><td>담당부서</td><td>{{post.department}}</td></tr>
+            <tr><td>사용목적</td><td>{{post.group}}</td></tr>
+            <tr><td>담당</td><td>{{post.department}}</td></tr>
             <tr><td>설비번호</td><td>{{post.code}}</td></tr>
             <tr><td>설비명칭</td><td>{{post.subject}}</td></tr>
             <tr><td>설비위치</td><td>{{post.location}}</td></tr>
@@ -30,7 +30,7 @@
             <tr><td>시작일자</td><td>{{post.start|date:"Y-m-d"}}</td></tr>
             <tr><td>완료일자</td><td>{{post.close|date:"Y-m-d"}}</td></tr>
             <tr><td>상세내용</td><td>{{post.text}}</td></tr>
-            <tr><td>결재</td><td>{{post.remark}}</td></tr>
+            <tr><td>확인</td><td>{{post.remark}}</td></tr>
             <tr><td>최초작성일</td><td>{{post.created|date:"Y-m-d"}}</td></tr>
             <tr><td>수정일자</td><td>{{post.updated|date:"Y-m-d"}}</td></tr>
             <tr>

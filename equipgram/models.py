@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Equip(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_equips', verbose_name='작성자')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, default=1, related_name='group_equips', verbose_name='아파트명')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, default=1, related_name='group_equips', verbose_name='사용목적')
     code = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품번호')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품명칭')
     quantity = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품수량')
@@ -34,13 +34,9 @@ class Equip(models.Model):
         return reverse('equipgram:equip_detail', args=[str(self.id)])
         #return reverse('equipgram:equip_list')
 
-    #def get_absolute_url(self):
-    #    return reverse('equipgram:equip_detail', kwargs={'pk': self.pk})
-
-
 class Sequip(models.Model):
     author = models.CharField(max_length=100, null=True, blank=True, verbose_name='작성자')
-    group = models.CharField(max_length=100, null=True, blank=True, verbose_name='아파트명')
+    group = models.CharField(max_length=100, null=True, blank=True, verbose_name='사용목적')
     code = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품번호')
     subject = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품명칭')
     quantity = models.CharField(max_length=100, null=True, blank=True, verbose_name='비품수량')

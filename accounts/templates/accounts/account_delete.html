@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 {% extends 'base.html' %}
 <head>
     <meta charset="UTF-8">
-    <title>shrimp-delete</title>
+    <title>account-delete</title>
 </head>
 <body>
 {% block content %}
@@ -11,15 +11,16 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 panel panel-default">
-                <div class="alert alert-info">[{{object.location}}:{{object.serial}}] 기기등록을 정말 삭제하시겠습니까?</div>
+                <p></p><p></p><p></p>
+                <div class="alert alert-info">[{{object.username}}:{{object.last_name}}] 계정을 정말 삭제하시겠습니까?</div>
                 <form action="" method="post">
-                    <p></p>
                     {{form.as_p}}
                     {% csrf_token %}
-                    <input type="submit" class="btn btn-danger" value="Confirm">
-                    <p></p>
+                    <input type="submit" class="btn btn-danger" value="삭제확인">
                 </form>
+                <p></p><p></p><p></p>
             </div>
+
             <div class="col-md-2"></div>
         </div>
 

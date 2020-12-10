@@ -3,8 +3,8 @@ from .models import Meter
 from bootstrap_datepicker_plus import DatePickerInput
 
 subject_choice= [
-    ('측정장치', '측정장치'),
-    ('조작장치', '조작장치'),
+    ('스마트계량기', '스마트계량기'),
+    ('스마트차단기', '스마트차단기'),
     ]
 
 class RegistForm(forms.ModelForm):
@@ -15,10 +15,17 @@ class RegistForm(forms.ModelForm):
             'subject': forms.Select(choices=subject_choice),
         }
 
+class CloseForm(forms.ModelForm):
+   class Meta:
+        model = Meter
+        fields = ['location', 'serial', 'valveaction']
+        exclude = ('location', 'serial', 'valveaction',)
+
 class MeterForm(forms.ModelForm):
     class Meta:
         model = Meter
-        fields = ['serial', 'mtr', 'cor', 'elec', 'water', 'temp', 'humidity', 'usegas', 'usewater', 'alarm', 'date']
+        fields = ['subject', 'serial', 'monmtr', 'moncor', 'amtmonmtr', 'amtmoncor', 'accmtr', 'acccor',
+                  'gastmp', 'gasprs', 'gasalarm',]
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d'),
             'subject': forms.Select(choices=subject_choice),
@@ -27,8 +34,8 @@ class MeterForm(forms.ModelForm):
 class ControlForm(forms.ModelForm):
     class Meta:
         model = Meter
-        fields = ['location', 'subject', 'serial', 'actgas', 'actalarm', 'remark', ]
+        fields = ['subject', 'serial', 'hometmp', 'homehumid', 'homealarm', 'valveaction',]
         widgets = {
-            #'date': DatePickerInput(format='%Y-%m-%d'),
+            'date': DatePickerInput(format='%Y-%m-%d'),
             'subject': forms.Select(choices=subject_choice),
         }

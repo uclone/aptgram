@@ -5,6 +5,8 @@ from bootstrap_datepicker_plus import DatePickerInput
 subject_choice= [
     ('측정장치', '측정장치'),
     ('조작장치', '조작장치'),
+    ('수질측정기', '수질측정기'),
+    ('원격조정기', '원격조정기'),
     ]
 
 class RegistForm(forms.ModelForm):

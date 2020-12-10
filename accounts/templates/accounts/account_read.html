@@ -7,11 +7,6 @@
 </head>
 <body>
 {% block content %}
-    <p></p>
-    <div class="btn-group float-right">
-        <a href="{% url 'accounts:generate_pdf' %}" class="btn btn-success btn-sm">pdf 출력</a>&nbsp;&nbsp;
-    </div>
-    <p></p>
 
     <table class="table">
         <thead>
@@ -21,6 +16,7 @@
                 <th scope="col">스마트폰번호</th>
                 <th scope="col">이메일</th>
                 <th scope="col">수정하기</th>
+                <th scope="col">삭제하기</th>
             </tr>
         </thead>
 
@@ -31,7 +27,8 @@
                 <td>{{post.groups.all.0.name}}</td>
                 <td>{{post.last_name}}</td>
                 <td>{{post.email}}</td>
-                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-outline-success btn-sm">수정하기</a></td>
+                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-success btn-sm">수정하기</a></td>
+                <td><a href="{% url 'accounts:account_delete' pk=post.id %}" class="btn btn-danger btn-sm">삭제하기</a></td>
             </tr>
         {% endfor %}
         </tbody>
