@@ -10,5 +10,5 @@ class SearchFilter(django_filters.FilterSet):
             'location': ['icontains'],
             'subject': ['exact'],
             'serial': ['exact'],
-            'created': ['range'],
+            'date': ['range'],
         }

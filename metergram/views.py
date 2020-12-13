@@ -419,8 +419,8 @@ class MeterAPIView(LoginRequiredMixin, APIView):
             utc_now = (mktime(time_tuple) + 32400) * 1000
             monmtr_list.append([utc_now, file.monmtr/100])
             moncor_list.append([utc_now, file.moncor/100])
-            accmtr_list.append([utc_now, file.accmtr/100])
-            acccor_list.append([utc_now, file.acccor/100])
+            accmtr_list.append([utc_now, file.accmtr/10000])
+            acccor_list.append([utc_now, file.acccor/10000])
             gastmp_list.append([utc_now, file.gastmp/10])
             gasprs_list.append([utc_now, file.gasprs/10])
 

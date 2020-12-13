@@ -14,9 +14,8 @@
     <p></p>
     <div class="btn-toolbar float-left">
         <a href="{% url 'shrimpgram:shrimp_upload' %}" class="btn btn-danger btn-sm">등록:수질측정기</a>
-        <a href="{% url 'shrimpgram:shrimp_upload' %}" class="btn btn-danger btn-sm">등록:원격조정기</a>
-        <a href="{% url 'shrimpgram:shrimp_search' %}" class="btn btn-info btn-sm">검색:차트</a>
-        <a href="{% url 'shrimpgram:control_list' %}" class="btn btn-primary btn-sm">자료:원격조정기</a></div>
+        <a href="{% url 'shrimpgram:shrimp_search' %}" class="btn btn-info btn-sm">검색 & 차트</a>
+        <a href="{% url 'shrimpgram:control_upload' %}" class="btn btn-primary btn-sm">직접기록하기</a></div>
     <div class="btn-toolbar float-right">
         <a href="{% url 'shrimpgram:generate_pdf' %}" class="btn btn-success btn-sm">pdf출력</a></div>
     <p></p>
@@ -24,7 +23,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th class="text-center" scope="col">호지구분</th>
+                <th class="text-center" scope="col">구역</th>
+                <th class="text-center" scope="col">장치종류</th>
                 <th class="text-center" scope="col">장치번호</th>
                 <th class="text-center" scope="col">온도(*C)</th>
                 <th class="text-center" scope="col">pH</th>
@@ -34,7 +34,8 @@
                 <th class="text-center" scope="col">암모니아(ppm)</th>
                 <th class="text-center" scope="col">아질산(ppm)</th>
                 <th class="text-center" scope="col">탁도(ppm)</th>
-                <th class="text-center" scope="col">보안</th>
+                <th class="text-center" scope="col">중화제(cc/min)</th>
+                <th class="text-center" scope="col">당밀(l/min)</th>
                 <th class="text-center" scope="col">해당일시</th>
             </tr>
         </thead>
@@ -43,6 +44,7 @@
             {% for post in files %}
                 <tr>
                     <td align="center">{{post.location}}</td>
+                    <td align="center">{{post.subject}}</td>
                     <td><a href="{% url 'shrimpgram:shrimp_detail' pk=post.id %}">{{post.serial}}</a></td>
                     <td align="center">{{post.temp|div:10}}</td>
                     {% if post.ph > 80 or post.ph < 75 %}
@@ -56,7 +58,8 @@
                     <td align="center">{{post.nh4|div:1000}}</td>
                     <td align="center">{{post.no2|div:1000}}</td>
                     <td align="center">{{post.turbid}}</td>
-                    <td align="center">{{post.security}}</td>
+                    <td align="center">{{post.naoh}}</td>
+                    <td align="center">{{post.dang}}</td>
                     <td align="center">{{post.date|date:"y-m-d H:i"}}</td>
                 </tr>
             {% endfor %}

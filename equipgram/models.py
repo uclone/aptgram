@@ -27,8 +27,8 @@ class Equip(models.Model):
     def __str__(self):
         return self.author.username + " " + self.date.strftime("%Y-%m-%d %H:%M:%S")
 
-    def __str__(self):
-        return self.photo.name
+    #def __str__(self):
+    #    return self.photo.name
 
     def get_absolute_url(self):
         return reverse('equipgram:equip_detail', args=[str(self.id)])
@@ -56,5 +56,5 @@ class Sequip(models.Model):
     def __str__(self):
         return self.author.username + " " + self.date.strftime("%Y-%m-%d %H:%M:%S")
 
-    def __str__(self):
-        return self.photo.name
+    #def __str__(self):
+    #    return self.photo.name

@@ -25,34 +25,35 @@ from time import mktime, strptime
 @method_decorator(csrf_exempt, name='dispatch')
 class IndexView(View):
     def post(self, request):
-        #instance = Shrimp()
-        #form = MeterForm(request.POST, instance=instance)
-        #Iserial = form.instance.serial
         Iserial = request.POST['serial']
+        obj = Shrimp.objects.filter(serial=Iserial).last()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
         form = Shrimp(serial = request.POST['serial'],
                       temp = request.POST['temp'],
                       ph = request.POST['ph'],
                       alkali = request.POST['alkali'],
                       salt = request.POST['salt'],
                       do = request.POST['do'],
-                      nh4 = request.POST['nh4'],
-                      turbid = request.POST['turbid'],)
-
-        obj = Shrimp.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = getattr(obj, 'location')
-
+                      nh4=request.POST['nh4'],
+                      no2=request.POST['no2'],
+                      turbid=request.POST['turbid'],
+                      naoh=request.POST['naoh'],
+                      dang=request.POST['dang'],)
+        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
-        form.serial = Iserial
-
-        form.save()
+        form.date = form.created
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
+        obj = Shrimp.objects.filter(serial=Iserial).last()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
         form = Shrimp(serial = Iserial,
                       temp = request.GET['temp'],
                       ph = request.GET['ph'],
@@ -60,18 +61,15 @@ class IndexView(View):
                       salt = request.GET['salt'],
                       do = request.GET['do'],
                       nh4 = request.GET['nh4'],
-                      turbid = request.GET['turbid'],)
-
-        obj = Shrimp.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = getattr(obj, 'location')
-
+                      no2 = request.GET['no2'],
+                      turbid = request.GET['turbid'],
+                      naoh = request.GET['naoh'],
+                      dang = request.GET['dang'],)
+        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
-        form.serial = Iserial
-
+        form.date = form.created
         form.save()
         return HttpResponse(status=200)
 
@@ -91,21 +89,6 @@ def shrimp_list(request):
     return render(request, 'shrimpgram/shrimp_list.html', {'files':files})
 
 @login_required
-def control_list(request):
-    pagefiles = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
-# - pagination - start
-    page = request.GET.get('page', 1)
-    paginator = Paginator(pagefiles, 10)
-    try:
-        files = paginator.page(page)
-    except PageNotAnInteger:
-        files = paginator.page(1)
-    except EmptyPage:
-        files = paginator.page(paginator.num_pages)
-# - pagination - end
-    return render(request, 'shrimpgram/control_list.html', {'files':files})
-
-@login_required
 def shrimp_search(request):
     file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
@@ -117,24 +100,9 @@ def shrimp_search(request):
         b = Sshrimp(id=a.id, author=a.author.username, group=xid, location=a.location, subject=a.subject, serial=a.serial,
                     temp=a.temp, ph=a.ph, alkali=a.alkali, salt=a.salt, do=a.do, nh4=a.nh4, no2=a.no2, turbid=a.turbid,
                     security=a.security, naoh=a.naoh, dang=a.dang, blower=a.blower,  boiler=a.boiler, remark=a.remark,
-                    created=a.created, date=a.date, xdate=a.xdate)
+                    created=a.created, date=a.date,)
         b.save()
     return render(request, 'shrimpgram/shrimp_search.html', {'filter': file_filter})
-
-@login_required
-def control_search(request):
-    file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
-    file_filter = SearchFilter(request.GET, queryset=file_list)
-    # - Save in the other Table
-    x = file_filter.qs
-    Sshrimp.objects.filter(Q(author=request.user.username) & Q(subject='조작장치')).delete()
-    for a in x:
-        b = Sshrimp(id=a.id, author=a.author.username, group=a.group.name, location=a.location, subject=a.subject, serial=a.serial,
-                    temp=a.temp, ph=a.ph, alkali=a.alkali, salt=a.salt, do=a.do, nh4=a.nh4, no2=a.no2, turbid=a.turbid,
-                    security=a.security, naoh=a.naoh, dang=a.dang, blower=a.blower,  boiler=a.boiler, remark=a.remark,
-                    created=a.created, date=a.date)
-        b.save()
-    return render(request, 'shrimpgram/control_search.html', {'filter': file_filter})
 
 class ShrimpDeleteView(LoginRequiredMixin, DeleteView):
     model = Shrimp
@@ -179,23 +147,13 @@ class ControlUploadView(LoginRequiredMixin, CreateView):
         form = ControlForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
-        form.instance.serial = 'control'
+        location_field = form.instance.location
         if form.is_valid():
+            form.save(commit=False)
+            #form.instance.serial = location_field         #'직접기록'
+            form.instance.subject = '측정장치'
             form.save()
-            # -------- for App -----------
-            url = "http://www.smarteolife.com/push/register.php"
-            data_dict = {
-                "CMD": "COMMAND_REG",
-                "TOKEN_TYP": "sop",
-                "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": "blank",  # request.POST['password'],
-                "TOKEN_USR": form.instance.user.username,  # request.POST['username'],
-                "TOKEN_TEL": "blank",  # request.POST['last_name'],
-                "TOKEN_EML": "blank",  # request.POST['email'],
-            }
-            requests.get(url, params=data_dict)  # response = requests.get(url, params=data_dict)
-            # --------------------------
-            return redirect('shrimpgram:control_list')
+            return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
 
 class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
@@ -209,7 +167,7 @@ class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
         if form.is_valid():
             form.save()                                                                         # -------- for App -----------
             typ = request.POST['subject']
-            if "측정기" in typ:
+            if "측정" in typ:
                 type = "sop"
             else:
                 type = "sec"
@@ -231,18 +189,9 @@ class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
 #for weasyprint
 def generate_pdf(request):
     files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
-    html_string = render_to_string('shrimpgram/pdf_list.html', {'files': files})             # Rendered
-    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
+    html_string = render_to_string('shrimpgram/pdf_list.html', {'files': files})                        # Rendered
+    response = HttpResponse(content_type='application/pdf;')                                            # Creating http response
     response['Content-Disposition'] = 'filename=shrimp_list_{}.pdf'.format(request.user)
-    weasyprint.HTML(string=html_string).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS('static/css/pdf.css')])
-    return response
-
-def control_pdf(request):
-    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='조작장치'))
-    html_string = render_to_string('shrimpgram/pdf_list_control.html', {'files': files})             # Rendered
-    response = HttpResponse(content_type='application/pdf;')                                # Creating http response
-    response['Content-Disposition'] = 'filename=control_list_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
@@ -252,15 +201,6 @@ def search_pdf(request):
     html_string = render_to_string('shrimpgram/pdf_search.html', {'filter': files_filter})                  # Rendered
     response = HttpResponse(content_type='application/pdf;')                                                # Creating http response
     response['Content-Disposition'] = 'filename=shrimp_search_{}.pdf'.format(request.user)
-    weasyprint.HTML(string=html_string).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS('static/css/pdf.css')])
-    return response
-
-def control_search_pdf(request):
-    files_filter = Sshrimp.objects.filter(Q(author=request.user.username) & Q(subject='조작장치'))
-    html_string = render_to_string('shrimpgram/pdf_search_control.html', {'filter': files_filter})          # Rendered
-    response = HttpResponse(content_type='application/pdf;')                                                # Creating http response
-    response['Content-Disposition'] = 'filename=control_search_{}.pdf'.format(request.user)
     weasyprint.HTML(string=html_string).write_pdf(response,
                                            stylesheets=[weasyprint.CSS('static/css/pdf.css')])
     return response
@@ -277,13 +217,14 @@ def search_xls(request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-    columns = ['호지', '장치번호', '온도(*C)', 'ph', '알칼리도(ppm)', '염도(ppt)', '용존산소(ppm)', '암모니아(ppm)', '아질산(ppm)', '탁도(ppm)', '보안',]
+    columns = ['호지', '장치번호', '온도(*C)', 'ph', '알칼리도(ppm)', '염도(ppt)', '용존산소(ppm)', '암모니아(ppm)',
+               '아질산(ppm)', '탁도(ppm)', '중화제(cc/min)', '당밀(l/min)']
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     rows = Sshrimp.objects.filter(Q(author=request.user.username) & Q(subject='측정장치')).values_list('location', 'serial',
-                                            'temp', 'ph', 'alkali', 'salt', 'do', 'nh4', 'no2', 'turbid', 'security')
+                                            'temp', 'ph', 'alkali', 'salt', 'do', 'nh4', 'no2', 'turbid', 'naoh', 'dang',)
 
     for row in rows:
         row_num += 1
@@ -311,6 +252,8 @@ class ShrimpAPIView(LoginRequiredMixin, APIView):
         nh4_list = []
         no2_list = []
         turbid_list = []
+        naoh_list = []
+        dang_list = []
 
         for file in files:
             org_date = str(file.date)
@@ -325,6 +268,8 @@ class ShrimpAPIView(LoginRequiredMixin, APIView):
             nh4_list.append([utc_now, file.nh4])
             no2_list.append([utc_now, file.no2])
             turbid_list.append([utc_now, file.turbid])
+            naoh_list.append([utc_now, file.naoh])
+            dang_list.append([utc_now, file.dang])
 
         data = {
             'temp': temp_list,
@@ -335,6 +280,8 @@ class ShrimpAPIView(LoginRequiredMixin, APIView):
             'nh4': nh4_list,
             'no2': no2_list,
             'turbid': turbid_list,
+            'naoh': naoh_list,
+            'dang': dang_list,
         }
         return Response(data)
 

@@ -14,7 +14,7 @@
     <table class="container_big">
         <thead>
             <tr>
-                <th>호지구분</th>
+                <th>구역</th>
                 <th>장치번호</th>
                 <th>온도(*C)</th>
                 <th>pH</th>
@@ -24,7 +24,8 @@
                 <th>암모니아(ppm)</th>
                 <th>아질산(ppm)</th>
                 <th>탁도(ppm)</th>
-                <th>보안</th>
+                <th>중화제(cc/min)</th>
+                <th>당밀(l/min)</th>
                 <th>해당일시</th>
             </tr>
         </thead>
@@ -46,7 +47,8 @@
                 <td align="center">{{post.nh4|div:1000}}</td>
                 <td align="center">{{post.no2|div:1000}}</td>
                 <td align="center">{{post.turbid}}</td>
-                <td align="center">{{post.security}}</td>
+                <td align="center">{{post.naoh}}</td>
+                <td align="center">{{post.dang}}</td>
                 <td align="center">{{post.date|date:"y-m-d H:i"}}</td>
             </tr>
         {% endfor %}
