@@ -11,17 +11,13 @@ app_name = 'metergram'
 urlpatterns = [
     path('mindex/', MeterDataView.as_view(), name='mindex'),
     path('vindex/', ValveDataView.as_view(), name='vindex'),
-
     path('vclose/', ValveCloseView.as_view(), name='valve_close'),
 
     path('', meter_list, name='meter_list'),
     path('control/', control_list, name='control_list'),
 
     path('upload/', MeterUploadView.as_view(), name='meter_upload'),
-    path('control_upload/', ControlUploadView.as_view(), name='control_upload'),
-
-    path('update/<int:pk>/', MeterUpdateView.as_view(), name='meter_update'),
-    path('delete/<int:pk>/', MeterDeleteView.as_view(), name='meter_delete'),
+    path('delete/<int:pk>/', meter_delete, name='smart_delete'),
     path('detail/<int:pk>/', DetailView.as_view(model=Meter, template_name='metergram/meter_detail.html'),
          name='meter_detail'),
 

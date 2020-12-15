@@ -78,7 +78,7 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
                 "CMD": "ACCOUNT_REG",
                 "TOKEN_TYP": "uclone",                          #request.POST['first_name'],
                 "TOKEN_SER": "uclone",                          #request.POST['first_name'],
-                "TOKEN_PSW": request.user.password,
+                "TOKEN_PSW": request.POST['password'],
                 "TOKEN_USR": request.POST['username'],
                 "TOKEN_TEL": request.POST['last_name'],
                 "TOKEN_EML": request.POST['email'],

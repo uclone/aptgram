@@ -12,10 +12,9 @@
 {% block content %}
     <p></p>
     <div class="btn-toolbar float-left">
-        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-danger btn-sm">등록:계량기</a>
-        <a href="{% url 'metergram:control_upload' %}" class="btn btn-danger btn-sm">등록:차단기</a>
+        <a href="{% url 'metergram:meter_upload' %}" class="btn btn-danger btn-sm">장치등록</a>
         <a href="{% url 'metergram:control_search' %}" class="btn btn-info btn-sm">기록검색</a>
-        <a href="{% url 'metergram:meter_list' %}" class="btn btn-primary btn-sm">기록:계량기</a></div>
+        <a href="{% url 'metergram:meter_list' %}" class="btn btn-primary btn-sm">스마트계량기</a></div>
     <div class="btn-toolbar float-right">
         <a href="{% url 'metergram:valve_close' %}" class="btn btn-danger btn-sm">밸브:작동</a>
         <a href="{% url 'metergram:control_pdf' %}" class="btn btn-success btn-sm">pdf:출력</a></div>

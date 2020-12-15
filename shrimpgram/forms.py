@@ -10,7 +10,7 @@ subject_choice= [
 class RegistForm(forms.ModelForm):
     class Meta:
         model = Shrimp
-        fields = ['location', 'subject', 'serial']
+        fields = ['location', 'subject', 'serial', 'mk']
         widgets = {
             'subject': forms.Select(choices=subject_choice),
         }

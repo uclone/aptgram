@@ -26,6 +26,7 @@ class Shrimp(models.Model):
     date = models.DateTimeField(null=True, blank=True, default=timezone.now, verbose_name='작성일시')
     xdate = models.DateField(null=True, blank=True, default=timezone.now, verbose_name='수정일시')
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name='일시')
+    mk = models.CharField(max_length=100, null=True, blank=True, verbose_name='구글계정과 동일한 패스워드')
 
     class Meta:
         ordering = ['-created']

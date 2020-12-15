@@ -9,13 +9,12 @@ app_name = 'shrimpgram'
 
 urlpatterns = [
     path('sindex', views.IndexView.as_view(), name='sindex'),
-
     path('', shrimp_list, name='shrimp_list'),
 
     path('upload/', ShrimpUploadView.as_view(), name='shrimp_upload'),
     path('control_upload/', ControlUploadView.as_view(), name='control_upload'),
 
-    path('delete/<int:pk>/', ShrimpDeleteView.as_view(), name='shrimp_delete'),
+    path('delete/<int:pk>/', shrimp_delete, name='shrimp_delete'),
     path('update/<int:pk>/', ShrimpUpdateView.as_view(), name='shrimp_update'),
     path('detail/<int:pk>/', DetailView.as_view(model=Shrimp, template_name='shrimpgram/shrimp_detail.html'), name='shrimp_detail'),
 

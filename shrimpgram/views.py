@@ -26,11 +26,12 @@ from time import mktime, strptime
 class IndexView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        obj = Shrimp.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Shrimp(serial = request.POST['serial'],
+        j = Shrimp.objects.filter(serial=Iserial)   #.last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location               #getattr(obj, 'location')
+            form = Shrimp(serial = request.POST['serial'],
                       temp = request.POST['temp'],
                       ph = request.POST['ph'],
                       alkali = request.POST['alkali'],
@@ -41,20 +42,21 @@ class IndexView(View):
                       turbid=request.POST['turbid'],
                       naoh=request.POST['naoh'],
                       dang=request.POST['dang'],)
-        form.save(commit=False)
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.date = form.created
+            form.save(commit=False)
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.date = form.created
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        obj = Shrimp.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Shrimp(serial = Iserial,
+        j = Shrimp.objects.filter(serial=Iserial)     #.last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location               #getattr(obj, 'location')
+            form = Shrimp(serial = Iserial,
                       temp = request.GET['temp'],
                       ph = request.GET['ph'],
                       alkali = request.GET['alkali'],
@@ -65,12 +67,12 @@ class IndexView(View):
                       turbid = request.GET['turbid'],
                       naoh = request.GET['naoh'],
                       dang = request.GET['dang'],)
-        form.save(commit=False)
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.date = form.created
-        form.save()
+            form.save(commit=False)
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.date = form.created
+            form.save()
         return HttpResponse(status=200)
 
 @login_required
@@ -104,10 +106,30 @@ def shrimp_search(request):
         b.save()
     return render(request, 'shrimpgram/shrimp_search.html', {'filter': file_filter})
 
-class ShrimpDeleteView(LoginRequiredMixin, DeleteView):
-    model = Shrimp
-    success_url = reverse_lazy('shrimpgram:shrimp_list')
-    template_name = 'shrimpgram/shrimp_delete.html'
+
+def shrimp_delete(request, pk):
+    obj = Shrimp.objects.filter(id=pk).first()
+    pretype = obj.subject
+    mserial = obj.serial
+    mkey = obj.mk
+    # -------- for App -----------
+    type = "sec"
+    url = "http://www.smarteolife.com/push/register.php"
+    data_dict = {
+        "CMD": "COMMAND_DEL",
+        "TOKEN_TYP": type,
+        "TOKEN_SER": mserial,
+        "TOKEN_PSW": mkey,
+        "TOKEN_USR": request.user.username,                     # request.POST['username'],
+        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
+        "TOKEN_EML": request.user.email,                        # request.POST['email'],
+        "TOKEN_TLK": " ",
+    }
+    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
+    # --------------------------
+    Shrimp.objects.filter(id=pk).delete()
+    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치'))
+    return render(request, 'shrimpgram/shrimp_list.html', {'files': files})
 
 class ShrimpUploadView(LoginRequiredMixin, CreateView):
     model = Shrimp

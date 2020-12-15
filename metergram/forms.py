@@ -10,7 +10,7 @@ subject_choice= [
 class RegistForm(forms.ModelForm):
    class Meta:
         model = Meter
-        fields = ['location', 'subject', 'serial']
+        fields = ['subject', 'location', 'serial', 'mk']
         widgets = {
             'subject': forms.Select(choices=subject_choice),
         }

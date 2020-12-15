@@ -25,12 +25,13 @@ class Meter(models.Model):
     valveaction = models.CharField(max_length=100, null=True, blank=True, verbose_name='가스밸브조작')
     date = models.DateTimeField(null=True, blank=True, default=timezone.now, verbose_name='일시')
     created = models.DateTimeField(auto_now_add=True, verbose_name='일시')
+    mk = models.CharField(max_length=100, null=True, blank=True, verbose_name='구글계정과 동일한 패스워드')
 
     class Meta:
         ordering = ['-created']
 
     def __str__(self):
-        return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")
+        return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M")
 
 
     def get_absolute_url(self):
@@ -64,5 +65,5 @@ class Smeter(models.Model):
         ordering = ['-created']
 
     def __str__(self):
-        return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M:%S")
+        return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M")
 

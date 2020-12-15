@@ -25,11 +25,12 @@ from time import mktime, strptime
 class MeterDataView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        obj = Meter.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Meter(subject='스마트계량기',
+        j = Meter.objects.filter(serial=Iserial)        #.last() #++++++++++++++++++++++++++++++>> multi user 대책은?
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location
+            form = Meter(subject='스마트계량기',
                      serial=Iserial,
                      monmtr=request.POST['monmtr'],
                      moncor=request.POST['moncor'],
@@ -40,19 +41,20 @@ class MeterDataView(View):
                      gastmp=request.POST['gastmp'],
                      gasprs=request.POST['gasprs'],
                      gasalarm=request.POST['gasalarm'], )
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.save()
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        obj = Meter.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Meter(subject = '스마트계량기',
+        j = Meter.objects.filter(serial=Iserial)        #.last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location
+            form = Meter(subject = '스마트계량기',
                       serial = Iserial,
                       monmtr = request.GET['monmtr'],
                       moncor = request.GET['moncor'],
@@ -63,50 +65,52 @@ class MeterDataView(View):
                       gastmp = request.GET['gastmp'],
                       gasprs = request.GET['gasprs'],
                       gasalarm = request.GET['gasalarm'],)
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.save()
         return HttpResponse(status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ValveDataView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        obj = Meter.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Meter(subject = '스마트차단기',
+        j = Meter.objects.filter(serial=Iserial)    #.last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location               #getattr(obj, 'location')
+            form = Meter(subject = '스마트차단기',
                       serial = Iserial,
                       hometmp = request.POST['hometmp'],
                       homeprs = request.POST['homeprs'],
                       homealarm = request.POST['homealarm'],
                       valvestatus = request.POST['valvestatus'],
                       valveaction = request.POST['valveaction'],)
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.save()
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        obj = Meter.objects.filter(serial=Iserial).last()
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location               #getattr(obj, 'location')
-        form = Meter(subject = '스마트차단기',
+        j = Meter.objects.filter(serial=Iserial)    #.last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location               #getattr(obj, 'location')
+            form = Meter(subject = '스마트차단기',
                       serial = Iserial,
                       hometmp = request.GET['hometmp'],
                       homeprs = request.GET['homeprs'],
                       homealarm = request.GET['homealarm'],
                       valvestatus=request.POST['valvestatus'],
                       valveaction=request.POST['valveaction'], )
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            form.save()
         return HttpResponse(status=200)
 
 class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기 작동
@@ -118,6 +122,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
         obj = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기')).first()
         location_field = obj.location
         serial_field = obj.serial
+        mk_field = obj.mk
         instance = Meter()
         form = CloseForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
@@ -126,6 +131,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
             form.save(commit=False)
             form.instance.location = location_field
             form.instance.serial = serial_field
+            form.instance.mk = mk_field
             form.instance.subject = '스마트차단기'
             form.instance.valveaction = '가스밸브 차단작동'
             form.save()
@@ -135,7 +141,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
                 "CMD": "COMMAND_TLK",
                 "TOKEN_TYP": "gop",
                 "TOKEN_SER": serial_field,
-                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_PSW": mk_field,                   # request.POST['password'],
                 "TOKEN_USR": request.user.username,                   # request.POST['username'],
                 "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
                 "TOKEN_EML": request.user.email,                      # request.POST['email'],
@@ -206,38 +212,37 @@ def control_search(request):
         b.save()
     return render(request, 'metergram/control_search.html', {'filter': file_filter})
 
-class MeterDeleteView(LoginRequiredMixin, DeleteView):
-    model = Meter
-    success_url = reverse_lazy('metergram:meter_list')
-    template_name = 'metergram/meter_delete.html'
+def meter_delete(request, pk):
+    obj = Meter.objects.filter(id=pk).first()
+    pretype = obj.subject
+    mserial = obj.serial
+    mkey = obj.mk
+    # -------- for App -----------
+    if "차단기" in pretype:
+        type = "gop"
+    else:
+        type = "gvc"
+    url = "http://www.smarteolife.com/push/register.php"
+    data_dict = {
+        "CMD": "COMMAND_DEL",
+        "TOKEN_TYP": type,
+        "TOKEN_SER": mserial,
+        "TOKEN_PSW": mkey,
+        "TOKEN_USR": request.user.username,                     # request.POST['username'],
+        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
+        "TOKEN_EML": request.user.email,                        # request.POST['email'],
+        "TOKEN_TLK": " ",
+    }
+    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
+    # --------------------------
+    Meter.objects.filter(id=pk).delete()
+    if type=="gvc":
+        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
+        return render(request, 'metergram/meter_list.html', {'files': files})
+    elif type=="gop":
+        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
+        return render(request, 'metergram/control_list.html', {'files': files})
 
-    def smart_delete(self, request, pk):
-        obj = Meter.objects.filter(id=pk).first()
-        pretype = obj.subject
-        instance = Meter()
-        form = RegistForm(request.POST, instance=instance)          #MeterForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
-            # -------- for App -----------
-            if "차단기" in pretype:
-                type = "gop"
-            else:
-                type = "gvc"
-            url = "http://www.smarteolife.com/push/register.php"
-            data_dict = {
-                "CMD": "COMMAND_DEL",
-                "TOKEN_TYP": type,
-                "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
-                "TOKEN_USR": request.user.username,                   # request.POST['username'],
-                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
-                "TOKEN_EML": request.user.email,                      # request.POST['email'],
-                "TOKEN_TLK": " ",
-            }
-            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
-            # --------------------------
-            return redirect('metergram:control_list')
-        return render(request, 'metergram/meter_delete.html', {'form': form})
 
 class MeterUploadView(LoginRequiredMixin, CreateView):              #스마트계량기 등록
     model = Meter
@@ -245,69 +250,16 @@ class MeterUploadView(LoginRequiredMixin, CreateView):              #스마트�
     template_name = 'metergram/meter_upload.html'
 
     def post(self, request):
+        mkey = request.POST['mk']
         instance = Meter()
         form = RegistForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
+            form.save(commit=False)
+            form.instance.mk = mkey
             form.save()
             #-------- for App -----------
-            url = "http://www.smarteolife.com/push/register.php"
-            data_dict = {
-                "CMD": "COMMAND_REG",
-                "TOKEN_TYP": "gvc",
-                "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
-                "TOKEN_USR": request.user.username,                   # request.POST['username'],
-                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
-                "TOKEN_EML": request.user.email,                      # request.POST['email'],
-                "TOKEN_TLK": " ",
-            }
-            requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
-            #--------------------------
-            return redirect('metergram:meter_list')
-        return self.render_to_response({'form': form})
-
-class ControlUploadView(LoginRequiredMixin, CreateView):            #스마트차단기 등록
-    model = Meter
-    form_class = RegistForm
-    template_name = 'metergram/control_upload.html'
-
-    def post(self, request):
-        instance = Meter()
-        form = RegistForm(request.POST, instance=instance)
-        form.instance.author_id = request.user.id
-        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
-        if form.is_valid():
-            form.save()
-            # -------- for App -----------
-            url = "http://www.smarteolife.com/push/register.php"
-            data_dict = {
-                "CMD": "COMMAND_REG",
-                "TOKEN_TYP": "gop",
-                "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
-                "TOKEN_USR": request.user.username,                   # request.POST['username'],
-                "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
-                "TOKEN_EML": request.user.email,                      # request.POST['email'],
-                "TOKEN_TLK": " ",
-            }
-            requests.get(url, params=data_dict)                 # response = requests.get(url, params=data_dict)
-            # --------------------------
-            return redirect('metergram:control_list')
-        return self.render_to_response({'form': form})
-
-class MeterUpdateView(LoginRequiredMixin, UpdateView):              #스마트계량기, 스마트차단기 등록사항 변경 --> 불필요??
-    model = Meter
-    form_class = RegistForm                                         #MeterForm
-    template_name = 'metergram/meter_update.html'
-
-    def meter_update(self, request, pk):
-        instance = Meter()
-        form = RegistForm(request.POST, instance=instance)          #MeterForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
-            # -------- for App -----------
             typ = request.POST['subject']
             if "차단기" in typ:
                 type = "gop"
@@ -318,16 +270,16 @@ class MeterUpdateView(LoginRequiredMixin, UpdateView):              #스마트�
                 "CMD": "COMMAND_REG",
                 "TOKEN_TYP": type,
                 "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": request.user.password,                   # request.POST['password'],
+                "TOKEN_PSW": mkey,
                 "TOKEN_USR": request.user.username,                   # request.POST['username'],
                 "TOKEN_TEL": request.user.last_name,                  # request.POST['last_name'],
                 "TOKEN_EML": request.user.email,                      # request.POST['email'],
                 "TOKEN_TLK": " ",
             }
             requests.get(url, params=data_dict)                     # response = requests.get(url, params=data_dict)
-            # --------------------------
+            #--------------------------
             return redirect('metergram:meter_list')
-        return render(request, 'metergram/meter_update.html', {'form': form})
+        return self.render_to_response({'form': form})
 
 #for weasyprint
 def generate_pdf(request):
@@ -438,3 +390,5 @@ class MeterChartView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = Smeter.objects.filter(Q(author=request.user.username) & Q(subject='스마트계량기')).first()
         return render(request, 'metergram/meter_chart.html', {'form': form})
+
+
