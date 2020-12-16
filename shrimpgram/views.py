@@ -47,6 +47,9 @@ class IndexView(View):
             form.author = author_field
             form.location = location_field
             form.date = form.created
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
     def get(self, request):
@@ -72,7 +75,9 @@ class IndexView(View):
             form.author = author_field
             form.location = location_field
             form.date = form.created
-            form.save()
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
 @login_required

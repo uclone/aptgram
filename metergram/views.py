@@ -25,12 +25,12 @@ from time import mktime, strptime
 class MeterDataView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        obj = Meter.objects.filter(serial=Iserial).last() #++++++++++++++++++++++++++++++>> multi user 대책은?
-        #for obj in j:
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location
-        form = Meter(subject='스마트계량기',
+        j = Meter.objects.filter(serial=Iserial).last() #++++++++++++++++++++++++++++++>> multi user 대책은?
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location
+            form = Meter(subject='스마트계량기',
                      serial=Iserial,
                      monmtr=request.POST['monmtr'],
                      moncor=request.POST['moncor'],
@@ -41,20 +41,22 @@ class MeterDataView(View):
                      gastmp=request.POST['gastmp'],
                      gasprs=request.POST['gasprs'],
                      gasalarm=request.POST['gasalarm'], )
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        obj = Meter.objects.filter(serial=Iserial).last()
-        #for obj in j:
-        group_field = getattr(obj, 'group')
-        author_field = getattr(obj, 'author')
-        location_field = obj.location
-        form = Meter(subject = '스마트계량기',
+        j = Meter.objects.filter(serial=Iserial).last()
+        for obj in j:
+            group_field = getattr(obj, 'group')
+            author_field = getattr(obj, 'author')
+            location_field = obj.location
+            form = Meter(subject = '스마트계량기',
                       serial = Iserial,
                       monmtr = request.GET['monmtr'],
                       moncor = request.GET['moncor'],
@@ -65,10 +67,12 @@ class MeterDataView(View):
                       gastmp = request.GET['gastmp'],
                       gasprs = request.GET['gasprs'],
                       gasalarm = request.GET['gasalarm'],)
-        form.group = group_field
-        form.author = author_field
-        form.location = location_field
-        form.save()
+            form.group = group_field
+            form.author = author_field
+            form.location = location_field
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -90,7 +94,9 @@ class ValveDataView(View):
             form.group = group_field
             form.author = author_field
             form.location = location_field
-            form.save()
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
     def get(self, request):
@@ -110,7 +116,9 @@ class ValveDataView(View):
             form.group = group_field
             form.author = author_field
             form.location = location_field
-            form.save()
+            if old_field != group_field:
+                form.save()
+            old_field = group_field
         return HttpResponse(status=200)
 
 class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기 작동
