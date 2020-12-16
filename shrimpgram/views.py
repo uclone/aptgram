@@ -26,12 +26,11 @@ from time import mktime, strptime
 class IndexView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        j = Shrimp.objects.filter(serial=Iserial)   #.last()
-        for obj in j:
-            group_field = getattr(obj, 'group')
-            author_field = getattr(obj, 'author')
-            location_field = obj.location               #getattr(obj, 'location')
-            form = Shrimp(serial = request.POST['serial'],
+        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(subject='측정장치')).first()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Shrimp(serial = Iserial,
                       temp = request.POST['temp'],
                       ph = request.POST['ph'],
                       alkali = request.POST['alkali'],
@@ -42,24 +41,21 @@ class IndexView(View):
                       turbid=request.POST['turbid'],
                       naoh=request.POST['naoh'],
                       dang=request.POST['dang'],)
-            form.save(commit=False)
-            form.group = group_field
-            form.author = author_field
-            form.location = location_field
-            form.date = form.created
-            if old_field != group_field:
-                form.save()
-            old_field = group_field
+        form.save(commit=False)
+        form.group = group_field
+        form.author = author_field
+        form.location = location_field
+        form.date = form.created
+        form.save()
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        j = Shrimp.objects.filter(serial=Iserial)     #.last()
-        for obj in j:
-            group_field = getattr(obj, 'group')
-            author_field = getattr(obj, 'author')
-            location_field = obj.location               #getattr(obj, 'location')
-            form = Shrimp(serial = Iserial,
+        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(subject='측정장치')).first()
+        group_field = getattr(obj, 'group')
+        author_field = getattr(obj, 'author')
+        location_field = obj.location               #getattr(obj, 'location')
+        form = Shrimp(serial = Iserial,
                       temp = request.GET['temp'],
                       ph = request.GET['ph'],
                       alkali = request.GET['alkali'],
@@ -70,14 +66,12 @@ class IndexView(View):
                       turbid = request.GET['turbid'],
                       naoh = request.GET['naoh'],
                       dang = request.GET['dang'],)
-            form.save(commit=False)
-            form.group = group_field
-            form.author = author_field
-            form.location = location_field
-            form.date = form.created
-            if old_field != group_field:
-                form.save()
-            old_field = group_field
+        form.save(commit=False)
+        form.group = group_field
+        form.author = author_field
+        form.location = location_field
+        form.date = form.created
+        form.save()
         return HttpResponse(status=200)
 
 @login_required
@@ -142,11 +136,15 @@ class ShrimpUploadView(LoginRequiredMixin, CreateView):
     template_name = 'shrimpgram/shrimp_upload.html'
 
     def post(self, request):
+        mkey = request.POST['mk']
         instance = Shrimp()
         form = RegistForm(request.POST, instance=instance)
         form.instance.author_id = request.user.id
         form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
         if form.is_valid():
+            form.save(commit=False)
+            form.instance.mk = mkey
+            form.instance.gasalarm = 'Register'
             form.save()
             # -------- for App -----------
             url = "http://www.smarteolife.com/push/register.php"
@@ -164,7 +162,7 @@ class ShrimpUploadView(LoginRequiredMixin, CreateView):
             return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
 
-class ControlUploadView(LoginRequiredMixin, CreateView):
+class ControlUploadView(LoginRequiredMixin, CreateView):        # 직접 기록하는 경우
     model = Shrimp
     form_class = ControlForm
     template_name = 'shrimpgram/control_upload.html'

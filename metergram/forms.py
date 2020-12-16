@@ -26,6 +26,7 @@ class MeterForm(forms.ModelForm):
         model = Meter
         fields = ['subject', 'serial', 'monmtr', 'moncor', 'amtmonmtr', 'amtmoncor', 'accmtr', 'acccor',
                   'gastmp', 'gasprs', 'gasalarm',]
+        #fields = ['gasalarm', ]
         widgets = {
             'date': DatePickerInput(format='%Y-%m-%d'),
             'subject': forms.Select(choices=subject_choice),

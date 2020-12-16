@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('upload/', MeterUploadView.as_view(), name='meter_upload'),
     path('delete/<int:pk>/', meter_delete, name='meter_delete'),
+    path('update/<int:pk>/', MeterUpdateView.as_view(), name='meter_update'),
     path('detail/<int:pk>/', DetailView.as_view(model=Meter, template_name='metergram/meter_detail.html'),
          name='meter_detail'),
 
