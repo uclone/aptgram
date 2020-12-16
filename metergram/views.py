@@ -162,7 +162,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
 
 @login_required
 def meter_list(request):
-    pagefiles = Meter.objects.all()     #filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))A
+    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
