@@ -9,14 +9,20 @@ app_name = 'shrimpgram'
 
 urlpatterns = [
     path('sindex', views.IndexView.as_view(), name='sindex'),
+
     path('', shrimp_list, name='shrimp_list'),
+    path('instrument/', instrument_list, name='instrument_list'),
 
     path('upload/', ShrimpUploadView.as_view(), name='shrimp_upload'),
-    path('control_upload/', ControlUploadView.as_view(), name='control_upload'),
-
-    path('delete/<int:pk>/', shrimp_delete, name='shrimp_delete'),
     path('update/<int:pk>/', ShrimpUpdateView.as_view(), name='shrimp_update'),
-    path('detail/<int:pk>/', DetailView.as_view(model=Shrimp, template_name='shrimpgram/shrimp_detail.html'), name='shrimp_detail'),
+
+    path('data_delete/<int:pk>/', data_delete, name='data_delete'),
+    path('instrument_delete/<int:pk>/', instrument_delete, name='instrument_delete'),
+
+    path('detail/<int:pk>/', DetailView.as_view(model=Shrimp, template_name='shrimpgram/shrimp_detail.html'),
+         name='shrimp_detail'),
+    path('instrument_detail/<int:pk>/', DetailView.as_view(model=Shrimp, template_name='shrimpgram/instrument_detail.html'),
+         name='instrument_detail'),
 
     url(r'^search/$', shrimp_search, name='shrimp_search'),                             # search
 

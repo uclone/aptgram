@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>instrument-detail</title>
+</head>
+
+<body>
+{% block content %}
+    <p></p>
+    <div class="btn-toolbar float-left">
+        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-primary btn-sm">자료:측정기</a>
+    <div class="btn-toolbar float-right">
+        <a href="{% url 'shrimpgram:instrument_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a></div>
+    <p></p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">항목</th>
+                <th scope="col">내역</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr><td>가입자명</td><td>{{object.author}}</td></tr>
+            <tr><td>사용목적</td><td>{{object.group}}</td></tr>
+            <tr><td>장치위치</td><td>{{object.location}}</td></tr>
+            <tr><td>장치종류</td><td>{{object.subject}}</td></tr>
+            <tr><td>장치번호</td><td>{{object.serial}}</td></tr>
+            <tr><td>알림사항</td><td>{{object.remark}}</td></tr>
+            <tr><td>기록일시</td><td>{{object.created|date:"Y-m-d H:i"}}</td></tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+</body>
+</html>

@@ -25,7 +25,6 @@ from time import mktime, strptime
 class MeterDataView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        Iserial = '31215131'
         obj = Meter.objects.filter(Q(serial=Iserial) & Q(gasalarm='Register')).first()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
@@ -41,7 +40,6 @@ class MeterDataView(View):
                      gastmp=request.POST['gastmp'],
                      gasprs=request.POST['gasprs'],
                      gasalarm=request.POST['gasalarm'], )
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
@@ -65,7 +63,6 @@ class MeterDataView(View):
                       gastmp = request.GET['gastmp'],
                       gasprs = request.GET['gasprs'],
                       gasalarm = request.GET['gasalarm'],)
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
@@ -87,7 +84,6 @@ class ValveDataView(View):
                       homealarm = request.POST['homealarm'],
                       valvestatus = request.POST['valvestatus'],
                       valveaction = request.POST['valveaction'],)
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
@@ -107,7 +103,6 @@ class ValveDataView(View):
                       homealarm = request.GET['homealarm'],
                       valvestatus=request.POST['valvestatus'],
                       valveaction=request.POST['valveaction'], )
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
@@ -155,7 +150,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
 
 @login_required
 def meter_list(request):
-    pagefiles = Meter.objects.all() #filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
+    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -220,12 +215,12 @@ def control_search(request):
 
 def data_delete(request, pk):
     obj = Meter.objects.filter(id=pk).first()
-    type = obj.subject
-    Meter.objects.filter(id=pk).delete()
-    if type=="gvc":
+    pretype = obj.subject
+    obj.delete()
+    if "계량기" in pretype:
         files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
         return render(request, 'metergram/meter_list.html', {'files': files})
-    elif type=="gop":
+    elif "차단기" in pretype:
         files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기') & ~Q(gasalarm='Register'))
         return render(request, 'metergram/control_list.html', {'files': files})
 
@@ -296,10 +291,8 @@ def instrument_delete(request, pk):
     requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
     # --------------------------
     obj.delete()
-    #return redirect('metergram:instrument_list')
     files = Meter.objects.filter(Q(author_id=request.user.id) & Q(gasalarm='Register'))
     return render(request, 'metergram/instrument_list.html', {'files': files})
-    #return HttpResponse("ffffffffffffe")
 
 #for weasyprint
 def generate_pdf(request):

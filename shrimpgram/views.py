@@ -26,7 +26,7 @@ from time import mktime, strptime
 class IndexView(View):
     def post(self, request):
         Iserial = request.POST['serial']
-        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(subject='측정장치')).first()
+        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(remark='Register')).first()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
         location_field = obj.location               #getattr(obj, 'location')
@@ -41,17 +41,17 @@ class IndexView(View):
                       turbid=request.POST['turbid'],
                       naoh=request.POST['naoh'],
                       dang=request.POST['dang'],)
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
+        form.save()                                 ################################
         form.date = form.created
         form.save()
         return HttpResponse(status=200)
 
     def get(self, request):
         Iserial = request.GET['serial']
-        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(subject='측정장치')).first()
+        obj = Shrimp.objects.filter(Q(author_id=Iserial) & Q(remark='Register')).first()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
         location_field = obj.location               #getattr(obj, 'location')
@@ -66,17 +66,17 @@ class IndexView(View):
                       turbid = request.GET['turbid'],
                       naoh = request.GET['naoh'],
                       dang = request.GET['dang'],)
-        form.save(commit=False)
         form.group = group_field
         form.author = author_field
         form.location = location_field
+        form.save()                                 #######################################3
         form.date = form.created
         form.save()
         return HttpResponse(status=200)
 
 @login_required
 def shrimp_list(request):
-    pagefiles = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Regist'))
+    pagefiles = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(remark='Register'))
 # - pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -90,8 +90,13 @@ def shrimp_list(request):
     return render(request, 'shrimpgram/shrimp_list.html', {'files':files})
 
 @login_required
+def instrument_list(request):
+    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(remark='Register'))
+    return render(request, 'shrimpgram/instrument_list.html', {'files':files})
+
+@login_required
 def shrimp_search(request):
-    file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Regist'))
+    file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Register'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
@@ -105,30 +110,16 @@ def shrimp_search(request):
         b.save()
     return render(request, 'shrimpgram/shrimp_search.html', {'filter': file_filter})
 
-
-def shrimp_delete(request, pk):
+def data_delete(request, pk):
     obj = Shrimp.objects.filter(id=pk).first()
-    pretype = obj.subject
-    mserial = obj.serial
-    mkey = obj.mk
-    # -------- for App -----------
-    type = "sec"
-    url = "http://www.smarteolife.com/push/register.php"
-    data_dict = {
-        "CMD": "COMMAND_DEL",
-        "TOKEN_TYP": type,
-        "TOKEN_SER": mserial,
-        "TOKEN_PSW": mkey,
-        "TOKEN_USR": request.user.username,                     # request.POST['username'],
-        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
-        "TOKEN_EML": request.user.email,                        # request.POST['email'],
-        "TOKEN_TLK": " ",
-    }
-    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
-    # --------------------------
-    Shrimp.objects.filter(id=pk).delete()
+    obj.delete
     files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Regist'))
     return render(request, 'shrimpgram/shrimp_list.html', {'files': files})
+
+class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
+    model = Shrimp
+    form_class = MeterForm
+    template_name = 'shrimpgram/shrimp_update.html'
 
 class ShrimpUploadView(LoginRequiredMixin, CreateView):
     model = Shrimp
@@ -152,12 +143,13 @@ class ShrimpUploadView(LoginRequiredMixin, CreateView):
                 "CMD": "COMMAND_REG",
                 "TOKEN_TYP": "sec",
                 "TOKEN_SER": request.POST['serial'],
-                "TOKEN_PSW": "blank",  # request.POST['password'],
-                "TOKEN_USR": form.instance.user.username,  # request.POST['username'],
-                "TOKEN_TEL": "blank",  # request.POST['last_name'],
-                "TOKEN_EML": "blank",  # request.POST['email'],
+                "TOKEN_PSW": mkey,                                      # request.POST['password'],
+                "TOKEN_USR": request.user.username,                     # request.POST['username'],
+                "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
+                "TOKEN_EML": request.user.email,                        # request.POST['email'],
+                "TOKEN_TLK": " ",
             }
-            requests.get(url, params=data_dict)  # response = requests.get(url, params=data_dict)
+            requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
             # --------------------------
             return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
@@ -181,10 +173,29 @@ class ControlUploadView(LoginRequiredMixin, CreateView):        # 직접 기록�
             return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
 
-class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
-    model = Shrimp
-    form_class = MeterForm
-    template_name = 'shrimpgram/shrimp_update.html'
+def instrument_delete(request, pk):
+    obj = Shrimp.objects.filter(id=pk).first()
+    #pretype = obj.subject
+    mserial = obj.serial
+    mkey = obj.mk
+    # -------- for App -----------
+    type = "sec"
+    url = "http://www.smarteolife.com/push/register.php"
+    data_dict = {
+        "CMD": "COMMAND_DEL",
+        "TOKEN_TYP": type,
+        "TOKEN_SER": mserial,
+        "TOKEN_PSW": mkey,
+        "TOKEN_USR": request.user.username,                     # request.POST['username'],
+        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
+        "TOKEN_EML": request.user.email,                        # request.POST['email'],
+        "TOKEN_TLK": " ",
+    }
+    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
+    # --------------------------
+    obj.delete()
+    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(remark='Regist'))
+    return render(request, 'shrimpgram/shrimp_list.html', {'files': files})
 
 #for weasyprint
 def generate_pdf(request):
