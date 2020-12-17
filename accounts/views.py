@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm, UpdateForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
-from django.views.generic.edit import DeleteView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
@@ -43,6 +43,12 @@ def register(request):
     else:
         user_form = RegisterForm()
     return render(request, 'accounts/register.html', {'form':user_form})
+
+class RegisterBtnView(CreateView):
+    model = Meter
+    fields = '__all__'
+    #form_class = CloseForm
+    template_name = 'accounts/register_btn.html'
 
 @login_required
 def account_list(request):

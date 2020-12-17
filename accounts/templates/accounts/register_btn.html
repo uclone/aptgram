@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+{% extends 'base_mobile.html' %}
+{% load bootstrap4 %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>register_btn</title>
+
+</head>
+
+<body>
+{% block content %}
+
+    <div class="text-center">
+        <p></p>
+        <a href="{% url 'accounts:register' %}" class="btn btn-info btn-lg">유클론계정 등록하기</a>
+        <p></p>
+    </div>
+
+{% endblock %}
+</body>
+</html>
