@@ -34,8 +34,8 @@ class Meter(models.Model):
         return self.author.username + " " + self.created.strftime("%Y-%m-%d %H:%M")
 
 
-    def get_absolute_url(self):
-        return reverse('metergram:meter_detail', args=[str(self.id)])
+    #def get_absolute_url(self):
+    #    return reverse('metergram:meter_detail', args=[str(self.id)])
 
 
 class Smeter(models.Model):

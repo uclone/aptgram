@@ -25,6 +25,7 @@ from time import mktime, strptime
 class MeterDataView(View):
     def post(self, request):
         Iserial = request.POST['serial']
+        Iserial = '31215131'
         obj = Meter.objects.filter(Q(serial=Iserial) & Q(gasalarm='Register')).first()
         group_field = getattr(obj, 'group')
         author_field = getattr(obj, 'author')
@@ -154,7 +155,7 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
 
 @login_required
 def meter_list(request):
-    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
+    pagefiles = Meter.objects.all() #filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
     #pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -169,7 +170,7 @@ def meter_list(request):
 
 @login_required
 def control_list(request):
-    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
+    pagefiles = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기') & ~Q(gasalarm='Register'))
     # pagination - start
     page = request.GET.get('page', 1)
     paginator = Paginator(pagefiles, 10)
@@ -183,8 +184,13 @@ def control_list(request):
     return render(request, 'metergram/control_list.html', {'files':files})
 
 @login_required
+def instrument_list(request):
+    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(gasalarm='Register'))
+    return render(request, 'metergram/instrument_list.html', {'files':files})
+
+@login_required
 def meter_search(request):
-    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
+    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
@@ -199,7 +205,7 @@ def meter_search(request):
 
 @login_required
 def control_search(request):
-    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
+    file_list = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기') & ~Q(gasalarm='Register'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
@@ -212,35 +218,15 @@ def control_search(request):
         b.save()
     return render(request, 'metergram/control_search.html', {'filter': file_filter})
 
-def meter_delete(request, pk):
+def data_delete(request, pk):
     obj = Meter.objects.filter(id=pk).first()
-    pretype = obj.subject
-    mserial = obj.serial
-    mkey = obj.mk
-    # -------- for App -----------
-    if "차단기" in pretype:
-        type = "gop"
-    else:
-        type = "gvc"
-    url = "http://www.smarteolife.com/push/register.php"
-    data_dict = {
-        "CMD": "COMMAND_DEL",
-        "TOKEN_TYP": type,
-        "TOKEN_SER": mserial,
-        "TOKEN_PSW": mkey,
-        "TOKEN_USR": request.user.username,                     # request.POST['username'],
-        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
-        "TOKEN_EML": request.user.email,                        # request.POST['email'],
-        "TOKEN_TLK": " ",
-    }
-    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
-    # --------------------------
+    type = obj.subject
     Meter.objects.filter(id=pk).delete()
     if type=="gvc":
-        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기'))
+        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트계량기') & ~Q(gasalarm='Register'))
         return render(request, 'metergram/meter_list.html', {'files': files})
     elif type=="gop":
-        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기'))
+        files = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기') & ~Q(gasalarm='Register'))
         return render(request, 'metergram/control_list.html', {'files': files})
 
 class MeterUpdateView(LoginRequiredMixin, UpdateView):
@@ -285,6 +271,35 @@ class MeterUploadView(LoginRequiredMixin, CreateView):              #스마트�
             #--------------------------
             return redirect('metergram:meter_list')
         return self.render_to_response({'form': form})
+
+def instrument_delete(request, pk):
+    obj = Meter.objects.filter(id=pk).first()
+    pretype = obj.subject
+    mserial = obj.serial
+    mkey = obj.mk
+    # -------- for App -----------
+    if "차단기" in pretype:
+        type = "gop"
+    else:
+        type = "gvc"
+    url = "http://www.smarteolife.com/push/register.php"
+    data_dict = {
+        "CMD": "COMMAND_DEL",
+        "TOKEN_TYP": type,
+        "TOKEN_SER": mserial,
+        "TOKEN_PSW": mkey,
+        "TOKEN_USR": request.user.username,                     # request.POST['username'],
+        "TOKEN_TEL": request.user.last_name,                    # request.POST['last_name'],
+        "TOKEN_EML": request.user.email,                        # request.POST['email'],
+        "TOKEN_TLK": " ",
+    }
+    requests.get(url, params=data_dict)                         # response = requests.get(url, params=data_dict)
+    # --------------------------
+    obj.delete()
+    #return redirect('metergram:instrument_list')
+    files = Meter.objects.filter(Q(author_id=request.user.id) & Q(gasalarm='Register'))
+    return render(request, 'metergram/instrument_list.html', {'files': files})
+    #return HttpResponse("ffffffffffffe")
 
 #for weasyprint
 def generate_pdf(request):
