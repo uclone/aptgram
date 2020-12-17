@@ -14,6 +14,7 @@ urlpatterns = [
     path('instrument/', instrument_list, name='instrument_list'),
 
     path('upload/', ShrimpUploadView.as_view(), name='shrimp_upload'),
+    path('control_upload/', ControlUploadView.as_view(), name='control_upload'),
     path('update/<int:pk>/', ShrimpUpdateView.as_view(), name='shrimp_update'),
 
     path('data_delete/<int:pk>/', data_delete, name='data_delete'),
