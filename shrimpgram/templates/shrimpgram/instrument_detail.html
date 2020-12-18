@@ -12,9 +12,9 @@
 {% block content %}
     <p></p>
     <div class="btn-toolbar float-left">
-        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-primary btn-sm">자료:측정기</a>
+        <a href="{% url 'shrimpgram:shrimp_list' %}" class="btn btn-primary btn-sm">측정기록보기</a>
     <div class="btn-toolbar float-right">
-        <a href="{% url 'shrimpgram:instrument_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a></div>
+        <a href="{% url 'shrimpgram:instrument_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제:등록기기</a></div>
     <p></p>
 
     <table class="table">

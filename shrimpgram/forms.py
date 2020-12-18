@@ -15,7 +15,7 @@ class RegistForm(forms.ModelForm):
             'subject': forms.Select(choices=subject_choice),
         }
 
-class MeterForm(forms.ModelForm):
+class ShrimpForm(forms.ModelForm):
     class Meta:
         model = Shrimp
         fields = ['serial', 'temp', 'ph', 'alkali', 'salt', 'do', 'nh4', 'no2', 'turbid', 'security', 'date']

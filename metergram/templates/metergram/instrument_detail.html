@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>safety-detail</title>
+    <title>instrument-detail</title>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
         <a href="{% url 'metergram:meter_list' %}" class="btn btn-primary btn-sm">자료:계량기</a>
         <a href="{% url 'metergram:control_list' %}" class="btn btn-primary btn-sm">자료:차단기</a></div>
     <div class="btn-toolbar float-right">
-        <a href="{% url 'metergram:instrument_delete' pk=object.id %}" class="btn btn-danger btn-sm">삭제하기</a></div>
+        <a href="{% url 'metergram:instrument_delete' pk=object.id %}" class="btn btn-danger btn-sm">등록기기삭제</a></div>
     <p></p>
 
     <table class="table">

@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import weasyprint
 from django.db.models import Q
 from .filters import SearchFilter
-from .forms import RegistForm, MeterForm, ControlForm
+from .forms import RegistForm, ShrimpForm, ControlForm
 from django.contrib.auth.models import User, Group
 import xlwt
 import requests
@@ -116,11 +116,6 @@ def data_delete(request, pk):
     files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Regist'))
     return render(request, 'shrimpgram/shrimp_list.html', {'files': files})
 
-class ShrimpUpdateView(LoginRequiredMixin, UpdateView):
-    model = Shrimp
-    form_class = MeterForm
-    template_name = 'shrimpgram/shrimp_update.html'
-
 class ShrimpUploadView(LoginRequiredMixin, CreateView):
     model = Shrimp
     form_class = RegistForm
@@ -167,11 +162,15 @@ class ControlUploadView(LoginRequiredMixin, CreateView):        # 직접 기록�
         location_field = form.instance.location
         if form.is_valid():
             form.save(commit=False)
-            #form.instance.serial = location_field         #'직접기록'
-            form.instance.subject = '측정장치'
+            form.instance.subject = '직접기록'
             form.save()
             return redirect('shrimpgram:shrimp_list')
         return self.render_to_response({'form': form})
+
+class ControlUpdateView(LoginRequiredMixin, UpdateView):
+    model = Shrimp
+    form_class = ControlForm
+    template_name = 'shrimpgram/control_update.html'
 
 def instrument_delete(request, pk):
     obj = Shrimp.objects.filter(id=pk).first()
