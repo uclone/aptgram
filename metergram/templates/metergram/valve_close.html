@@ -27,10 +27,36 @@
                     <a href="{% url 'metergram:control_list' %}" class="btn btn-primary btn-lg">스마트차단기 기록</a>
                     <p></p>
                 </form>
+
+
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
                 </div>
             </div>
             <div class="col-md-2"></div>
         </div>
+
+
+
+
+
+
+
+
+
 {% endblock %}
+
+
+
+
 </body>
 </html>

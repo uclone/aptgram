@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views.generic import View
 from time import mktime, strptime
+from django.contrib import messages
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -116,37 +117,45 @@ class ValveCloseView(LoginRequiredMixin, CreateView):        #스마트차단기
 
     def post(self, request):
         obj = Meter.objects.filter(Q(author_id=request.user.id) & Q(subject='스마트차단기')).first()
-        location_field = obj.location
-        serial_field = obj.serial
-        mk_field = obj.mk
-        instance = Meter()
-        form = CloseForm(request.POST, instance=instance)
-        form.instance.author_id = request.user.id
-        form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
-        if form.is_valid():
-            form.save(commit=False)
-            form.instance.location = location_field
-            form.instance.serial = serial_field
-            form.instance.mk = mk_field
-            form.instance.subject = '스마트차단기'
-            form.instance.valveaction = '가스밸브 차단작동'
-            form.save()
-            # -------- for App -----------
-            url = "http://www.smarteolife.com/push/register.php"
-            data_dict = {
-                "CMD": "COMMAND_TLK",
-                "TOKEN_TYP": "gop",
-                "TOKEN_SER": serial_field,
-                "TOKEN_PSW": mk_field,                          # request.POST['password'],
-                "TOKEN_USR": request.user.username,             # request.POST['username'],
-                "TOKEN_TEL": request.user.last_name,            # request.POST['last_name'],
-                "TOKEN_EML": request.user.email,                # request.POST['email'],
-                "TOKEN_TLK": "afrtsclose",
-            }
-            requests.get(url, params=data_dict)                 # response = requests.get(url, params=data_dict)
-            # --------------------------
+        if not obj:
+            messages.warning(request, '등록된 스마트차단기가 없습니다.')
             return redirect('metergram:control_list')
-        return self.render_to_response({'form': form})
+            #return render(request, 'metergram/valve_close.html')
+        else:
+            location_field = obj.location
+            serial_field = obj.serial
+            mk_field = obj.mk
+            instance = Meter()
+            form = CloseForm(request.POST, instance=instance)
+            form.instance.author_id = request.user.id
+            form.instance.group_id = request.user.groups.values_list('id', flat=True).first()
+            if form.is_valid():
+                form.save(commit=False)
+                form.instance.location = location_field
+                form.instance.serial = serial_field
+                form.instance.mk = mk_field
+                form.instance.subject = '스마트차단기'
+                form.instance.valveaction = '가스밸브 차단작동'
+                form.save()
+                # -------- for App -----------
+                url = "http://www.smarteolife.com/push/register.php"
+                data_dict = {
+                    "CMD": "COMMAND_TLK",
+                    "TOKEN_TYP": "gop",
+                    "TOKEN_SER": serial_field,
+                    "TOKEN_PSW": mk_field,                          # request.POST['password'],
+                    "TOKEN_USR": request.user.username,             # request.POST['username'],
+                    "TOKEN_TEL": request.user.last_name,            # request.POST['last_name'],
+                    "TOKEN_EML": request.user.email,                # request.POST['email'],
+                    "TOKEN_TLK": "afrtsclose",
+                }
+                requests.get(url, params=data_dict)                 # response = requests.get(url, params=data_dict)
+                # --------------------------
+                return redirect('metergram:control_list')
+            else:
+                messages.warning(request, '가스를 사용 중입니다!')
+                #messages.add_message(request, messages.WARNING, 'Your Gas is Burning!')
+            return self.render_to_response({'form': form})
 
 @login_required
 def meter_list(request):
@@ -176,6 +185,7 @@ def control_list(request):
     except EmptyPage:
         files = paginator.page(paginator.num_pages)
     # pagination - end
+    #messages.WARNING(request, 'Gas Valve will be Closed!')
     return render(request, 'metergram/control_list.html', {'files':files})
 
 @login_required
