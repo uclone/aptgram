@@ -32,27 +32,27 @@
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a href="#" class="nav-link">{{user.get_username}}</a></li>
                         {% if "아파트관리" in user.last_name %}
-                        <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">&laquo; 일정 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'filegram:file_list' %}" class="active nav-link">&laquo; 문서 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">&laquo; 일기 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'susungram:susun_list' %}" class="active nav-link">&laquo; 수선 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">&laquo; 설비 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">&laquo; 비품 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'lifegram:life_list' %}" class="active nav-link">&laquo; 민원 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">&laquo; 검침 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'newsgram:news_list_jumin' %}" class="active nav-link">&laquo; 공고읽기 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'lifegram:life_upload_jumin' %}" class="active nav-link">&laquo; 민원접수 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">&laquo; 투표하기 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">&laquo; 주민 &raquo;</a></li>
-                        <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">&laquo; 공고 &raquo;</a></li>
+                        <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">일정</a></li>
+                        <li class="nav-item"><a href="{% url 'filegram:file_list' %}" class="active nav-link">문서</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일기</a></li>
+                        <li class="nav-item"><a href="{% url 'susungram:susun_list' %}" class="active nav-link">수선</a></li>
+                        <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">설비</a></li>
+                        <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">비품</a></li>
+                        <li class="nav-item"><a href="{% url 'lifegram:life_list' %}" class="active nav-link">민원</a></li>
+                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">검침</a></li>
+                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">투표</a></li>
+                        <li class="nav-item"><a href="{% url 'newsgram:news_list_jumin' %}" class="active nav-link">공고읽기</a></li>
+                        <li class="nav-item"><a href="{% url 'lifegram:life_upload_jumin' %}" class="active nav-link">민원접수</a></li>
+                        <li class="nav-item"><a href="{% url 'pollgram:poll_list' %}" class="active nav-link">투표하기</a></li>
+                        <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">주민</a></li>
+                        <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">공고</a></li>
                         {% else %}
                         <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">생활</a></li>
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">일정</a></li>
                         <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일기</a></li>
                         <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">설비</a></li>
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">비품</a></li>
-                        <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">수질</a></li>
+                        <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">업무</a></li>
                         {% endif %}
                     <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">로그아웃</a></li>
                     {% else %}

@@ -96,7 +96,7 @@ def instrument_list(request):
 
 @login_required
 def shrimp_search(request):
-    file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Register'))
+    file_list = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치')) # & ~Q(gasalarm='Register'))
     file_filter = SearchFilter(request.GET, queryset=file_list)
     # - Save in the other Table
     x = file_filter.qs
@@ -113,7 +113,7 @@ def shrimp_search(request):
 def data_delete(request, pk):
     obj = Shrimp.objects.filter(id=pk).first()
     obj.delete
-    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Regist'))
+    files = Shrimp.objects.filter(Q(author_id=request.user.id) & Q(subject='측정장치') & ~Q(gasalarm='Register'))
     return render(request, 'shrimpgram/shrimp_list.html', {'files': files})
 
 class ShrimpUploadView(LoginRequiredMixin, CreateView):
