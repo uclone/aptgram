@@ -15,7 +15,7 @@
                 <th scope="col">사용목적</th>
                 <th scope="col">스마트폰번호</th>
                 <th scope="col">이메일</th>
-                <th scope="col">수정하기</th>
+                <th scope="col">처음화면</th>
                 <th scope="col">삭제하기</th>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
                 <td>{{post.groups.all.0.name}}</td>
                 <td>{{post.last_name}}</td>
                 <td>{{post.email}}</td>
-                <td><a href="{% url 'accounts:account_update' pk=post.id %}" class="btn btn-success btn-sm">수정하기</a></td>
+                <td><a href="{% url 'index:index' %}" class="btn btn-success btn-sm">처음화면</a></td>
                 <td><a href="{% url 'accounts:account_delete' pk=post.id %}" class="btn btn-danger btn-sm">삭제하기</a></td>
             </tr>
         {% endfor %}

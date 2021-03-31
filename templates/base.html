@@ -31,7 +31,7 @@
                 <ul class="nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a href="#" class="nav-link">{{user.get_username}}</a></li>
-                        {% if "아파트관리" in user.last_name %}
+                        {% if "smart" in user.groups.all.0.name %}
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">일정</a></li>
                         <li class="nav-item"><a href="{% url 'filegram:file_list' %}" class="active nav-link">문서</a></li>
                         <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일기</a></li>
@@ -47,12 +47,23 @@
                         <li class="nav-item"><a href="{% url 'jumingram:jumin_list' %}" class="active nav-link">주민</a></li>
                         <li class="nav-item"><a href="{% url 'newsgram:news_list' %}" class="active nav-link">공고</a></li>
                         {% else %}
+                        {% endif %}
+
+                        {% if "업무" in user.groups.all.0.name %}
                         <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">생활</a></li>
                         <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">일정</a></li>
-                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일기</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일지</a></li>
                         <li class="nav-item"><a href="{% url 'sulbigram:sulbi_list' %}" class="active nav-link">설비</a></li>
                         <li class="nav-item"><a href="{% url 'equipgram:equip_list' %}" class="active nav-link">비품</a></li>
                         <li class="nav-item"><a href="{% url 'shrimpgram:shrimp_list' %}" class="active nav-link">업무</a></li>
+                        {% else %}
+                        {% endif %}
+
+                        {% if "생활" in user.groups.all.0.name %}
+                        <li class="nav-item"><a href="{% url 'metergram:meter_list' %}" class="active nav-link">생활</a></li>
+                        <li class="nav-item"><a href="{% url 'timegram:schedule' %}" class="active nav-link">일정</a></li>
+                        <li class="nav-item"><a href="{% url 'taskgram:task_list' %}" class="active nav-link">일기</a></li>
+                        {% else %}
                         {% endif %}
                     <li class="nav-item"><a href="{% url 'accounts:logout' %}" class="nav-link">로그아웃</a></li>
                     {% else %}
