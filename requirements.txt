@@ -32,7 +32,7 @@ Pillow==7.1.2
 pycparser==2.20
 PyMySQL==0.9.3
 Pyphen==0.9.5
-python-dateutil==2.8.1
+python-dateutil==1.5
 pytz==2020.1
 requests==2.24.0
 s3transfer==0.3.3
